@@ -1,0 +1,320 @@
+{
+  "tournament": "Masters",
+  "year": 2026,
+  "dates": "April 9–12",
+  "course": "Augusta National",
+  "participants": [
+    {
+      "name": "Harley Hudson",
+      "picks": [
+        { "player": "Ludvig Åberg",      "tier": 1 },
+        { "player": "Scottie Scheffler", "tier": 1 },
+        { "player": "Akshay Bhatia",     "tier": 2 },
+        { "player": "Jordan Spieth",     "tier": 2 },
+        { "player": "Daniel Berger",     "tier": 3 },
+        { "player": "Maverick McNealy",  "tier": 3 },
+        { "player": "Danny Willett",     "tier": 4 },
+        { "player": "Davis Riley",       "tier": 4 }
+      ]
+    },
+    {
+      "name": "Jimmy Messing",
+      "picks": [
+        { "player": "Ludvig Åberg",      "tier": 1 },
+        { "player": "Matt Fitzpatrick",  "tier": 1 },
+        { "player": "Akshay Bhatia",     "tier": 2 },
+        { "player": "Patrick Reed",      "tier": 2 },
+        { "player": "Aaron Rai",         "tier": 3 },
+        { "player": "Harris English",    "tier": 3 },
+        { "player": "Davis Riley",       "tier": 4 },
+        { "player": "Zach Johnson",      "tier": 4 }
+      ]
+    },
+    {
+      "name": "Nick O'Connor",
+      "picks": [
+        { "player": "Ludvig Åberg",      "tier": 1 },
+        { "player": "Scottie Scheffler", "tier": 1 },
+        { "player": "Jacob Bridgeman",   "tier": 2 },
+        { "player": "Min Woo Lee",       "tier": 2 },
+        { "player": "Harris English",    "tier": 3 },
+        { "player": "Max Homa",          "tier": 3 },
+        { "player": "Danny Willett",     "tier": 4 },
+        { "player": "Zach Johnson",      "tier": 4 }
+      ]
+    },
+    {
+      "name": "Timothy Dee",
+      "picks": [
+        { "player": "Justin Rose",       "tier": 1 },
+        { "player": "Xander Schauffele", "tier": 1 },
+        { "player": "Collin Morikawa",   "tier": 2 },
+        { "player": "Patrick Reed",      "tier": 2 },
+        { "player": "Cameron Smith",     "tier": 3 },
+        { "player": "Sungjae Im",        "tier": 3 },
+        { "player": "Charl Schwartzel",  "tier": 4 },
+        { "player": "Danny Willett",     "tier": 4 }
+      ]
+    },
+    {
+      "name": "Matthew Dee",
+      "picks": [
+        { "player": "Bryson DeChambeau", "tier": 1 },
+        { "player": "Scottie Scheffler", "tier": 1 },
+        { "player": "Hideki Matsuyama",  "tier": 2 },
+        { "player": "Jordan Spieth",     "tier": 2 },
+        { "player": "Daniel Berger",     "tier": 3 },
+        { "player": "Rasmus Højgaard",   "tier": 3 },
+        { "player": "Charl Schwartzel",  "tier": 4 },
+        { "player": "Davis Riley",       "tier": 4 }
+      ]
+    },
+    {
+      "name": "Justin",
+      "picks": [
+        { "player": "Cameron Young",     "tier": 1 },
+        { "player": "Tommy Fleetwood",   "tier": 1 },
+        { "player": "Chris Gotterup",    "tier": 2 },
+        { "player": "Collin Morikawa",   "tier": 2 },
+        { "player": "Aaron Rai",         "tier": 3 },
+        { "player": "Kurt Kitayama",     "tier": 3 },
+        { "player": "Danny Willett",     "tier": 4 },
+        { "player": "Vijay Singh",       "tier": 4 }
+      ]
+    },
+    {
+      "name": "Hearn",
+      "picks": [
+        { "player": "Matt Fitzpatrick",  "tier": 1 },
+        { "player": "Xander Schauffele", "tier": 1 },
+        { "player": "Akshay Bhatia",     "tier": 2 },
+        { "player": "Min Woo Lee",       "tier": 2 },
+        { "player": "Harris English",    "tier": 3 },
+        { "player": "Kurt Kitayama",     "tier": 3 },
+        { "player": "Davis Riley",       "tier": 4 },
+        { "player": "Zach Johnson",      "tier": 4 }
+      ]
+    },
+    {
+      "name": "Pat",
+      "picks": [
+        { "player": "Ludvig Åberg",      "tier": 1 },
+        { "player": "Matt Fitzpatrick",  "tier": 1 },
+        { "player": "Akshay Bhatia",     "tier": 2 },
+        { "player": "Shane Lowry",       "tier": 2 },
+        { "player": "Ben Griffin",       "tier": 3 },
+        { "player": "Brian Harman",      "tier": 3 },
+        { "player": "Danny Willett",     "tier": 4 },
+        { "player": "Mason Howell",      "tier": 4 }
+      ]
+    },
+    {
+      "name": "Scott",
+      "picks": [
+        { "player": "Jon Rahm",          "tier": 1 },
+        { "player": "Xander Schauffele", "tier": 1 },
+        { "player": "Akshay Bhatia",     "tier": 2 },
+        { "player": "Russell Henley",    "tier": 2 },
+        { "player": "Ben Griffin",       "tier": 3 },
+        { "player": "Max Homa",          "tier": 3 },
+        { "player": "Charl Schwartzel",  "tier": 4 },
+        { "player": "Davis Riley",       "tier": 4 }
+      ]
+    },
+    {
+      "name": "Baldur",
+      "picks": [
+        { "player": "Jon Rahm",          "tier": 1 },
+        { "player": "Ludvig Åberg",      "tier": 1 },
+        { "player": "Hideki Matsuyama",  "tier": 2 },
+        { "player": "Patrick Reed",      "tier": 2 },
+        { "player": "Cameron Smith",     "tier": 3 },
+        { "player": "Sungjae Im",        "tier": 3 },
+        { "player": "Charl Schwartzel",  "tier": 4 },
+        { "player": "Davis Riley",       "tier": 4 }
+      ]
+    },
+    {
+      "name": "Trevor",
+      "picks": [
+        { "player": "Matt Fitzpatrick",  "tier": 1 },
+        { "player": "Scottie Scheffler", "tier": 1 },
+        { "player": "Corey Conners",     "tier": 2 },
+        { "player": "Hideki Matsuyama",  "tier": 2 },
+        { "player": "Daniel Berger",     "tier": 3 },
+        { "player": "Harris English",    "tier": 3 },
+        { "player": "Brandon Holtz",     "tier": 4 },
+        { "player": "Danny Willett",     "tier": 4 }
+      ]
+    },
+    {
+      "name": "Ian",
+      "picks": [
+        { "player": "Ludvig Åberg",      "tier": 1 },
+        { "player": "Scottie Scheffler", "tier": 1 },
+        { "player": "Hideki Matsuyama",  "tier": 2 },
+        { "player": "Patrick Reed",      "tier": 2 },
+        { "player": "Daniel Berger",     "tier": 3 },
+        { "player": "Sungjae Im",        "tier": 3 },
+        { "player": "Davis Riley",       "tier": 4 },
+        { "player": "Zach Johnson",      "tier": 4 }
+      ]
+    },
+    {
+      "name": "Max",
+      "picks": [
+        { "player": "Ludvig Åberg",      "tier": 1 },
+        { "player": "Matt Fitzpatrick",  "tier": 1 },
+        { "player": "Patrick Reed",      "tier": 2 },
+        { "player": "Viktor Hovland",    "tier": 2 },
+        { "player": "Maverick McNealy",  "tier": 3 },
+        { "player": "Sungjae Im",        "tier": 3 },
+        { "player": "Davis Riley",       "tier": 4 },
+        { "player": "Mason Howell",      "tier": 4 }
+      ]
+    },
+    {
+      "name": "Bastian",
+      "picks": [
+        { "player": "Rory McIlroy",      "tier": 1 },
+        { "player": "Scottie Scheffler", "tier": 1 },
+        { "player": "Collin Morikawa",   "tier": 2 },
+        { "player": "J.J. Spaun",        "tier": 2 },
+        { "player": "Brian Harman",      "tier": 3 },
+        { "player": "Wyndham Clark",     "tier": 3 },
+        { "player": "Charl Schwartzel",  "tier": 4 },
+        { "player": "Zach Johnson",      "tier": 4 }
+      ]
+    },
+    {
+      "name": "Matt Mileski",
+      "picks": [
+        { "player": "Bryson DeChambeau", "tier": 1 },
+        { "player": "Jon Rahm",          "tier": 1 },
+        { "player": "Corey Conners",     "tier": 2 },
+        { "player": "Hideki Matsuyama",  "tier": 2 },
+        { "player": "Michael Kim",       "tier": 3 },
+        { "player": "Sungjae Im",        "tier": 3 },
+        { "player": "Charl Schwartzel",  "tier": 4 },
+        { "player": "Zach Johnson",      "tier": 4 }
+      ]
+    },
+    {
+      "name": "Kyan Nafissi",
+      "picks": [
+        { "player": "Matt Fitzpatrick",  "tier": 1 },
+        { "player": "Scottie Scheffler", "tier": 1 },
+        { "player": "Justin Thomas",     "tier": 2 },
+        { "player": "Patrick Cantlay",   "tier": 2 },
+        { "player": "Daniel Berger",     "tier": 3 },
+        { "player": "Maverick McNealy",  "tier": 3 },
+        { "player": "Danny Willett",     "tier": 4 },
+        { "player": "Davis Riley",       "tier": 4 }
+      ]
+    },
+    {
+      "name": "David",
+      "picks": [
+        { "player": "Jon Rahm",          "tier": 1 },
+        { "player": "Scottie Scheffler", "tier": 1 },
+        { "player": "Brooks Koepka",     "tier": 2 },
+        { "player": "Jordan Spieth",     "tier": 2 },
+        { "player": "Daniel Berger",     "tier": 3 },
+        { "player": "Maverick McNealy",  "tier": 3 },
+        { "player": "Danny Willett",     "tier": 4 },
+        { "player": "Zach Johnson",      "tier": 4 }
+      ]
+    },
+    {
+      "name": "Chip",
+      "picks": [
+        { "player": "Scottie Scheffler", "tier": 1 },
+        { "player": "Xander Schauffele", "tier": 1 },
+        { "player": "Chris Gotterup",    "tier": 2 },
+        { "player": "Viktor Hovland",    "tier": 2 },
+        { "player": "Aaron Rai",         "tier": 3 },
+        { "player": "Harris English",    "tier": 3 },
+        { "player": "Charl Schwartzel",  "tier": 4 },
+        { "player": "Danny Willett",     "tier": 4 }
+      ]
+    },
+    {
+      "name": "Caleb",
+      "picks": [
+        { "player": "Ludvig Åberg",      "tier": 1 },
+        { "player": "Scottie Scheffler", "tier": 1 },
+        { "player": "Corey Conners",     "tier": 2 },
+        { "player": "Hideki Matsuyama",  "tier": 2 },
+        { "player": "Sungjae Im",        "tier": 3 },
+        { "player": "Wyndham Clark",     "tier": 3 },
+        { "player": "Charl Schwartzel",  "tier": 4 },
+        { "player": "Zach Johnson",      "tier": 4 }
+      ]
+    },
+    {
+      "name": "Will",
+      "picks": [
+        { "player": "Ludvig Åberg",      "tier": 1 },
+        { "player": "Scottie Scheffler", "tier": 1 },
+        { "player": "Hideki Matsuyama",  "tier": 2 },
+        { "player": "Justin Thomas",     "tier": 2 },
+        { "player": "Harris English",    "tier": 3 },
+        { "player": "Sungjae Im",        "tier": 3 },
+        { "player": "Davis Riley",       "tier": 4 },
+        { "player": "Naoyuki Kataoka",   "tier": 4 }
+      ]
+    },
+    {
+      "name": "LB",
+      "picks": [
+        { "player": "Cameron Young",     "tier": 1 },
+        { "player": "Ludvig Åberg",      "tier": 1 },
+        { "player": "Akshay Bhatia",     "tier": 2 },
+        { "player": "Chris Gotterup",    "tier": 2 },
+        { "player": "Alex Noren",        "tier": 3 },
+        { "player": "Harry Hall",        "tier": 3 },
+        { "player": "Mason Howell",      "tier": 4 },
+        { "player": "Vijay Singh",       "tier": 4 }
+      ]
+    },
+    {
+      "name": "Egan",
+      "picks": [
+        { "player": "Bryson DeChambeau", "tier": 1 },
+        { "player": "Robert MacIntyre",  "tier": 1 },
+        { "player": "Akshay Bhatia",     "tier": 2 },
+        { "player": "Patrick Reed",      "tier": 2 },
+        { "player": "Ben Griffin",       "tier": 3 },
+        { "player": "Matt McCarty",      "tier": 3 },
+        { "player": "Danny Willett",     "tier": 4 },
+        { "player": "Davis Riley",       "tier": 4 }
+      ]
+    },
+    {
+      "name": "Ditto",
+      "picks": [
+        { "player": "Jon Rahm",          "tier": 1 },
+        { "player": "Scottie Scheffler", "tier": 1 },
+        { "player": "Hideki Matsuyama",  "tier": 2 },
+        { "player": "Jordan Spieth",     "tier": 2 },
+        { "player": "Cameron Smith",     "tier": 3 },
+        { "player": "Dustin Johnson",    "tier": 3 },
+        { "player": "Danny Willett",     "tier": 4 },
+        { "player": "Davis Riley",       "tier": 4 }
+      ]
+    },
+    {
+      "name": "Wes",
+      "picks": [
+        { "player": "Bryson DeChambeau", "tier": 1 },
+        { "player": "Matt Fitzpatrick",  "tier": 1 },
+        { "player": "Corey Conners",     "tier": 2 },
+        { "player": "Jordan Spieth",     "tier": 2 },
+        { "player": "Daniel Berger",     "tier": 3 },
+        { "player": "Sungjae Im",        "tier": 3 },
+        { "player": "Charl Schwartzel",  "tier": 4 },
+        { "player": "Danny Willett",     "tier": 4 }
+      ]
+    }
+  ]
+}
