@@ -55,9 +55,11 @@ export function calcParticipantScore(participant, scores, cutLine) {
     if (status === 'cut' || status === 'wd' || status === 'dq') {
       strokes = CUT + 1
       status = 'mc'
-    } else if (strokes > CUT) {
-      // Made the cut but finished strictly worse than the cut line
-      // → protected at one better than the cut line (rules §3)
+    } else if (strokes > CUT - 1) {
+      // Rules §3: "the worst he can finish is one better (-1) than the
+      // cut line" — any made-cut player with a total ≥ cut line gets
+      // capped at cutLine - 1. (A player already at cutLine - 1 or
+      // better keeps their actual score.)
       strokes = CUT - 1
       status = 'protected'
     }
