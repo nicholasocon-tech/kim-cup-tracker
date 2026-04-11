@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import TournamentView from './components/TournamentView.jsx'
 import SeasonView from './components/SeasonView.jsx'
+import JayHaasView from './components/JayHaasView.jsx'
 
 const TABS = [
   { id: 'tournament', label: 'Tournament' },
   { id: 'season',     label: 'Season' },
+  { id: 'jayhaas',    label: 'Jay Haas' },
 ]
 
 export default function App() {
@@ -39,7 +41,9 @@ export default function App() {
 
       {/* Content */}
       <main className="max-w-2xl mx-auto px-4 py-6">
-        {tab === 'tournament' ? <TournamentView /> : <SeasonView />}
+        {tab === 'tournament' && <TournamentView />}
+        {tab === 'season'     && <SeasonView />}
+        {tab === 'jayhaas'    && <JayHaasView />}
       </main>
     </div>
   )

@@ -1,5 +1,6 @@
 {
   "year": 2026,
   "majors": ["Masters", "PGA Championship", "U.S. Open", "The Open"],
-  "completedResults": []
+  "completedResults": [],
+  "cutsData": []
 }
