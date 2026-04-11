@@ -15,7 +15,30 @@ import { normalizeName } from './espn.js'
  * @returns {{ total: number, picks: PickResult[], counting: PickResult[], dropped: PickResult[] }}
  */
 export function calcParticipantScore(participant, scores, cutLine) {
-  const CUT = cutLine ?? 3 // default safety fallback
+  // Don't apply cut logic until we have a real cut line from ESPN
+  const CUT = cutLine ?? null
+  if (CUT === null) {
+    // Pre-cut: just use raw scores, no MC penalty or protection
+    const picks = participant.picks.map((pick) => {
+      const key = normalizeName(pick.player)
+      const score = scores.get(key)
+      const strokes = score ? score.total : 0
+      return {
+        ...pick,
+        strokes,
+        status: score ? 'active' : 'pending',
+        displayScore: score ? formatScore(score.total) : '-',
+        thru: score?.thru ?? '-',
+      }
+    })
+    const sorted = [...picks].sort((a, b) => a.strokes - b.strokes)
+    const counting = sorted.slice(0, 5)
+    const dropped = sorted.slice(5)
+    const countingKeys = new Set(counting.map((p) => p.player + p.tier))
+    const annotated = picks.map((p) => ({ ...p, counting: countingKeys.has(p.player + p.tier) }))
+    const total = counting.reduce((sum, p) => sum + p.strokes, 0)
+    return { total, picks: annotated, counting, dropped }
+  }
 
   const picks = participant.picks.map((pick) => {
     const key = normalizeName(pick.player)
@@ -32,7 +55,9 @@ export function calcParticipantScore(participant, scores, cutLine) {
     if (status === 'cut' || status === 'wd' || status === 'dq') {
       strokes = CUT + 1
       status = 'mc'
-    } else if (strokes > CUT - 1) {
+    } else if (strokes > CUT) {
+      // Made the cut but finished strictly worse than the cut line
+      // → protected at one better than the cut line (rules §3)
       strokes = CUT - 1
       status = 'protected'
     }
