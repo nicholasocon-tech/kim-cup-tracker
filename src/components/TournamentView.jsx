@@ -3,6 +3,7 @@ import { fetchScoreboard } from '../utils/espn.js'
 import { buildStandings, formatScore } from '../utils/scoring.js'
 import ParticipantRow from './ParticipantRow.jsx'
 import mastersData from '../data/masters-2026.json'
+import seasonData from '../data/season-2026.json'
 
 const REFRESH_MS = 5 * 60 * 1000 // 5 minutes
 
@@ -21,19 +22,40 @@ function buildOwnership(participants) {
   return pct
 }
 
+function snapshotToScoresMap(snapshot) {
+  const map = new Map()
+  for (const [key, val] of Object.entries(snapshot.scores)) {
+    map.set(key, val)
+  }
+  return map
+}
+
 const ownership = buildOwnership(mastersData.participants)
+const lockedResult = (seasonData.completedResults ?? []).find((r) => r.major === 'Masters')
 
 export default function TournamentView() {
-  const [standings, setStandings] = useState([])
-  const [cutLine, setCutLine] = useState(null)
+  const [standings, setStandings] = useState(() => {
+    if (!lockedResult) return []
+    const scoresMap = snapshotToScoresMap(lockedResult)
+    return buildStandings(mastersData.participants, scoresMap, lockedResult.cutLine, lockedResult.winner)
+  })
+  const [cutLine, setCutLine] = useState(lockedResult?.cutLine ?? null)
   const [lastUpdated, setLastUpdated] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(!lockedResult)
   const [error, setError] = useState(null)
+  const [notActive, setNotActive] = useState(false)
 
   const refresh = useCallback(async () => {
+    if (lockedResult) return
     try {
       setError(null)
-      const { scores, cutLine: cl } = await fetchScoreboard()
+      const { scores, cutLine: cl, tournament } = await fetchScoreboard()
+      if (!tournament.toLowerCase().includes(mastersData.tournament.toLowerCase())) {
+        setNotActive(true)
+        setStandings([])
+        return
+      }
+      setNotActive(false)
       const sorted = buildStandings(mastersData.participants, scores, cl)
       setStandings(sorted)
       setCutLine(cl)
@@ -46,6 +68,7 @@ export default function TournamentView() {
   }, [])
 
   useEffect(() => {
+    if (lockedResult) return
     refresh()
     const id = setInterval(refresh, REFRESH_MS)
     return () => clearInterval(id)
@@ -61,7 +84,6 @@ export default function TournamentView() {
 
   return (
     <div>
-      {/* Tournament header */}
       <div className="mb-4 flex items-center justify-between flex-wrap gap-2">
         <div>
           <h2 className="text-xl font-bold text-gray-900">{mastersData.tournament} {mastersData.year}</h2>
@@ -73,16 +95,22 @@ export default function TournamentView() {
               Cut: <span className="text-gray-900 font-medium">{formatScore(cutLine)}</span>
             </span>
           )}
-          {lastUpdated && (
-            <span className="text-xs text-gray-400">Updated {timeSince(lastUpdated)}</span>
+          {lockedResult ? (
+            <span className="text-xs px-2 py-1 rounded bg-green-100 text-green-700 font-medium">Final</span>
+          ) : (
+            <>
+              {lastUpdated && (
+                <span className="text-xs text-gray-400">Updated {timeSince(lastUpdated)}</span>
+              )}
+              <button
+                onClick={refresh}
+                disabled={loading}
+                className="text-xs px-3 py-1.5 rounded bg-gray-100 hover:bg-gray-200 text-gray-600 disabled:opacity-50 transition-colors"
+              >
+                {loading ? 'Refreshing…' : 'Refresh'}
+              </button>
+            </>
           )}
-          <button
-            onClick={refresh}
-            disabled={loading}
-            className="text-xs px-3 py-1.5 rounded bg-gray-100 hover:bg-gray-200 text-gray-600 disabled:opacity-50 transition-colors"
-          >
-            {loading ? 'Refreshing…' : 'Refresh'}
-          </button>
         </div>
       </div>
 
@@ -92,7 +120,11 @@ export default function TournamentView() {
         </div>
       )}
 
-      {loading && standings.length === 0 ? (
+      {notActive ? (
+        <div className="text-center py-16 text-gray-400">
+          {mastersData.tournament} is not currently active. Final results pending.
+        </div>
+      ) : loading && standings.length === 0 ? (
         <div className="text-center py-16 text-gray-400">Loading scores…</div>
       ) : (
         <div className="overflow-x-auto rounded-lg border border-gray-200">
@@ -106,8 +138,13 @@ export default function TournamentView() {
               </tr>
             </thead>
             <tbody>
-              {standings.map((p, i) => (
-                <ParticipantRow key={p.name} participant={p} rank={i + 1} ownership={ownership} />
+              {standings.map((p) => (
+                <ParticipantRow
+                  key={p.name}
+                  participant={p}
+                  rank={p.tied ? `T${p.place}` : p.place}
+                  ownership={ownership}
+                />
               ))}
             </tbody>
           </table>

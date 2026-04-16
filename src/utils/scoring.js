@@ -90,14 +90,127 @@ export function calcParticipantScore(participant, scores, cutLine) {
   return { total, picks: annotated, counting, dropped }
 }
 
+export const PAYOUTS = { 1: 462, 2: 231, 3: 77 }
+
+function countCutsMade(participant, scores) {
+  let count = 0
+  for (const pick of participant.picks) {
+    const score = scores.get(normalizeName(pick.player))
+    if (score && score.status === 'active') count++
+  }
+  return count
+}
+
+function pickedWinner(participant, winnerName) {
+  if (!winnerName) return false
+  const target = normalizeName(winnerName)
+  return participant.picks.some((pick) => normalizeName(pick.player) === target)
+}
+
 /**
- * Build standings: array of participants sorted by Kim Cup score (ascending).
+ * Build standings sorted by Kim Cup score with tiebreakers applied.
+ *
+ * When `winnerName` is provided (tournament complete), per-week tiebreakers
+ * resolve the 1st-place group only (rules §5):
+ *   (a) Team that picked the tournament winner wins the week
+ *   (b) Then most cuts made
+ *   (c) If still tied → split (handled by calcPayouts)
+ *
+ * 2nd/3rd-place ties get NO tiebreaker per Payouts §2 — the pot is split.
+ *
+ * Each row gets `rank` (1..N display order), `place` (medal position; equal
+ * for tied groups), and `tied` (boolean).
  */
-export function buildStandings(participants, scores, cutLine) {
-  return participants
-    .map((p) => ({ ...p, result: calcParticipantScore(p, scores, cutLine) }))
+export function buildStandings(participants, scores, cutLine, winnerName = null) {
+  const rows = participants
+    .map((p) => ({
+      ...p,
+      result: calcParticipantScore(p, scores, cutLine),
+      pickedWinner: pickedWinner(p, winnerName),
+      cutsMade: countCutsMade(p, scores),
+    }))
     .sort((a, b) => a.result.total - b.result.total)
-    .map((p, i) => ({ ...p, rank: i + 1 }))
+
+  let topGroup = []
+  let demoted = []
+  let rest = rows
+
+  const tournamentComplete = winnerName != null
+  if (tournamentComplete && rows.length > 1 && rows[0].result.total === rows[1].result.total) {
+    const topScore = rows[0].result.total
+    let i = 0
+    while (i < rows.length && rows[i].result.total === topScore) i++
+    topGroup = rows.slice(0, i)
+    rest = rows.slice(i)
+
+    const pickers = topGroup.filter((r) => r.pickedWinner)
+    const nonPickers = topGroup.filter((r) => !r.pickedWinner)
+    if (pickers.length > 0 && nonPickers.length > 0) {
+      topGroup = pickers
+      demoted = nonPickers
+    }
+
+    if (topGroup.length > 1) {
+      const maxCuts = Math.max(...topGroup.map((r) => r.cutsMade))
+      const top = topGroup.filter((r) => r.cutsMade === maxCuts)
+      const lower = topGroup.filter((r) => r.cutsMade !== maxCuts)
+      if (top.length > 0 && lower.length > 0) {
+        topGroup = top
+        demoted = [...lower, ...demoted]
+      }
+    }
+  }
+
+  const ordered = []
+  for (const r of topGroup) {
+    ordered.push({ ...r, place: 1, tied: topGroup.length > 1 })
+  }
+  if (demoted.length > 0) {
+    const demotedPlace = 1 + topGroup.length
+    for (const r of demoted) {
+      ordered.push({ ...r, place: demotedPlace, tied: demoted.length > 1 })
+    }
+  }
+  let nextPlace = topGroup.length + demoted.length + 1
+  let j = 0
+  while (j < rest.length) {
+    let end = j
+    while (end + 1 < rest.length && rest[end + 1].result.total === rest[j].result.total) end++
+    const size = end - j + 1
+    for (let k = j; k <= end; k++) {
+      ordered.push({ ...rest[k], place: nextPlace, tied: size > 1 })
+    }
+    nextPlace += size
+    j = end + 1
+  }
+
+  return ordered.map((p, i) => ({ ...p, rank: i + 1 }))
+}
+
+/**
+ * Map place → payout per Payouts §2: tied finishers split the combined pot
+ * of the positions they collectively occupy. T-2 (size 2) splits 2nd+3rd
+ * evenly with no separate 3rd payout, etc.
+ */
+export function calcPayouts(rankedRows, payoutTable = PAYOUTS) {
+  const result = {}
+  const byPlace = new Map()
+  for (const r of rankedRows) {
+    if (!byPlace.has(r.place)) byPlace.set(r.place, [])
+    byPlace.get(r.place).push(r)
+  }
+  for (const [place, members] of byPlace) {
+    if (place > 3) continue
+    let pot = 0
+    for (let p = place; p < place + members.length && p <= 3; p++) {
+      pot += payoutTable[p] ?? 0
+    }
+    const each = pot / members.length
+    for (const m of members) {
+      result[m.name] = each
+    }
+  }
+  return result
 }
 
 export function formatScore(n) {

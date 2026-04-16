@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "npm run build && gh-pages -d dist"
+    "deploy": "npm run build && gh-pages -d dist",
+    "snapshot": "node scripts/snapshot-major.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",

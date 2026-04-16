@@ -7,15 +7,22 @@ const MAJORS = ['Masters', 'PGA Championship', 'U.S. Open', 'The Open']
 const TOTAL_PICKS = 8
 const REFRESH_MS = 5 * 60 * 1000
 
-// Max possible cuts = 8 picks × 4 majors = 32
-const MAX_CUTS = TOTAL_PICKS * MAJORS.length
+function matchMajor(tournamentName) {
+  if (!tournamentName) return null
+  const t = tournamentName.toLowerCase()
+  if (t.includes('masters')) return 'Masters'
+  if (t.includes('pga championship')) return 'PGA Championship'
+  if (t.includes('u.s. open') || t.includes('us open')) return 'U.S. Open'
+  if (t.includes('open championship') || t.includes('the open')) return 'The Open'
+  return null
+}
 
 /**
- * Count how many of a participant's picks made the cut in the current tournament.
- * A pick "made the cut" = status is not 'cut', 'wd', or 'dq'.
- * Returns null if the cut hasn't been made yet (pre-cut round 1/2).
+ * Count picks whose golfer made the cut in a given scores map.
+ * Made the cut = status is not 'cut', 'wd', or 'dq'.
+ * Returns null if cutLine is null (cut not yet made — live pre-cut state).
  */
-function countLiveCuts(participant, scores, cutMade) {
+function countCuts(participant, scores, cutMade) {
   if (!cutMade) return null
   let made = 0
   for (const pick of participant.picks) {
@@ -27,17 +34,32 @@ function countLiveCuts(participant, scores, cutMade) {
   return made
 }
 
+function snapshotToScoresMap(snapshot) {
+  return new Map(Object.entries(snapshot.scores))
+}
+
 export default function JayHaasView() {
+  const [liveMajor, setLiveMajor] = useState(null)
   const [liveScores, setLiveScores] = useState(new Map())
-  const [cutMade, setCutMade] = useState(false)
+  const [liveCutMade, setLiveCutMade] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [sortColumn, setSortColumn] = useState('total')
+  const [sortDir, setSortDir] = useState('best')
 
   const refresh = useCallback(async () => {
     try {
-      const { scores, cutLine } = await fetchScoreboard()
-      setLiveScores(scores)
-      // Cut is considered "made" once ESPN provides a cut line
-      setCutMade(cutLine != null)
+      const { scores, cutLine, tournament } = await fetchScoreboard()
+      const major = matchMajor(tournament)
+      const alreadyLocked = (seasonData.completedResults ?? []).some((r) => r.major === major)
+      if (major && !alreadyLocked) {
+        setLiveMajor(major)
+        setLiveScores(scores)
+        setLiveCutMade(cutLine != null)
+      } else {
+        setLiveMajor(null)
+        setLiveScores(new Map())
+        setLiveCutMade(false)
+      }
     } catch {
       // silent
     } finally {
@@ -51,24 +73,22 @@ export default function JayHaasView() {
     return () => clearInterval(id)
   }, [refresh])
 
-  // Build completed cuts map from season data: { participantName: { major: cutsCount } }
-  const completedCuts = {}
-  for (const entry of seasonData.cutsData ?? []) {
-    for (const [name, count] of Object.entries(entry.cuts ?? {})) {
-      if (!completedCuts[name]) completedCuts[name] = {}
-      completedCuts[name][entry.major] = count
-    }
+  const lockedByMajor = {}
+  for (const result of seasonData.completedResults ?? []) {
+    lockedByMajor[result.major] = snapshotToScoresMap(result)
   }
 
   const participants = mastersData.participants
 
-  // Build rows
   const rows = participants.map((p) => {
     const cutsByMajor = MAJORS.map((major) => {
-      if (major === 'Masters') {
-        return countLiveCuts(p, liveScores, cutMade)
+      if (lockedByMajor[major]) {
+        return countCuts(p, lockedByMajor[major], true)
       }
-      return completedCuts[p.name]?.[major] ?? null
+      if (major === liveMajor) {
+        return countCuts(p, liveScores, liveCutMade)
+      }
+      return null
     })
 
     const totalCuts = cutsByMajor.reduce((sum, c) => (c != null ? sum + c : sum), 0)
@@ -79,25 +99,58 @@ export default function JayHaasView() {
     return { name: p.name, cutsByMajor, totalCuts, cutRate }
   })
 
-  // Sort by total cuts descending (most cuts = Jay Haas Award leader)
-  rows.sort((a, b) => b.totalCuts - a.totalCuts)
+  // Sort: for Jay Haas, higher = better for all sortable columns (cuts, %).
+  // "best-first" = descending numerically. Null values always go last.
+  const MAJOR_COL_IDX = { masters: 0, pga: 1, usopen: 2, theopen: 3 }
+  function valueFor(row, col) {
+    if (col === 'total') return row.totalCuts
+    if (col === 'cutRate') return row.cutRate
+    return row.cutsByMajor[MAJOR_COL_IDX[col]] ?? null
+  }
+  const dir = sortDir === 'best' ? -1 : 1 // best-first = descending for higher-is-better
+  rows.sort((a, b) => {
+    const av = valueFor(a, sortColumn)
+    const bv = valueFor(b, sortColumn)
+    if (av == null && bv == null) return 0
+    if (av == null) return 1
+    if (bv == null) return -1
+    return dir * (av - bv)
+  })
 
-  // Column averages
   const colAvgs = MAJORS.map((_, i) => {
     const vals = rows.map((r) => r.cutsByMajor[i]).filter((v) => v != null)
     if (!vals.length) return null
     return (vals.reduce((s, v) => s + v, 0) / vals.length).toFixed(1)
   })
   const totalAvg = (rows.reduce((s, r) => s + r.totalCuts, 0) / rows.length).toFixed(1)
-  const rateAvg = rows
-    .filter((r) => r.cutRate != null)
-    .reduce((s, r) => s + r.cutRate, 0) / rows.filter((r) => r.cutRate != null).length
+  const rateRows = rows.filter((r) => r.cutRate != null)
+  const rateAvg = rateRows.length
+    ? rateRows.reduce((s, r) => s + r.cutRate, 0) / rateRows.length
+    : null
+
+  const noDataYet = rows.every((r) => r.totalCuts === 0 && r.cutsByMajor.every((c) => c == null))
 
   function cutRateColor(pct) {
     if (pct == null) return 'text-gray-400'
     if (pct >= 75) return 'text-green-600 font-bold'
     if (pct >= 60) return 'text-gray-800'
     return 'text-red-500'
+  }
+
+  function SortHeader({ col, children, className = '' }) {
+    const active = sortColumn === col
+    const arrow = !active ? '' : sortDir === 'best' ? ' ↑' : ' ↓'
+    return (
+      <th
+        onClick={() => {
+          if (sortColumn === col) setSortDir(sortDir === 'best' ? 'worst' : 'best')
+          else { setSortColumn(col); setSortDir('best') }
+        }}
+        className={`py-2 px-2 text-right cursor-pointer select-none hover:bg-gray-100 ${className}`}
+      >
+        {children}{arrow}
+      </th>
+    )
   }
 
   return (
@@ -107,9 +160,9 @@ export default function JayHaasView() {
         <p className="text-sm text-gray-500">Most cuts made across all 4 majors · {TOTAL_PICKS} picks per major</p>
       </div>
 
-      {!cutMade && !loading && (
+      {noDataYet && !loading && (
         <div className="mb-4 p-3 rounded bg-yellow-50 border border-yellow-200 text-yellow-700 text-sm">
-          Cut hasn't been made yet — Masters column will populate after Round 2.
+          No major data yet. Data populates as majors finish.
         </div>
       )}
 
@@ -122,12 +175,12 @@ export default function JayHaasView() {
               <tr className="border-b border-gray-200 text-xs text-gray-500 uppercase tracking-wide bg-gray-50">
                 <th className="py-2 px-3 text-left w-6">#</th>
                 <th className="py-2 px-3 text-left">Name</th>
-                <th className="py-2 px-2 text-right">Masters</th>
-                <th className="py-2 px-2 text-right">PGA</th>
-                <th className="py-2 px-2 text-right">US Open</th>
-                <th className="py-2 px-2 text-right">The Open</th>
-                <th className="py-2 px-2 text-right font-bold text-gray-700">Total</th>
-                <th className="py-2 px-3 text-right font-bold text-gray-700">Cut %</th>
+                <SortHeader col="masters">Masters</SortHeader>
+                <SortHeader col="pga">PGA</SortHeader>
+                <SortHeader col="usopen">US Open</SortHeader>
+                <SortHeader col="theopen">The Open</SortHeader>
+                <SortHeader col="total" className="font-bold text-gray-700">Total</SortHeader>
+                <SortHeader col="cutRate" className="font-bold text-gray-700">Cut %</SortHeader>
               </tr>
             </thead>
             <tbody>
@@ -156,7 +209,7 @@ export default function JayHaasView() {
                   <td key={i} className="py-2 px-2 text-right tabular-nums">{avg ?? '—'}</td>
                 ))}
                 <td className="py-2 px-2 text-right tabular-nums font-bold text-gray-700">{totalAvg}</td>
-                <td className="py-2 px-3 text-right tabular-nums">{rateAvg ? `${rateAvg.toFixed(1)}%` : '—'}</td>
+                <td className="py-2 px-3 text-right tabular-nums">{rateAvg != null ? `${rateAvg.toFixed(1)}%` : '—'}</td>
               </tr>
             </tfoot>
           </table>
