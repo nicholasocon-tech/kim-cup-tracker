@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { fetchScoreboard } from '../utils/espn.js'
 import { buildStandings, formatScore } from '../utils/scoring.js'
 import ParticipantRow from './ParticipantRow.jsx'
-import mastersData from '../data/masters-2026.json'
+import majorData from '../data/pga-2026.json'
 import seasonData from '../data/season-2026.json'
 
 const REFRESH_MS = 5 * 60 * 1000 // 5 minutes
@@ -30,14 +30,14 @@ function snapshotToScoresMap(snapshot) {
   return map
 }
 
-const ownership = buildOwnership(mastersData.participants)
-const lockedResult = (seasonData.completedResults ?? []).find((r) => r.major === 'Masters')
+const ownership = buildOwnership(majorData.participants)
+const lockedResult = (seasonData.completedResults ?? []).find((r) => r.major === 'PGA Championship')
 
 export default function TournamentView() {
   const [standings, setStandings] = useState(() => {
     if (!lockedResult) return []
     const scoresMap = snapshotToScoresMap(lockedResult)
-    return buildStandings(mastersData.participants, scoresMap, lockedResult.cutLine, lockedResult.winner)
+    return buildStandings(majorData.participants, scoresMap, lockedResult.cutLine, lockedResult.winner)
   })
   const [cutLine, setCutLine] = useState(lockedResult?.cutLine ?? null)
   const [lastUpdated, setLastUpdated] = useState(null)
@@ -50,13 +50,13 @@ export default function TournamentView() {
     try {
       setError(null)
       const { scores, cutLine: cl, tournament } = await fetchScoreboard()
-      if (!tournament.toLowerCase().includes(mastersData.tournament.toLowerCase())) {
+      if (!tournament.toLowerCase().includes(majorData.tournament.toLowerCase())) {
         setNotActive(true)
         setStandings([])
         return
       }
       setNotActive(false)
-      const sorted = buildStandings(mastersData.participants, scores, cl)
+      const sorted = buildStandings(majorData.participants, scores, cl)
       setStandings(sorted)
       setCutLine(cl)
       setLastUpdated(new Date())
@@ -86,8 +86,8 @@ export default function TournamentView() {
     <div>
       <div className="mb-4 flex items-center justify-between flex-wrap gap-2">
         <div>
-          <h2 className="text-xl font-bold text-gray-900">{mastersData.tournament} {mastersData.year}</h2>
-          <p className="text-sm text-gray-500">{mastersData.course} · {mastersData.dates}</p>
+          <h2 className="text-xl font-bold text-gray-900">{majorData.tournament} {majorData.year}</h2>
+          <p className="text-sm text-gray-500">{majorData.course} · {majorData.dates}</p>
         </div>
         <div className="flex items-center gap-3">
           {cutLine != null && (
@@ -122,7 +122,7 @@ export default function TournamentView() {
 
       {notActive ? (
         <div className="text-center py-16 text-gray-400">
-          {mastersData.tournament} is not currently active. Final results pending.
+          {majorData.tournament} is not currently active. Final results pending.
         </div>
       ) : loading && standings.length === 0 ? (
         <div className="text-center py-16 text-gray-400">Loading scores…</div>

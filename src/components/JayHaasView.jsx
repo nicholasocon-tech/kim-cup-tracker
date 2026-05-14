@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { fetchScoreboard, normalizeName } from '../utils/espn.js'
-import mastersData from '../data/masters-2026.json'
+import majorData from '../data/pga-2026.json'
 import seasonData from '../data/season-2026.json'
 
 const MAJORS = ['Masters', 'PGA Championship', 'U.S. Open', 'The Open']
@@ -78,7 +78,7 @@ export default function JayHaasView() {
     lockedByMajor[result.major] = snapshotToScoresMap(result)
   }
 
-  const participants = mastersData.participants
+  const participants = majorData.participants
 
   const rows = participants.map((p) => {
     const cutsByMajor = MAJORS.map((major) => {

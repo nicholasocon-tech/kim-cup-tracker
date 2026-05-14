@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { fetchScoreboard } from '../utils/espn.js'
 import { buildStandings, calcPayouts, formatScore, PAYOUTS } from '../utils/scoring.js'
-import mastersData from '../data/masters-2026.json'
+import majorData from '../data/pga-2026.json'
 import seasonData from '../data/season-2026.json'
 
 const MAJORS = ['Masters', 'PGA Championship', 'U.S. Open', 'The Open']
@@ -47,7 +47,7 @@ export default function SeasonView() {
       const alreadyLocked = (seasonData.completedResults ?? []).some((r) => r.major === major)
       if (major && !alreadyLocked) {
         setLiveMajor(major)
-        setLiveStandings(buildStandings(mastersData.participants, scores, cutLine))
+        setLiveStandings(buildStandings(majorData.participants, scores, cutLine))
       } else {
         setLiveMajor(null)
         setLiveStandings([])
@@ -68,7 +68,7 @@ export default function SeasonView() {
   for (const result of seasonData.completedResults ?? []) {
     const scoresMap = snapshotToScoresMap(result)
     const standings = buildStandings(
-      mastersData.participants,
+      majorData.participants,
       scoresMap,
       result.cutLine,
       result.winner
@@ -80,7 +80,7 @@ export default function SeasonView() {
   }
 
   // Build per-participant aggregates
-  const aggregated = mastersData.participants.map((p) => {
+  const aggregated = majorData.participants.map((p) => {
     const perMajorEntries = MAJORS.map((major) => {
       const m = perMajor[major]
       if (!m) return { major, total: null, place: null, tied: false, locked: false, cutsMade: 0 }
