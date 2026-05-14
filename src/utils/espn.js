@@ -82,17 +82,33 @@ export async function fetchScoreboard() {
       }
     }
 
-    return { displayName, total, preCutTotal, thru, today }
+    // R2 completion is the signal for "cut has been applied" — ESPN only
+    // re-sorts the leaderboard into MC/non-MC segments after R2 is done.
+    const r2dv = rounds[1]?.displayValue
+    const r2Complete = !!(r2dv && r2dv !== '-' && r2dv !== '')
+
+    return { displayName, total, preCutTotal, thru, today, r2Complete }
   })
+
+  // Gate: only run segment detection once the cut has actually been applied.
+  // Pre-cut (during R1/R2), ESPN sorts unstarted (E) players to the end of
+  // the leaderboard, AFTER in-progress over-par players. That creates a
+  // false "total decreases" boundary which incorrectly marks every unstarted
+  // player as missed cut. We avoid this by requiring ≥90% of the field to
+  // have completed R2 (90% threshold tolerates a few WDs).
+  const r2CompleteCount = records.filter((r) => r.r2Complete).length
+  const cutApplied = records.length > 0 && r2CompleteCount / records.length > 0.9
 
   // Second pass: detect the cut segment boundary. ESPN re-sorts MC players
   // into their own ascending segment after made-cut players, so the first
   // place `total` drops vs the previous competitor marks the start of MC.
   let mcStart = -1
-  for (let i = 1; i < records.length; i++) {
-    if (records[i].total < records[i - 1].total) {
-      mcStart = i
-      break
+  if (cutApplied) {
+    for (let i = 1; i < records.length; i++) {
+      if (records[i].total < records[i - 1].total) {
+        mcStart = i
+        break
+      }
     }
   }
 
