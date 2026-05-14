@@ -1,0 +1,32 @@
+{
+  "tournament": "The Open Championship",
+  "year": 2026,
+  "dates": "July 16–19",
+  "course": "Royal Birkdale",
+  "participants": [
+    { "name": "Harley Hudson", "picks": [] },
+    { "name": "Jimmy Messing", "picks": [] },
+    { "name": "Nick O'Connor", "picks": [] },
+    { "name": "Timothy Dee",   "picks": [] },
+    { "name": "Matthew Dee",   "picks": [] },
+    { "name": "Justin",        "picks": [] },
+    { "name": "Hearn",         "picks": [] },
+    { "name": "Pat",           "picks": [] },
+    { "name": "Scott",         "picks": [] },
+    { "name": "Baldur",        "picks": [] },
+    { "name": "Trevor",        "picks": [] },
+    { "name": "Ian",           "picks": [] },
+    { "name": "Max",           "picks": [] },
+    { "name": "Bastian",       "picks": [] },
+    { "name": "Matt Mileski",  "picks": [] },
+    { "name": "Kyan Nafissi",  "picks": [] },
+    { "name": "David",         "picks": [] },
+    { "name": "Chip",          "picks": [] },
+    { "name": "Caleb",         "picks": [] },
+    { "name": "Will",          "picks": [] },
+    { "name": "LB",            "picks": [] },
+    { "name": "Egan",          "picks": [] },
+    { "name": "Ditto",         "picks": [] },
+    { "name": "Wes",           "picks": [] }
+  ]
+}

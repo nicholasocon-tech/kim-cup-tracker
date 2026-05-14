@@ -73,17 +73,27 @@ export default function JayHaasView() {
     return () => clearInterval(id)
   }, [refresh])
 
+  // Each locked result carries its own `participants` snapshot. A player's
+  // Masters cuts must be counted against their Masters picks, not their picks
+  // for whatever major is currently in `majorData`.
   const lockedByMajor = {}
+  const lockedPicksByMajor = {}
   for (const result of seasonData.completedResults ?? []) {
     lockedByMajor[result.major] = snapshotToScoresMap(result)
+    lockedPicksByMajor[result.major] = result.participants ?? majorData.participants
   }
 
   const participants = majorData.participants
 
+  function findPicks(participantList, name) {
+    return participantList.find((q) => q.name === name) ?? { name, picks: [] }
+  }
+
   const rows = participants.map((p) => {
     const cutsByMajor = MAJORS.map((major) => {
       if (lockedByMajor[major]) {
-        return countCuts(p, lockedByMajor[major], true)
+        const lockedPicks = findPicks(lockedPicksByMajor[major], p.name)
+        return countCuts(lockedPicks, lockedByMajor[major], true)
       }
       if (major === liveMajor) {
         return countCuts(p, liveScores, liveCutMade)

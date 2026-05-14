@@ -63,12 +63,15 @@ export default function SeasonView() {
     return () => clearInterval(id)
   }, [refresh])
 
-  // Per-major standings keyed by major name
+  // Per-major standings keyed by major name. Each locked result carries its
+  // own `participants` snapshot — the live major's picks file can change after
+  // it's locked, so we never use `majorData.participants` for historical majors.
   const perMajor = {}
   for (const result of seasonData.completedResults ?? []) {
     const scoresMap = snapshotToScoresMap(result)
+    const participants = result.participants ?? majorData.participants
     const standings = buildStandings(
-      majorData.participants,
+      participants,
       scoresMap,
       result.cutLine,
       result.winner

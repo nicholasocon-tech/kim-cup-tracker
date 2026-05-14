@@ -25,6 +25,16 @@ const REPO_ROOT = path.resolve(__dirname, '..')
 const SEASON_FILE = path.join(REPO_ROOT, 'src/data/season-2026.json')
 const VALID_MAJORS = ['Masters', 'PGA Championship', 'U.S. Open', 'The Open']
 
+// Picks file per major. Snapshot embeds these into completedResults so locked
+// standings stay correct even after the live `*-2026.json` for the next major
+// overwrites the current participants array.
+const PICKS_FILES = {
+  'Masters': 'masters-2026.json',
+  'PGA Championship': 'pga-2026.json',
+  'U.S. Open': 'usopen-2026.json',
+  'The Open': 'theopen-2026.json',
+}
+
 function parseArgs(argv) {
   const args = { dry: false }
   for (let i = 2; i < argv.length; i++) {
@@ -145,11 +155,22 @@ async function main() {
     }
   }
 
+  const picksFile = PICKS_FILES[args.major]
+  const picksPath = path.join(REPO_ROOT, 'src/data', picksFile)
+  if (!fs.existsSync(picksPath)) {
+    throw new Error(
+      `Picks file ${picksFile} not found for ${args.major}. ` +
+      `Create it (or update PICKS_FILES) before snapshotting.`
+    )
+  }
+  const picksJson = JSON.parse(fs.readFileSync(picksPath, 'utf8'))
+
   const snapshot = {
     major: args.major,
     tournament: event.name,
     cutLine,
     winner,
+    participants: picksJson.participants,
     scores,
   }
 
