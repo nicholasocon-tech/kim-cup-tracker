@@ -26,8 +26,24 @@ function scoreColor(n) {
 
 export default function ParticipantRow({ participant, rank, ownership = {} }) {
   const [open, setOpen] = useState(false)
-  const { result } = participant
+  const { result, dns } = participant
   const total = result.total
+
+  if (dns) {
+    return (
+      <tr className="border-b border-gray-200 bg-gray-50/50">
+        <td className="py-3 px-3 text-gray-300 text-sm w-8">—</td>
+        <td className="py-3 px-3 font-medium text-gray-400">
+          <span className="flex items-center gap-2">
+            {participant.name}
+            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-gray-200 text-gray-500">DNS</span>
+          </span>
+        </td>
+        <td className="py-3 px-3 text-right text-gray-300 text-lg">—</td>
+        <td className="py-3 px-2 w-6" />
+      </tr>
+    )
+  }
 
   return (
     <>

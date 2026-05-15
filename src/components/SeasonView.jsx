@@ -89,9 +89,11 @@ export default function SeasonView() {
       if (!m) return { major, total: null, place: null, tied: false, locked: false, cutsMade: 0 }
       const row = m.standings.find((s) => s.name === p.name)
       if (!row) return { major, total: null, place: null, tied: false, locked: m.locked, cutsMade: 0 }
+      // Treat non-submitters as having no score for the major — empty picks
+      // would otherwise show as 0 (E) and inflate their season total.
       return {
         major,
-        total: row.result.total,
+        total: row.dns ? null : row.result.total,
         place: row.place,
         tied: row.tied,
         locked: m.locked,

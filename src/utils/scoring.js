@@ -122,14 +122,20 @@ function pickedWinner(participant, winnerName) {
  * for tied groups), and `tied` (boolean).
  */
 export function buildStandings(participants, scores, cutLine, winnerName = null) {
-  const rows = participants
-    .map((p) => ({
-      ...p,
-      result: calcParticipantScore(p, scores, cutLine),
-      pickedWinner: pickedWinner(p, winnerName),
-      cutsMade: countCutsMade(p, scores),
-    }))
+  // Non-submitters (no picks) drop to the bottom and get no place — an empty
+  // pick set computes a total of 0, which would otherwise look identical to
+  // an actual even-par finish.
+  const all = participants.map((p) => ({
+    ...p,
+    result: calcParticipantScore(p, scores, cutLine),
+    pickedWinner: pickedWinner(p, winnerName),
+    cutsMade: countCutsMade(p, scores),
+    dns: !p.picks || p.picks.length === 0,
+  }))
+  const rows = all
+    .filter((r) => !r.dns)
     .sort((a, b) => a.result.total - b.result.total)
+  const dnsRows = all.filter((r) => r.dns)
 
   let topGroup = []
   let demoted = []
@@ -182,6 +188,10 @@ export function buildStandings(participants, scores, cutLine, winnerName = null)
     }
     nextPlace += size
     j = end + 1
+  }
+
+  for (const r of dnsRows) {
+    ordered.push({ ...r, place: null, tied: false })
   }
 
   return ordered.map((p, i) => ({ ...p, rank: i + 1 }))
