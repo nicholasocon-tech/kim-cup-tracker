@@ -15,6 +15,23 @@ const NAME_OVERRIDES = {
   'haotong li': 'hao-tong li',
 }
 
+// 36-hole cut rules per major (no 10-shot rule — discontinued post-2020).
+// Used to compute cutLine + MC status once R2 finishes, before ESPN's own
+// segment sort kicks in (which only happens after R3 starts and made-cut
+// totals start to diverge from preCutTotal).
+const CUT_RULES = [
+  { match: (t) => t.includes('masters'), topN: 50 },
+  { match: (t) => t.includes('pga championship'), topN: 70 },
+  { match: (t) => t.includes('u.s. open') || t.includes('us open'), topN: 60 },
+  { match: (t) => t.includes('open championship') || t.includes('the open'), topN: 70 },
+]
+
+function lookupCutRule(tournamentName) {
+  if (!tournamentName) return null
+  const t = tournamentName.toLowerCase()
+  return CUT_RULES.find((r) => r.match(t)) ?? null
+}
+
 function resolveKey(name) {
   const norm = normalizeName(name)
   return NAME_OVERRIDES[norm] ?? norm
@@ -82,49 +99,70 @@ export async function fetchScoreboard() {
       }
     }
 
-    // R2 completion is the signal for "cut has been applied" — ESPN only
-    // re-sorts the leaderboard into MC/non-MC segments after R2 is done.
-    const r2dv = rounds[1]?.displayValue
-    const r2Complete = !!(r2dv && r2dv !== '-' && r2dv !== '')
+    // "R2 fully complete" = this competitor has played all 18 holes of R2.
+    // Using displayValue alone is a false positive (it appears mid-round),
+    // so check the hole-by-hole linescores instead.
+    const r2Holes = rounds[1]?.linescores?.length ?? 0
+    const r2Full = r2Holes >= 18
 
-    return { displayName, total, preCutTotal, thru, today, r2Complete }
+    return { displayName, total, preCutTotal, thru, today, r2Full }
   })
 
-  // Gate: only run segment detection once the cut has actually been applied.
-  // Pre-cut (during R1/R2), ESPN sorts unstarted (E) players to the end of
-  // the leaderboard, AFTER in-progress over-par players. That creates a
-  // false "total decreases" boundary which incorrectly marks every unstarted
-  // player as missed cut. We avoid this by requiring ≥90% of the field to
-  // have completed R2 (90% threshold tolerates a few WDs).
-  const r2CompleteCount = records.filter((r) => r.r2Complete).length
-  const cutApplied = records.length > 0 && r2CompleteCount / records.length > 0.9
+  // Gate cut application to once R2 is fully played for ≥90% of the field
+  // (90% tolerates WDs whose R2 never finishes).
+  const r2FullCount = records.filter((r) => r.r2Full).length
+  const cutApplied = records.length > 0 && r2FullCount / records.length > 0.9
 
-  // Second pass: detect the cut segment boundary. ESPN re-sorts MC players
-  // into their own ascending segment after made-cut players, so the first
-  // place `total` drops vs the previous competitor marks the start of MC.
-  let mcStart = -1
+  // Cut resolution has two paths depending on tournament stage:
+  //
+  // Path A — hardcoded rule (Friday night window). Once R2 is done but R3
+  // hasn't started, every competitor's current total still equals their
+  // R1+R2 preCutTotal, so ESPN's leaderboard is one flat ascending list with
+  // no segment break to detect. We sort by preCutTotal, take top-N + ties
+  // per the major's published cut rule, and mark the rest MC.
+  //
+  // Path B — segment-break (R3 onward). Once R3 starts, made-cut players'
+  // current totals diverge from preCutTotal. ESPN keeps MC players in a
+  // separate segment sorted by their frozen preCutTotal, so a total
+  // decrease vs the previous competitor marks the MC segment start.
+  let cutLine = null
+  let missedCutSet = new Set()
   if (cutApplied) {
-    for (let i = 1; i < records.length; i++) {
-      if (records[i].total < records[i - 1].total) {
-        mcStart = i
-        break
+    const rule = lookupCutRule(tournament)
+    if (rule) {
+      const sortedByPreCut = [...records]
+        .map((r, idx) => ({ idx, preCutTotal: r.preCutTotal }))
+        .sort((a, b) => a.preCutTotal - b.preCutTotal)
+      const ix = rule.topN - 1
+      if (ix >= 0 && ix < sortedByPreCut.length) {
+        cutLine = sortedByPreCut[ix].preCutTotal
+        for (const r of sortedByPreCut) {
+          if (r.preCutTotal > cutLine) missedCutSet.add(r.idx)
+        }
+      }
+    }
+    // Fallback: if no rule matched (or after R3 starts and we want to trust
+    // ESPN's own segmentation), use the segment-break detection.
+    if (cutLine == null) {
+      let mcStart = -1
+      for (let i = 1; i < records.length; i++) {
+        if (records[i].total < records[i - 1].total) {
+          mcStart = i
+          break
+        }
+      }
+      if (mcStart >= 0) {
+        cutLine = records[mcStart].preCutTotal - 1
+        for (let i = mcStart; i < records.length; i++) missedCutSet.add(i)
       }
     }
   }
 
-  let cutLine = null
-  if (mcStart >= 0) {
-    // The first MC player is the one who most narrowly missed the cut,
-    // so their pre-cut total is exactly cutLine + 1.
-    cutLine = records[mcStart].preCutTotal - 1
-  }
-
-  // Build the output map with status resolved from the detected segment.
   const scores = new Map()
   records.forEach((r, idx) => {
     if (!r.displayName) return
     const key = resolveKey(r.displayName)
-    const isMissedCut = mcStart >= 0 && idx >= mcStart
+    const isMissedCut = missedCutSet.has(idx)
     scores.set(key, {
       total: r.total,
       today: r.today,
