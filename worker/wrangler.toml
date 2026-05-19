@@ -1,0 +1,27 @@
+name = "kim-cup-picks-api"
+main = "src/index.js"
+compatibility_date = "2024-12-01"
+
+# Public-facing vars (non-secret) — update these each major cycle.
+[vars]
+CURRENT_MAJOR = "U.S. Open"
+PICKS_FILE_PATH = "src/data/usopen-2026.json"
+LOCK_AT = "2026-06-11T10:30:00Z"
+GITHUB_OWNER = "nicholasocon-tech"
+GITHUB_REPO = "kim-cup-tracker"
+
+# KV namespace — populate `id` after running `wrangler kv namespace create KIMCUP_PICKS`
+[[kv_namespaces]]
+binding = "KIMCUP_PICKS"
+id = "8d7a50662101413dbe2d72dac83ed2f9"
+
+# Cron-fires at lock time. Cron is in UTC. The expression below maps to
+# 2026-06-11 10:30 UTC (6:30 AM ET) — first tee at Oakmont.
+# Format: minute hour day month weekday
+[triggers]
+crons = ["30 10 11 6 *"]
+
+# Secrets — set via `wrangler secret put <name>` (never check into the repo):
+#   GITHUB_TOKEN   fine-grained PAT, contents:write scope, repo: kim-cup-tracker
+#   PARTICIPANTS   JSON string (copy of src/data/participants-2026.json)
+#   ADMIN_SECRET   opaque string for the manual lock endpoint

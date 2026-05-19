@@ -2,12 +2,19 @@ import { useState } from 'react'
 import TournamentView from './components/TournamentView.jsx'
 import SeasonView from './components/SeasonView.jsx'
 import JayHaasView from './components/JayHaasView.jsx'
+import PicksView from './components/PicksView.jsx'
+import lockConfig from './data/lock-config.json'
 
-const TABS = [
+const ALL_TABS = [
   { id: 'tournament', label: 'Tournament' },
   { id: 'season',     label: 'Season' },
   { id: 'jayhaas',    label: 'Jay Haas' },
+  { id: 'picks',      label: 'Submit Picks' },
 ]
+
+// Hide the Picks tab once the current major's picks are locked.
+const picksLocked = Date.now() >= new Date(lockConfig.lockAt).getTime()
+const TABS = picksLocked ? ALL_TABS.filter((t) => t.id !== 'picks') : ALL_TABS
 
 export default function App() {
   const [tab, setTab] = useState('tournament')
@@ -44,6 +51,7 @@ export default function App() {
         {tab === 'tournament' && <TournamentView />}
         {tab === 'season'     && <SeasonView />}
         {tab === 'jayhaas'    && <JayHaasView />}
+        {tab === 'picks'      && <PicksView />}
       </main>
     </div>
   )
