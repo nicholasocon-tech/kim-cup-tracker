@@ -1,0 +1,38 @@
+name: Auto-snapshot completed majors
+
+on:
+  schedule:
+    # Mondays at 16:00 UTC = noon ET (DST) / 11:00 ET (standard).
+    # Majors run April–July (DST in effect), so this fires at noon ET
+    # the day after Sunday final rounds, by which point ESPN has
+    # STATUS_FINAL data populated.
+    - cron: '0 16 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run auto-snapshot
+        run: node scripts/auto-snapshot.mjs
+
+      - name: Commit & push if changed
+        run: |
+          if [[ -n "$(git status --porcelain src/data/season-2026.json)" ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add src/data/season-2026.json
+            git commit -m "Auto-lock completed major(s)"
+            git push
+          else
+            echo "No new majors to snapshot."
+          fi
