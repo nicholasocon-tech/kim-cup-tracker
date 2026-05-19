@@ -206,6 +206,9 @@ export function calcPayouts(rankedRows, payoutTable = PAYOUTS) {
   const result = {}
   const byPlace = new Map()
   for (const r of rankedRows) {
+    // Skip unranked players (DNS, no score yet). null coerces to 0 in
+    // arithmetic and would otherwise pull pot from the table.
+    if (r.place == null) continue
     if (!byPlace.has(r.place)) byPlace.set(r.place, [])
     byPlace.get(r.place).push(r)
   }
