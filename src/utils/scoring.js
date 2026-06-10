@@ -34,8 +34,10 @@ export function calcParticipantScore(participant, scores, cutLine) {
     const sorted = [...picks].sort((a, b) => a.strokes - b.strokes)
     const counting = sorted.slice(0, 5)
     const dropped = sorted.slice(5)
-    const countingKeys = new Set(counting.map((p) => p.player + p.tier))
-    const annotated = picks.map((p) => ({ ...p, counting: countingKeys.has(p.player + p.tier) }))
+    // Flag counting picks by object identity, not by player+tier — a duplicated
+    // player would otherwise mark both copies counting and double the total.
+    const countingSet = new Set(counting)
+    const annotated = picks.map((p) => ({ ...p, counting: countingSet.has(p) }))
     const total = counting.reduce((sum, p) => sum + p.strokes, 0)
     return { total, picks: annotated, counting, dropped }
   }
@@ -78,11 +80,12 @@ export function calcParticipantScore(participant, scores, cutLine) {
   const counting = sorted.slice(0, 5)
   const dropped = sorted.slice(5)
 
-  // Map back which original picks are counting vs dropped
-  const countingKeys = new Set(counting.map((p) => p.player + p.tier))
+  // Map back which original picks are counting vs dropped, by object identity
+  // (see pre-cut branch — guards against a duplicated player double-counting).
+  const countingSet = new Set(counting)
   const annotated = picks.map((p) => ({
     ...p,
-    counting: countingKeys.has(p.player + p.tier),
+    counting: countingSet.has(p),
   }))
 
   const total = counting.reduce((sum, p) => sum + p.strokes, 0)

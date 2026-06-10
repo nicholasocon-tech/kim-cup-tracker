@@ -8,7 +8,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "deploy": "npm run build && gh-pages -d dist",
-    "snapshot": "node scripts/snapshot-major.mjs"
+    "snapshot": "node scripts/snapshot-major.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -22,6 +24,7 @@
     "gh-pages": "^6.2.0",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.14",
-    "vite": "^6.0.1"
+    "vite": "^6.0.1",
+    "vitest": "^2.1.9"
   }
 }

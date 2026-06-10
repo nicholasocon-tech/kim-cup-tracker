@@ -123,6 +123,13 @@ async function handleSubmit(request, env) {
     }
   }
 
+  // No duplicate golfers across tiers — a repeated pick would double-count in
+  // the best-5 scoring. The UI prevents this; this guards direct API calls.
+  const playerKeys = picks.map((p) => normalizeName(p.player))
+  if (new Set(playerKeys).size !== playerKeys.length) {
+    return json({ error: 'each golfer can only be picked once' }, 400, request)
+  }
+
   const submittedAt = new Date().toISOString()
   const record = { name, email: participant.email, picks, submittedAt }
   await env.KIMCUP_PICKS.put(kvKey(major, name), JSON.stringify(record))

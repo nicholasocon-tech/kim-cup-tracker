@@ -1,11 +1,8 @@
-import { useState, useEffect, useCallback } from 'react'
-import { fetchScoreboard } from '../utils/espn.js'
+import { useState, useMemo } from 'react'
 import { buildStandings, calcPayouts, formatScore, PAYOUTS } from '../utils/scoring.js'
-import majorData from '../data/pga-2026.json'
+import { MAJORS, MAJOR_META, MEMBERS, snapshotToScoresMap } from '../utils/majors.js'
+import { useLiveScoreboard } from '../utils/useLiveScoreboard.js'
 import seasonData from '../data/season-2026.json'
-
-const MAJORS = ['Masters', 'PGA Championship', 'U.S. Open', 'The Open']
-const REFRESH_MS = 5 * 60 * 1000
 
 const PLACE_STYLE = {
   1: { label: '1st', cls: 'bg-yellow-100 text-yellow-700 border border-yellow-300' },
@@ -20,70 +17,33 @@ function placeLabel(place, tied) {
   return { ...base, label: tied ? `T-${base.label}` : base.label }
 }
 
-function matchMajor(tournamentName) {
-  if (!tournamentName) return null
-  const t = tournamentName.toLowerCase()
-  if (t.includes('masters')) return 'Masters'
-  if (t.includes('pga championship')) return 'PGA Championship'
-  if (t.includes('u.s. open') || t.includes('us open')) return 'U.S. Open'
-  if (t.includes('open championship') || t.includes('the open')) return 'The Open'
-  return null
-}
-
-function snapshotToScoresMap(snapshot) {
-  return new Map(Object.entries(snapshot.scores))
-}
-
 export default function SeasonView() {
-  const [liveMajor, setLiveMajor] = useState(null)
-  const [liveStandings, setLiveStandings] = useState([])
+  const { liveMajor, scores, cutLine } = useLiveScoreboard()
   const [sortColumn, setSortColumn] = useState(null)
   const [sortDir, setSortDir] = useState('best')
 
-  const refresh = useCallback(async () => {
-    try {
-      const { scores, cutLine, tournament } = await fetchScoreboard()
-      const major = matchMajor(tournament)
-      const alreadyLocked = (seasonData.completedResults ?? []).some((r) => r.major === major)
-      if (major && !alreadyLocked) {
-        setLiveMajor(major)
-        setLiveStandings(buildStandings(majorData.participants, scores, cutLine))
-      } else {
-        setLiveMajor(null)
-        setLiveStandings([])
-      }
-    } catch {
-      // silent
-    }
-  }, [])
-
-  useEffect(() => {
-    refresh()
-    const id = setInterval(refresh, REFRESH_MS)
-    return () => clearInterval(id)
-  }, [refresh])
+  const liveStandings = useMemo(() => {
+    if (!liveMajor) return []
+    const picks = MAJOR_META[liveMajor]?.participants ?? []
+    return buildStandings(picks, scores, cutLine)
+  }, [liveMajor, scores, cutLine])
 
   // Per-major standings keyed by major name. Each locked result carries its
   // own `participants` snapshot — the live major's picks file can change after
-  // it's locked, so we never use `majorData.participants` for historical majors.
+  // it's locked, so we never reuse another major's picks for historical majors.
   const perMajor = {}
   for (const result of seasonData.completedResults ?? []) {
     const scoresMap = snapshotToScoresMap(result)
-    const participants = result.participants ?? majorData.participants
-    const standings = buildStandings(
-      participants,
-      scoresMap,
-      result.cutLine,
-      result.winner
-    )
+    const participants = result.participants ?? MAJOR_META[result.major]?.participants ?? []
+    const standings = buildStandings(participants, scoresMap, result.cutLine, result.winner)
     perMajor[result.major] = { standings, locked: true, payouts: calcPayouts(standings) }
   }
   if (liveMajor && liveStandings.length > 0 && !perMajor[liveMajor]) {
     perMajor[liveMajor] = { standings: liveStandings, locked: false, payouts: {} }
   }
 
-  // Build per-participant aggregates
-  const aggregated = majorData.participants.map((p) => {
+  // Build per-participant aggregates over the canonical member roster.
+  const aggregated = MEMBERS.map((p) => {
     const perMajorEntries = MAJORS.map((major) => {
       const m = perMajor[major]
       if (!m) return { major, total: null, place: null, tied: false, locked: false, cutsMade: 0 }

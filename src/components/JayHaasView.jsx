@@ -1,26 +1,15 @@
-import { useState, useEffect, useCallback } from 'react'
-import { fetchScoreboard, normalizeName } from '../utils/espn.js'
-import majorData from '../data/pga-2026.json'
+import { useState } from 'react'
+import { normalizeName } from '../utils/espn.js'
+import { MAJORS, MAJOR_META, MEMBERS, snapshotToScoresMap } from '../utils/majors.js'
+import { useLiveScoreboard } from '../utils/useLiveScoreboard.js'
 import seasonData from '../data/season-2026.json'
 
-const MAJORS = ['Masters', 'PGA Championship', 'U.S. Open', 'The Open']
 const TOTAL_PICKS = 8
-const REFRESH_MS = 5 * 60 * 1000
-
-function matchMajor(tournamentName) {
-  if (!tournamentName) return null
-  const t = tournamentName.toLowerCase()
-  if (t.includes('masters')) return 'Masters'
-  if (t.includes('pga championship')) return 'PGA Championship'
-  if (t.includes('u.s. open') || t.includes('us open')) return 'U.S. Open'
-  if (t.includes('open championship') || t.includes('the open')) return 'The Open'
-  return null
-}
 
 /**
  * Count picks whose golfer made the cut in a given scores map.
  * Made the cut = status is not 'cut', 'wd', or 'dq'.
- * Returns null if cutLine is null (cut not yet made — live pre-cut state).
+ * Returns null if cutMade is false (cut not yet made — live pre-cut state).
  */
 function countCuts(participant, scores, cutMade) {
   if (!cutMade) return null
@@ -34,69 +23,33 @@ function countCuts(participant, scores, cutMade) {
   return made
 }
 
-function snapshotToScoresMap(snapshot) {
-  return new Map(Object.entries(snapshot.scores))
-}
-
 export default function JayHaasView() {
-  const [liveMajor, setLiveMajor] = useState(null)
-  const [liveScores, setLiveScores] = useState(new Map())
-  const [liveCutMade, setLiveCutMade] = useState(false)
-  const [loading, setLoading] = useState(true)
+  const { liveMajor, scores: liveScores, cutLine, resolved } = useLiveScoreboard()
+  const liveCutMade = cutLine != null
   const [sortColumn, setSortColumn] = useState('total')
   const [sortDir, setSortDir] = useState('best')
 
-  const refresh = useCallback(async () => {
-    try {
-      const { scores, cutLine, tournament } = await fetchScoreboard()
-      const major = matchMajor(tournament)
-      const alreadyLocked = (seasonData.completedResults ?? []).some((r) => r.major === major)
-      if (major && !alreadyLocked) {
-        setLiveMajor(major)
-        setLiveScores(scores)
-        setLiveCutMade(cutLine != null)
-      } else {
-        setLiveMajor(null)
-        setLiveScores(new Map())
-        setLiveCutMade(false)
-      }
-    } catch {
-      // silent
-    } finally {
-      setLoading(false)
-    }
-  }, [])
-
-  useEffect(() => {
-    refresh()
-    const id = setInterval(refresh, REFRESH_MS)
-    return () => clearInterval(id)
-  }, [refresh])
-
   // Each locked result carries its own `participants` snapshot. A player's
   // Masters cuts must be counted against their Masters picks, not their picks
-  // for whatever major is currently in `majorData`.
-  const lockedByMajor = {}
+  // for whatever major is currently live.
+  const lockedScoresByMajor = {}
   const lockedPicksByMajor = {}
   for (const result of seasonData.completedResults ?? []) {
-    lockedByMajor[result.major] = snapshotToScoresMap(result)
-    lockedPicksByMajor[result.major] = result.participants ?? majorData.participants
+    lockedScoresByMajor[result.major] = snapshotToScoresMap(result)
+    lockedPicksByMajor[result.major] = result.participants ?? MAJOR_META[result.major]?.participants ?? []
   }
-
-  const participants = majorData.participants
 
   function findPicks(participantList, name) {
     return participantList.find((q) => q.name === name) ?? { name, picks: [] }
   }
 
-  const rows = participants.map((p) => {
+  const rows = MEMBERS.map((p) => {
     const cutsByMajor = MAJORS.map((major) => {
-      if (lockedByMajor[major]) {
-        const lockedPicks = findPicks(lockedPicksByMajor[major], p.name)
-        return countCuts(lockedPicks, lockedByMajor[major], true)
+      if (lockedScoresByMajor[major]) {
+        return countCuts(findPicks(lockedPicksByMajor[major], p.name), lockedScoresByMajor[major], true)
       }
       if (major === liveMajor) {
-        return countCuts(p, liveScores, liveCutMade)
+        return countCuts(findPicks(MAJOR_META[liveMajor].participants, p.name), liveScores, liveCutMade)
       }
       return null
     })
@@ -170,13 +123,13 @@ export default function JayHaasView() {
         <p className="text-sm text-gray-500">Most cuts made across all 4 majors · {TOTAL_PICKS} picks per major</p>
       </div>
 
-      {noDataYet && !loading && (
+      {noDataYet && resolved && (
         <div className="mb-4 p-3 rounded bg-yellow-50 border border-yellow-200 text-yellow-700 text-sm">
           No major data yet. Data populates as majors finish.
         </div>
       )}
 
-      {loading ? (
+      {!resolved ? (
         <div className="text-center py-16 text-gray-400">Loading…</div>
       ) : (
         <div className="overflow-x-auto rounded-lg border border-gray-200">

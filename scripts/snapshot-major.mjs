@@ -18,6 +18,11 @@
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import {
+  normalizeName,
+  extractCompetitorRecord,
+  detectCutBySegment,
+} from '../src/utils/espn.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -53,24 +58,6 @@ function parseArgs(argv) {
   return args
 }
 
-function normalizeName(name) {
-  return name
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .replace(/[^a-z\s]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim()
-}
-
-function parseScore(val) {
-  if (val == null) return 0
-  const s = String(val).trim()
-  if (s === 'E' || s === '') return 0
-  const n = Number(s)
-  return isNaN(n) ? 0 : n
-}
-
 function matchesMajor(tournamentName, major) {
   const t = tournamentName.toLowerCase()
   if (major === 'Masters') return t.includes('masters')
@@ -100,44 +87,19 @@ async function main() {
   }
 
   const competitors = event.competitions?.[0]?.competitors ?? []
-  const records = competitors.map((comp) => {
-    const displayName = comp.athlete?.displayName ?? ''
-    const rounds = comp.linescores ?? []
-    const total = parseScore(comp.score)
-    let preCutTotal = 0
-    for (let i = 0; i < Math.min(2, rounds.length); i++) {
-      const dv = rounds[i]?.displayValue
-      if (dv && dv !== '-') preCutTotal += parseScore(dv)
-    }
-    const roundsPlayed = rounds.filter((r) => (r?.linescores?.length ?? 0) > 0).length
-    let thru = '-'
-    for (let i = rounds.length - 1; i >= 0; i--) {
-      const holes = rounds[i]?.linescores ?? []
-      if (holes.length > 0) {
-        thru = holes.length >= 18 ? 'F' : String(holes.length)
-        break
-      }
-    }
-    return { displayName, total, preCutTotal, thru, roundsPlayed }
-  })
+  const records = competitors.map(extractCompetitorRecord)
 
-  let mcStart = -1
-  for (let i = 1; i < records.length; i++) {
-    if (records[i].total < records[i - 1].total) {
-      mcStart = i
-      break
-    }
-  }
-  const cutLine = mcStart >= 0 ? records[mcStart].preCutTotal - 1 : null
+  // Final leaderboards expose the same MC segment as live R3+ play, so the
+  // shared segment-break detector applies directly.
+  const { cutLine, missedCutSet } = detectCutBySegment(records)
 
   const scores = {}
   records.forEach((r, idx) => {
     if (!r.displayName) return
     const key = normalizeName(r.displayName)
-    const isMissedCut = mcStart >= 0 && idx >= mcStart
     scores[key] = {
       total: r.total,
-      status: isMissedCut ? 'cut' : 'active',
+      status: missedCutSet.has(idx) ? 'cut' : 'active',
       displayName: r.displayName,
       thru: r.thru,
     }

@@ -1,46 +1,9 @@
-import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
-import { fetchScoreboard } from '../utils/espn.js'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import { buildStandings, formatScore } from '../utils/scoring.js'
+import { MAJORS, SHORT_LABEL, MAJOR_META, snapshotToScoresMap } from '../utils/majors.js'
+import { useLiveScoreboard } from '../utils/useLiveScoreboard.js'
 import ParticipantRow from './ParticipantRow.jsx'
 import seasonData from '../data/season-2026.json'
-import mastersMeta from '../data/masters-2026.json'
-import pgaMeta from '../data/pga-2026.json'
-import usopenMeta from '../data/usopen-2026.json'
-import theopenMeta from '../data/theopen-2026.json'
-
-const REFRESH_MS = 5 * 60 * 1000
-
-const MAJORS_ORDER = ['Masters', 'PGA Championship', 'U.S. Open', 'The Open']
-
-// Short labels for the selector pills.
-const SHORT_LABEL = {
-  'Masters': 'Masters',
-  'PGA Championship': 'PGA',
-  'U.S. Open': 'US Open',
-  'The Open': 'The Open',
-}
-
-// Per-major metadata pulled from each major's picks file.
-const MAJOR_META = {
-  'Masters':          { course: mastersMeta.course, dates: mastersMeta.dates, participants: mastersMeta.participants },
-  'PGA Championship': { course: pgaMeta.course,     dates: pgaMeta.dates,     participants: pgaMeta.participants },
-  'U.S. Open':        { course: usopenMeta.course,  dates: usopenMeta.dates,  participants: usopenMeta.participants },
-  'The Open':         { course: theopenMeta.course, dates: theopenMeta.dates, participants: theopenMeta.participants },
-}
-
-function matchMajor(tournamentName) {
-  if (!tournamentName) return null
-  const t = tournamentName.toLowerCase()
-  if (t.includes('masters')) return 'Masters'
-  if (t.includes('pga championship')) return 'PGA Championship'
-  if (t.includes('u.s. open') || t.includes('us open')) return 'U.S. Open'
-  if (t.includes('open championship') || t.includes('the open')) return 'The Open'
-  return null
-}
-
-function snapshotToScoresMap(snapshot) {
-  return new Map(Object.entries(snapshot.scores))
-}
 
 function buildOwnership(participants) {
   const counts = {}
@@ -69,8 +32,8 @@ function timeSince(date) {
 // major (the upcoming/in-progress one). This matches the live tournament most
 // of the time and avoids a visible swap when the fetch returns.
 function initialPick(lockedByMajor) {
-  const open = MAJORS_ORDER.find((m) => !lockedByMajor[m])
-  return open ?? MAJORS_ORDER[MAJORS_ORDER.length - 1]
+  const open = MAJORS.find((m) => !lockedByMajor[m])
+  return open ?? MAJORS[MAJORS.length - 1]
 }
 
 export default function TournamentView() {
@@ -83,44 +46,16 @@ export default function TournamentView() {
   const [selected, setSelected] = useState(() => initialPick(lockedByMajor))
   const userPickedRef = useRef(false)
 
-  const [liveMajor, setLiveMajor] = useState(null)
-  const [liveScores, setLiveScores] = useState(new Map())
-  const [liveCutLine, setLiveCutLine] = useState(null)
-  const [lastUpdated, setLastUpdated] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
-  const [resolved, setResolved] = useState(false)
-
-  const refresh = useCallback(async () => {
-    setLoading(true)
-    setError(null)
-    try {
-      const { scores, cutLine, tournament } = await fetchScoreboard()
-      const m = matchMajor(tournament)
-      // A major is "live" only if ESPN reports it and we haven't locked it.
-      if (m && !lockedByMajor[m]) {
-        setLiveMajor(m)
-        setLiveScores(scores)
-        setLiveCutLine(cutLine)
-      } else {
-        setLiveMajor(null)
-        setLiveScores(new Map())
-        setLiveCutLine(null)
-      }
-      setLastUpdated(new Date())
-    } catch (e) {
-      setError(e.message)
-    } finally {
-      setLoading(false)
-      setResolved(true)
-    }
-  }, [lockedByMajor])
-
-  useEffect(() => {
-    refresh()
-    const id = setInterval(refresh, REFRESH_MS)
-    return () => clearInterval(id)
-  }, [refresh])
+  const {
+    liveMajor,
+    scores: liveScores,
+    cutLine: liveCutLine,
+    lastUpdated,
+    loading,
+    error,
+    resolved,
+    refresh,
+  } = useLiveScoreboard()
 
   // Auto-target the right major once the scoreboard fetch resolves, unless
   // the user has already clicked a pill (then we respect their choice).
@@ -129,7 +64,7 @@ export default function TournamentView() {
     if (liveMajor) {
       setSelected(liveMajor)
     } else {
-      const completed = MAJORS_ORDER.filter((m) => lockedByMajor[m])
+      const completed = MAJORS.filter((m) => lockedByMajor[m])
       if (completed.length > 0) setSelected(completed[completed.length - 1])
     }
   }, [resolved, liveMajor, lockedByMajor])
@@ -204,7 +139,7 @@ export default function TournamentView() {
     <div>
       {/* Major selector pills */}
       <div className="mb-4 flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1">
-        {MAJORS_ORDER.map((m) => {
+        {MAJORS.map((m) => {
           const s = statusFor(m)
           const isActive = m === selected
           const stateCls = isActive
