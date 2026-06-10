@@ -27,7 +27,6 @@ export function calcParticipantScore(participant, scores, cutLine) {
         ...pick,
         strokes,
         status: score ? 'active' : 'pending',
-        displayScore: score ? formatScore(score.total) : '-',
         thru: score?.thru ?? '-',
       }
     })
@@ -48,13 +47,16 @@ export function calcParticipantScore(participant, scores, cutLine) {
 
     if (!score) {
       // Player not found — not yet started or API mismatch
-      return { ...pick, strokes: 0, status: 'pending', displayScore: 'E', thru: '-' }
+      return { ...pick, strokes: 0, status: 'pending', thru: '-' }
     }
 
     let strokes = score.total
     let status = score.status
 
-    if (status === 'cut' || status === 'wd' || status === 'dq') {
+    // espn.js / the snapshot script only ever emit 'cut' or 'active' (ESPN's
+    // per-competitor status objects are empty, so WD/DQ aren't distinguished —
+    // those players just land in the missed-cut segment).
+    if (status === 'cut') {
       strokes = CUT + 1
       status = 'mc'
     } else if (strokes > CUT - 1) {
@@ -70,7 +72,6 @@ export function calcParticipantScore(participant, scores, cutLine) {
       ...pick,
       strokes,
       status,
-      displayScore: formatScore(score.total),
       thru: score.thru ?? '-',
     }
   })

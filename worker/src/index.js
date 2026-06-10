@@ -97,6 +97,10 @@ async function handleSubmit(request, env) {
   if (!major || !name || !email || !Array.isArray(picks)) {
     return json({ error: 'missing fields' }, 400, request)
   }
+  // Bound work before the validation loop — a valid entry is exactly 8 picks.
+  if (picks.length > 8) {
+    return json({ error: 'too many picks (expected 8)' }, 400, request)
+  }
   if (major !== env.CURRENT_MAJOR) {
     return json({ error: `submissions only accepted for ${env.CURRENT_MAJOR}` }, 400, request)
   }
@@ -295,7 +299,11 @@ export default {
       console.log('scheduled fired before lockAt, skipping')
       return
     }
-    const result = await performLock(env)
-    console.log('lock complete:', JSON.stringify(result))
+    try {
+      const result = await performLock(env)
+      console.log('lock complete:', JSON.stringify(result))
+    } catch (e) {
+      console.error('scheduled lock failed:', e.message)
+    }
   },
 }

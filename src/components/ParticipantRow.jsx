@@ -10,8 +10,6 @@ const TIER_COLORS = {
 
 const STATUS_BADGE = {
   mc:        { label: 'MC',  cls: 'bg-red-100 text-red-600' },
-  wd:        { label: 'WD',  cls: 'bg-gray-100 text-gray-500' },
-  dq:        { label: 'DQ',  cls: 'bg-gray-100 text-gray-500' },
   protected: { label: 'P',   cls: 'bg-orange-100 text-orange-600' },
   pending:   { label: '-',   cls: 'bg-gray-100 text-gray-400' },
   active:    { label: null,  cls: '' },

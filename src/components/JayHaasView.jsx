@@ -8,7 +8,7 @@ const TOTAL_PICKS = 8
 
 /**
  * Count picks whose golfer made the cut in a given scores map.
- * Made the cut = status is not 'cut', 'wd', or 'dq'.
+ * Made the cut = status 'active' (espn.js only emits 'active' or 'cut').
  * Returns null if cutMade is false (cut not yet made — live pre-cut state).
  */
 function countCuts(participant, scores, cutMade) {
@@ -17,7 +17,7 @@ function countCuts(participant, scores, cutMade) {
   for (const pick of participant.picks) {
     const key = normalizeName(pick.player)
     const score = scores.get(key)
-    if (!score || score.status === 'cut' || score.status === 'wd' || score.status === 'dq') continue
+    if (!score || score.status === 'cut') continue
     made++
   }
   return made
