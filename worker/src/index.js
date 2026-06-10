@@ -1,8 +1,17 @@
 // Kim Cup picks API
 //
+// Auth model (magic code):
+//   Submitting/reading picks requires a bearer token. To get one, a participant
+//   requests a 6-digit code, which is emailed to their on-file roster address;
+//   verifying the code issues a short-lived HMAC-signed token. This proves the
+//   person controls the roster email — the old name+email check trusted an
+//   unverified, group-known email.
+//
 // Routes:
-//   POST /api/picks          submit or update picks (auth: name + email match)
-//   GET  /api/picks          read own picks (auth: name + email match)
+//   POST /api/auth/request   { name, email } → emails a one-time code
+//   POST /api/auth/verify    { name, email, code } → { token, expiresAt }
+//   POST /api/picks          submit/update picks (auth: Bearer token)
+//   GET  /api/picks          read own picks    (auth: Bearer token)
 //   GET  /api/lock-status    public — is the current major locked?
 //   POST /api/admin/lock     protected by ADMIN_SECRET — manually run the
 //                            lock-and-commit flow (fallback if cron misses)
@@ -16,13 +25,16 @@
 //   GITHUB_TOKEN     fine-grained PAT, contents:write scope, repo: nicholasocon-tech/kim-cup-tracker
 //   PARTICIPANTS     JSON string matching src/data/participants-2026.json
 //   ADMIN_SECRET     opaque string for the manual lock endpoint
-//   GITHUB_OWNER     "nicholasocon-tech"
-//   GITHUB_REPO      "kim-cup-tracker"
+//   AUTH_SECRET      random 32+ char string — HMAC key for session tokens
+//   SENDGRID_API_KEY SendGrid key with Mail Send permission
 //
 // Vars (set in wrangler.toml):
 //   CURRENT_MAJOR    e.g. "U.S. Open"
 //   PICKS_FILE_PATH  e.g. "src/data/usopen-2026.json"
-//   LOCK_AT          ISO-8601 e.g. "2026-06-11T10:30:00Z"
+//   LOCK_AT          ISO-8601 e.g. "2026-06-18T10:30:00Z"
+//   GITHUB_OWNER     "nicholasocon-tech"
+//   GITHUB_REPO      "kim-cup-tracker"
+//   MAIL_FROM        verified SendGrid single-sender address
 
 const ALLOWED_ORIGINS = [
   'https://nicholasocon-tech.github.io',
@@ -79,7 +91,199 @@ function isLocked(env) {
   return Date.now() >= new Date(env.LOCK_AT).getTime()
 }
 
+// ───────── Auth: codes, tokens, email ─────────
+
+const CODE_TTL_MS = 10 * 60 * 1000   // a code is valid for 10 minutes
+const MAX_VERIFY_ATTEMPTS = 5        // wrong-code guesses before a code dies
+const MAX_CODE_REQUESTS = 5          // code requests per name per hour
+const TOKEN_MAX_AGE_MS = 24 * 60 * 60 * 1000
+
+const enc = new TextEncoder()
+
+function b64urlFromBytes(bytes) {
+  let s = ''
+  for (const b of new Uint8Array(bytes)) s += String.fromCharCode(b)
+  return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
+}
+
+function b64urlToBytes(str) {
+  const b = atob(str.replace(/-/g, '+').replace(/_/g, '/'))
+  const out = new Uint8Array(b.length)
+  for (let i = 0; i < b.length; i++) out[i] = b.charCodeAt(i)
+  return out
+}
+
+async function hmacKey(secret) {
+  return crypto.subtle.importKey(
+    'raw', enc.encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign', 'verify']
+  )
+}
+
+async function sha256hex(str) {
+  const buf = await crypto.subtle.digest('SHA-256', enc.encode(str))
+  return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, '0')).join('')
+}
+
+// Stateless session token: base64url(JSON payload) + "." + base64url(HMAC).
+async function signToken(payload, secret) {
+  const body = b64urlFromBytes(enc.encode(JSON.stringify(payload)))
+  const sig = await crypto.subtle.sign('HMAC', await hmacKey(secret), enc.encode(body))
+  return `${body}.${b64urlFromBytes(sig)}`
+}
+
+async function verifyToken(token, secret) {
+  if (typeof token !== 'string' || !token.includes('.')) return null
+  const [body, sig] = token.split('.')
+  if (!body || !sig) return null
+  let ok
+  try {
+    ok = await crypto.subtle.verify('HMAC', await hmacKey(secret), b64urlToBytes(sig), enc.encode(body))
+  } catch {
+    return null
+  }
+  if (!ok) return null
+  let payload
+  try {
+    payload = JSON.parse(new TextDecoder().decode(b64urlToBytes(body)))
+  } catch {
+    return null
+  }
+  if (!payload.exp || Date.now() > payload.exp) return null
+  return payload
+}
+
+// The authenticated participant name (normalized) for a request, or null.
+async function authedSub(request, env) {
+  const m = (request.headers.get('Authorization') ?? '').match(/^Bearer (.+)$/)
+  if (!m) return null
+  const payload = await verifyToken(m[1], env.AUTH_SECRET)
+  return payload?.sub ?? null
+}
+
+function genCode() {
+  const n = crypto.getRandomValues(new Uint32Array(1))[0] % 1000000
+  return String(n).padStart(6, '0')
+}
+
+function maskEmail(email) {
+  const [user, domain] = email.split('@')
+  if (!domain) return '***'
+  const head = user.slice(0, 1)
+  return `${head}${'*'.repeat(Math.max(1, user.length - 1))}@${domain}`
+}
+
+async function sendCodeEmail(env, toEmail, toName, code) {
+  const res = await fetch('https://api.sendgrid.com/v3/mail/send', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${env.SENDGRID_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      personalizations: [{ to: [{ email: toEmail, name: toName }] }],
+      from: { email: env.MAIL_FROM, name: 'Kim Cup' },
+      subject: `Your Kim Cup code: ${code}`,
+      content: [{
+        type: 'text/plain',
+        value:
+          `Your Kim Cup verification code is ${code}\n\n` +
+          `It expires in 10 minutes. If you didn't request this, ignore this email.`,
+      }],
+    }),
+  })
+  if (!res.ok) {
+    const t = await res.text()
+    throw new Error(`SendGrid ${res.status}: ${t.slice(0, 200)}`)
+  }
+}
+
 // ───────── Endpoint handlers ─────────
+
+async function handleAuthRequest(request, env) {
+  if (isLocked(env)) {
+    return json({ error: 'picks locked for this major' }, 423, request)
+  }
+  let body
+  try {
+    body = await request.json()
+  } catch {
+    return json({ error: 'invalid JSON body' }, 400, request)
+  }
+  const { name, email } = body ?? {}
+  if (!name || !email) return json({ error: 'missing fields' }, 400, request)
+
+  const participant = findParticipant(parseParticipants(env), name)
+  if (!emailMatches(participant, email)) {
+    return json({ error: 'email does not match our records' }, 403, request)
+  }
+
+  // Rate-limit code requests per person (counter with a 1h TTL window).
+  const norm = normalizeName(name)
+  const rlKey = `otpreq:${norm}`
+  const count = Number((await env.KIMCUP_PICKS.get(rlKey)) ?? 0)
+  if (count >= MAX_CODE_REQUESTS) {
+    return json({ error: 'too many code requests — try again later' }, 429, request)
+  }
+  await env.KIMCUP_PICKS.put(rlKey, String(count + 1), { expirationTtl: 3600 })
+
+  const code = genCode()
+  const codeHash = await sha256hex(`${norm}:${code}`)
+  const exp = Date.now() + CODE_TTL_MS
+  await env.KIMCUP_PICKS.put(
+    `otp:${norm}`,
+    JSON.stringify({ codeHash, exp, attempts: 0 }),
+    { expirationTtl: Math.ceil(CODE_TTL_MS / 1000) }
+  )
+  await sendCodeEmail(env, participant.email, participant.name, code)
+
+  return json({ ok: true, sentTo: maskEmail(participant.email) }, 200, request)
+}
+
+async function handleAuthVerify(request, env) {
+  let body
+  try {
+    body = await request.json()
+  } catch {
+    return json({ error: 'invalid JSON body' }, 400, request)
+  }
+  const { name, email, code } = body ?? {}
+  if (!name || !email || !code) return json({ error: 'missing fields' }, 400, request)
+
+  const participant = findParticipant(parseParticipants(env), name)
+  if (!emailMatches(participant, email)) {
+    return json({ error: 'email does not match our records' }, 403, request)
+  }
+
+  const norm = normalizeName(name)
+  const key = `otp:${norm}`
+  const raw = await env.KIMCUP_PICKS.get(key)
+  if (!raw) return json({ error: 'no code requested, or it expired' }, 400, request)
+  const rec = JSON.parse(raw)
+
+  if (Date.now() > rec.exp) {
+    await env.KIMCUP_PICKS.delete(key)
+    return json({ error: 'code expired — request a new one' }, 400, request)
+  }
+  if (rec.attempts >= MAX_VERIFY_ATTEMPTS) {
+    await env.KIMCUP_PICKS.delete(key)
+    return json({ error: 'too many attempts — request a new code' }, 429, request)
+  }
+
+  const codeHash = await sha256hex(`${norm}:${String(code).trim()}`)
+  if (codeHash !== rec.codeHash) {
+    const ttl = Math.max(1, Math.ceil((rec.exp - Date.now()) / 1000))
+    await env.KIMCUP_PICKS.put(
+      key, JSON.stringify({ ...rec, attempts: rec.attempts + 1 }), { expirationTtl: ttl }
+    )
+    return json({ error: 'incorrect code' }, 401, request)
+  }
+
+  await env.KIMCUP_PICKS.delete(key)
+  // Token lives until lockAt or 24h, whichever is sooner — no point past lock.
+  const exp = Math.min(new Date(env.LOCK_AT).getTime(), Date.now() + TOKEN_MAX_AGE_MS)
+  const token = await signToken({ sub: norm, exp }, env.AUTH_SECRET)
+  return json({ token, expiresAt: exp }, 200, request)
+}
 
 async function handleSubmit(request, env) {
   if (isLocked(env)) {
@@ -93,8 +297,8 @@ async function handleSubmit(request, env) {
     return json({ error: 'invalid JSON body' }, 400, request)
   }
 
-  const { major, name, email, picks } = body ?? {}
-  if (!major || !name || !email || !Array.isArray(picks)) {
+  const { major, name, picks } = body ?? {}
+  if (!major || !name || !Array.isArray(picks)) {
     return json({ error: 'missing fields' }, 400, request)
   }
   // Bound work before the validation loop — a valid entry is exactly 8 picks.
@@ -109,8 +313,10 @@ async function handleSubmit(request, env) {
   if (!participant) {
     return json({ error: 'unknown participant' }, 403, request)
   }
-  if (!emailMatches(participant, email)) {
-    return json({ error: 'email does not match our records' }, 403, request)
+  // Bearer token must be present and belong to this participant.
+  const sub = await authedSub(request, env)
+  if (sub !== normalizeName(name)) {
+    return json({ error: 'not authenticated — request a code first' }, 401, request)
   }
 
   // Tier shape: exactly 2 per tier, 8 total
@@ -145,15 +351,15 @@ async function handleRead(request, env) {
   const url = new URL(request.url)
   const major = url.searchParams.get('major')
   const name = url.searchParams.get('name')
-  const email = url.searchParams.get('email')
 
-  if (!major || !name || !email) {
+  if (!major || !name) {
     return json({ error: 'missing query params' }, 400, request)
   }
 
-  const participant = findParticipant(parseParticipants(env), name)
-  if (!emailMatches(participant, email)) {
-    return json({ error: 'email does not match our records' }, 403, request)
+  // Bearer token must belong to the participant whose picks are requested.
+  const sub = await authedSub(request, env)
+  if (sub !== normalizeName(name)) {
+    return json({ error: 'not authenticated — request a code first' }, 401, request)
   }
 
   const raw = await env.KIMCUP_PICKS.get(kvKey(major, name))
@@ -269,6 +475,12 @@ async function handleRequest(request, env) {
     return new Response(null, { status: 204, headers: corsHeaders(request) })
   }
 
+  if (url.pathname === '/api/auth/request' && request.method === 'POST') {
+    return handleAuthRequest(request, env)
+  }
+  if (url.pathname === '/api/auth/verify' && request.method === 'POST') {
+    return handleAuthVerify(request, env)
+  }
   if (url.pathname === '/api/picks' && request.method === 'POST') {
     return handleSubmit(request, env)
   }

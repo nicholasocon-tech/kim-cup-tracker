@@ -9,6 +9,8 @@ PICKS_FILE_PATH = "src/data/usopen-2026.json"
 LOCK_AT = "2026-06-18T10:30:00Z"
 GITHUB_OWNER = "nicholasocon-tech"
 GITHUB_REPO = "kim-cup-tracker"
+# Verified SendGrid single-sender address that magic-code emails are sent from.
+MAIL_FROM = "nicholas.ocon@gmail.com"
 
 # KV namespace — populate `id` after running `wrangler kv namespace create KIMCUP_PICKS`
 [[kv_namespaces]]
@@ -22,6 +24,8 @@ id = "8d7a50662101413dbe2d72dac83ed2f9"
 crons = ["30 10 18 6 *"]
 
 # Secrets — set via `wrangler secret put <name>` (never check into the repo):
-#   GITHUB_TOKEN   fine-grained PAT, contents:write scope, repo: kim-cup-tracker
-#   PARTICIPANTS   JSON string (copy of src/data/participants-2026.json)
-#   ADMIN_SECRET   opaque string for the manual lock endpoint
+#   GITHUB_TOKEN     fine-grained PAT, contents:write scope, repo: kim-cup-tracker
+#   PARTICIPANTS     JSON string (copy of src/data/participants-2026.json)
+#   ADMIN_SECRET     opaque string for the manual lock endpoint
+#   AUTH_SECRET      random 32+ char string — HMAC key for session tokens
+#   SENDGRID_API_KEY SendGrid key with Mail Send permission
