@@ -9,8 +9,9 @@ PICKS_FILE_PATH = "src/data/usopen-2026.json"
 LOCK_AT = "2026-06-18T10:30:00Z"
 GITHUB_OWNER = "nicholasocon-tech"
 GITHUB_REPO = "kim-cup-tracker"
-# Verified SendGrid single-sender address that magic-code emails are sent from.
-MAIL_FROM = "nicholas.ocon@gmail.com"
+# From-address for magic-code emails. kim-cup.com is domain-authenticated in
+# SendGrid (DNS CNAMEs), so the mailbox need not exist.
+MAIL_FROM = "noreply@kim-cup.com"
 
 # KV namespace — populate `id` after running `wrangler kv namespace create KIMCUP_PICKS`
 [[kv_namespaces]]
