@@ -2,6 +2,6 @@
   "currentMajor": "U.S. Open",
   "currentMajorFile": "usopen-2026.json",
   "tiersFile": "usopen-2026-tiers.json",
-  "lockAt": "2026-06-11T10:30:00Z",
+  "lockAt": "2026-06-18T10:30:00Z",
   "apiBaseUrl": "https://kim-cup-picks-api.nicholas-ocon.workers.dev"
 }

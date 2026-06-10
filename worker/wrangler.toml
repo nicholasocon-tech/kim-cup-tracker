@@ -6,7 +6,7 @@ compatibility_date = "2024-12-01"
 [vars]
 CURRENT_MAJOR = "U.S. Open"
 PICKS_FILE_PATH = "src/data/usopen-2026.json"
-LOCK_AT = "2026-06-11T10:30:00Z"
+LOCK_AT = "2026-06-18T10:30:00Z"
 GITHUB_OWNER = "nicholasocon-tech"
 GITHUB_REPO = "kim-cup-tracker"
 
@@ -16,10 +16,10 @@ binding = "KIMCUP_PICKS"
 id = "8d7a50662101413dbe2d72dac83ed2f9"
 
 # Cron-fires at lock time. Cron is in UTC. The expression below maps to
-# 2026-06-11 10:30 UTC (6:30 AM ET) — first tee at Oakmont.
+# 2026-06-18 10:30 UTC (6:30 AM ET) — first tee at Shinnecock Hills.
 # Format: minute hour day month weekday
 [triggers]
-crons = ["30 10 11 6 *"]
+crons = ["30 10 18 6 *"]
 
 # Secrets — set via `wrangler secret put <name>` (never check into the repo):
 #   GITHUB_TOKEN   fine-grained PAT, contents:write scope, repo: kim-cup-tracker
