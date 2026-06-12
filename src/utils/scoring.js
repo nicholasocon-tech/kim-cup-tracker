@@ -96,6 +96,16 @@ export function calcParticipantScore(participant, scores, cutLine) {
 
 export const PAYOUTS = { 1: 462, 2: 231, 3: 77 }
 
+// A participant who submits no picks for a major fields a phantom team of all
+// +5s (8 picks × +5, best 5 count) for a flat +25 penalty — no free pass for
+// skipping. Applied wherever standings are built.
+export const DNS_PER_PICK = 5
+export const DNS_PENALTY = DNS_PER_PICK * 5
+
+function penaltyResult() {
+  return { total: DNS_PENALTY, picks: [], counting: [], dropped: [], noPicks: true }
+}
+
 function countCutsMade(participant, scores) {
   let count = 0
   for (const pick of participant.picks) {
@@ -126,20 +136,20 @@ function pickedWinner(participant, winnerName) {
  * for tied groups), and `tied` (boolean).
  */
 export function buildStandings(participants, scores, cutLine, winnerName = null) {
-  // Non-submitters (no picks) drop to the bottom and get no place — an empty
-  // pick set computes a total of 0, which would otherwise look identical to
-  // an actual even-par finish.
-  const all = participants.map((p) => ({
-    ...p,
-    result: calcParticipantScore(p, scores, cutLine),
-    pickedWinner: pickedWinner(p, winnerName),
-    cutsMade: countCutsMade(p, scores),
-    dns: !p.picks || p.picks.length === 0,
-  }))
-  const rows = all
-    .filter((r) => !r.dns)
+  // A non-submitter (no picks) is assigned the +25 all-+5s penalty team and
+  // ranks by it like everyone else — no longer dropped to the bottom unscored.
+  const rows = participants
+    .map((p) => {
+      const noPicks = !p.picks || p.picks.length === 0
+      return {
+        ...p,
+        result: noPicks ? penaltyResult() : calcParticipantScore(p, scores, cutLine),
+        pickedWinner: pickedWinner(p, winnerName),
+        cutsMade: countCutsMade(p, scores),
+        noPicks,
+      }
+    })
     .sort((a, b) => a.result.total - b.result.total)
-  const dnsRows = all.filter((r) => r.dns)
 
   let topGroup = []
   let demoted = []
@@ -192,10 +202,6 @@ export function buildStandings(participants, scores, cutLine, winnerName = null)
     }
     nextPlace += size
     j = end + 1
-  }
-
-  for (const r of dnsRows) {
-    ordered.push({ ...r, place: null, tied: false })
   }
 
   return ordered.map((p, i) => ({ ...p, rank: i + 1 }))

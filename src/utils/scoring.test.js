@@ -6,6 +6,7 @@ import {
   calcPayouts,
   formatScore,
   PAYOUTS,
+  DNS_PENALTY,
 } from './scoring.js'
 
 // Build a scores Map keyed the way espn.js produces it: normalizeName(displayName).
@@ -165,19 +166,21 @@ describe('buildStandings', () => {
     expect(rows.map((r) => r.rank)).toEqual([1, 2])
   })
 
-  it('pushes non-submitters (no picks) to the bottom with null place', () => {
+  it('gives a non-submitter the +25 penalty team and ranks them by it', () => {
     const A = participant('A', eightPicks('a'))
-    const DNS = { name: 'Zed', picks: [] }
+    const NP = { name: 'Zed', picks: [] }
     const scores = scoresFrom({
       'a a': { total: -1 }, 'a b': { total: -1 }, 'a c': { total: -1 },
       'a d': { total: -1 }, 'a e': { total: -1 }, 'a f': { total: 0 },
       'a g': { total: 0 }, 'a h': { total: 0 },
     })
-    const rows = buildStandings([DNS, A], scores, null)
-    expect(rows[0].name).toBe('A')
-    expect(rows[1].name).toBe('Zed')
-    expect(rows[1].dns).toBe(true)
-    expect(rows[1].place).toBeNull()
+    const rows = buildStandings([NP, A], scores, null)
+    const zed = rows.find((r) => r.name === 'Zed')
+    expect(DNS_PENALTY).toBe(25)            // 8 picks × +5, best 5 = +25
+    expect(zed.noPicks).toBe(true)
+    expect(zed.result.total).toBe(DNS_PENALTY)
+    expect(zed.place).toBe(2)               // ranked, not dumped to null
+    expect(rows[0].name).toBe('A')          // real (better) score still on top
   })
 
   it('marks a live tie (no winner yet) as a shared place', () => {

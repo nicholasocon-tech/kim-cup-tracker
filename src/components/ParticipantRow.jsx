@@ -24,25 +24,9 @@ function scoreColor(n) {
 
 export default function ParticipantRow({ participant, rank, ownership = {} }) {
   const [open, setOpen] = useState(false)
-  const { result, dns } = participant
+  const { result, noPicks } = participant
   const total = result.total
   const isLeader = participant.place === 1
-
-  if (dns) {
-    return (
-      <tr className="border-b border-cream-200 bg-cream-50/50">
-        <td className="py-3 px-3 text-gray-300 text-sm w-8">—</td>
-        <td className="py-3 px-3 font-medium text-gray-400">
-          <span className="flex items-center gap-2">
-            {participant.name}
-            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-cream-200 text-gray-500">DNS</span>
-          </span>
-        </td>
-        <td className="py-3 px-3 text-right text-gray-300 text-lg">—</td>
-        <td className="py-3 px-2 w-6" />
-      </tr>
-    )
-  }
 
   return (
     <>
@@ -66,6 +50,14 @@ export default function ParticipantRow({ participant, rank, ownership = {} }) {
           <span className="flex items-center gap-1.5">
             {participant.name}
             {isLeader && <span className="text-gold-500" title="Leader">🏆</span>}
+            {noPicks && (
+              <span
+                className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-cream-200 text-gray-500"
+                title="No picks submitted — +5 penalty team"
+              >
+                NO PICKS
+              </span>
+            )}
           </span>
         </td>
         <td className={`py-3 px-3 text-right font-bold tabular-nums text-lg ${scoreColor(total)}`}>
@@ -80,6 +72,13 @@ export default function ParticipantRow({ participant, rank, ownership = {} }) {
       {open && (
         <tr className="bg-cream-50">
           <td colSpan={4} className="px-3 pb-3 pt-1">
+            {noPicks ? (
+              <div className="text-sm text-gray-500 py-2">
+                No picks submitted — penalty team of 8 × +5.{' '}
+                <span className={`font-bold ${scoreColor(total)}`}>Best 5 = {formatScore(total)}</span>
+              </div>
+            ) : (
+              <>
             <div className="grid grid-cols-1 gap-1">
               {[...result.picks].sort((a, b) => a.strokes - b.strokes).map((pick, i) => {
                 const badge = STATUS_BADGE[pick.status] ?? STATUS_BADGE.active
@@ -146,6 +145,8 @@ export default function ParticipantRow({ participant, rank, ownership = {} }) {
                 Total: {formatScore(total)}
               </span>
             </div>
+              </>
+            )}
           </td>
         </tr>
       )}

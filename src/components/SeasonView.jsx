@@ -46,18 +46,19 @@ export default function SeasonView() {
   const aggregated = MEMBERS.map((p) => {
     const perMajorEntries = MAJORS.map((major) => {
       const m = perMajor[major]
-      if (!m) return { major, total: null, place: null, tied: false, locked: false, cutsMade: 0 }
+      if (!m) return { major, total: null, place: null, tied: false, locked: false, cutsMade: 0, noPicks: false }
       const row = m.standings.find((s) => s.name === p.name)
-      if (!row) return { major, total: null, place: null, tied: false, locked: m.locked, cutsMade: 0 }
-      // Treat non-submitters as having no score for the major — empty picks
-      // would otherwise show as 0 (E) and inflate their season total.
+      if (!row) return { major, total: null, place: null, tied: false, locked: m.locked, cutsMade: 0, noPicks: false }
+      // Non-submitters carry the +25 penalty team into their season total
+      // (no free pass for skipping a major).
       return {
         major,
-        total: row.dns ? null : row.result.total,
+        total: row.result.total,
         place: row.place,
         tied: row.tied,
         locked: m.locked,
         cutsMade: row.cutsMade,
+        noPicks: row.noPicks,
       }
     })
 
@@ -257,9 +258,13 @@ export default function SeasonView() {
                           <span className={scoreColor(entry.total)}>
                             {entry.total == null
                               ? <span className="text-gray-200">—</span>
-                              : entry.locked
-                                ? formatScore(entry.total)
-                                : <span title="Live">{formatScore(entry.total)}*</span>
+                              : entry.noPicks
+                                ? <span title="No picks submitted — +5 penalty team">
+                                    {formatScore(entry.total)}<sup className="text-[9px] text-gray-400 ml-0.5">NP</sup>
+                                  </span>
+                                : entry.locked
+                                  ? formatScore(entry.total)
+                                  : <span title="Live">{formatScore(entry.total)}*</span>
                             }
                           </span>
                         </div>
@@ -283,6 +288,7 @@ export default function SeasonView() {
 
       <div className="mt-3 flex flex-wrap gap-4 text-xs text-gray-400 justify-center">
         <span>* Live (in progress)</span>
+        <span>NP = no picks (+5 penalty team)</span>
         <span>Per-major payouts: 1st $462 · 2nd $231 · 3rd $77</span>
       </div>
     </div>
