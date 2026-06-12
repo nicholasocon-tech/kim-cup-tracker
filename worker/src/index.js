@@ -37,6 +37,8 @@
 //   MAIL_FROM        verified SendGrid single-sender address
 
 const ALLOWED_ORIGINS = [
+  'https://kim-cup.com',
+  'https://www.kim-cup.com',
   'https://nicholasocon-tech.github.io',
   'http://localhost:5173',
   'http://localhost:4173',
