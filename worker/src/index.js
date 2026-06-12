@@ -394,6 +394,23 @@ async function handleAdminLock(request, env) {
 
 // ───────── Lock-and-commit flow ─────────
 
+// UTF-8-safe base64 ⇄ string (GitHub Contents API content is base64 of UTF-8
+// bytes; player names like "Ludvig Åberg" are multi-byte, so plain atob/btoa
+// would mangle them).
+function utf8ToBase64(str) {
+  const bytes = new TextEncoder().encode(str)
+  let bin = ''
+  for (const b of bytes) bin += String.fromCharCode(b)
+  return btoa(bin)
+}
+
+function base64ToUtf8(b64) {
+  const bin = atob(b64)
+  const bytes = new Uint8Array(bin.length)
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i)
+  return new TextDecoder().decode(bytes)
+}
+
 async function ghApi(env, method, path, body) {
   const res = await fetch(`https://api.github.com${path}`, {
     method,
@@ -438,7 +455,7 @@ async function performLock(env) {
     'GET',
     `/repos/${env.GITHUB_OWNER}/${env.GITHUB_REPO}/contents/${encodeURIComponent(filePath)}?ref=main`
   )
-  const currentContent = JSON.parse(atob(fileResp.content.replace(/\n/g, '')))
+  const currentContent = JSON.parse(base64ToUtf8(fileResp.content.replace(/\n/g, '')))
 
   // Rebuild participants array in the existing canonical order, merging in submissions
   const newParticipants = currentContent.participants.map((p) => {
@@ -446,7 +463,7 @@ async function performLock(env) {
     return { name: p.name, picks: sub ? sub.picks : [] }
   })
   const newContent = { ...currentContent, participants: newParticipants }
-  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(newContent, null, 2) + '\n')))
+  const encoded = utf8ToBase64(JSON.stringify(newContent, null, 2) + '\n')
 
   await ghApi(
     env,

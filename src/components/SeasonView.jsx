@@ -185,12 +185,17 @@ export default function SeasonView() {
   function SortHeader({ col, children, className = '' }) {
     const active = sortColumn === col
     const arrow = !active ? '' : sortDir === 'best' ? ' ↑' : ' ↓'
+    const toggle = () => {
+      if (sortColumn === col) setSortDir(sortDir === 'best' ? 'worst' : 'best')
+      else { setSortColumn(col); setSortDir('best') }
+    }
     return (
       <th
-        onClick={() => {
-          if (sortColumn === col) setSortDir(sortDir === 'best' ? 'worst' : 'best')
-          else { setSortColumn(col); setSortDir('best') }
-        }}
+        onClick={toggle}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle() } }}
+        tabIndex={0}
+        role="button"
+        aria-sort={active ? (sortDir === 'best' ? 'ascending' : 'descending') : 'none'}
         className={`py-2 px-2 text-right cursor-pointer select-none hover:bg-gray-100 ${className}`}
       >
         {children}{arrow}

@@ -23,11 +23,14 @@ const MAJORS = [
   { name: 'The Open',         picksFile: 'theopen-2026.json' },
 ]
 
-// "May 14–17" + 2026 → "20260517" (last day of the range)
+// Final-round date = the END of the range. Handles single-month ranges
+// ("May 14–17" → 20260517) and cross-month ranges ("May 30 – June 2" →
+// 20260602), where the end day belongs to the trailing month.
 function finalRoundYYYYMMDD(datesField, year) {
-  const match = datesField.match(/^(\w+)\s+\d+\s*[–-]\s*(\d+)$/)
+  const match = datesField.match(/^([A-Za-z]+)\s+\d+\s*[–-]\s*(?:([A-Za-z]+)\s+)?(\d+)$/)
   if (!match) throw new Error(`Can't parse dates field: "${datesField}"`)
-  const [, monthName, endDay] = match
+  const [, startMonth, endMonth, endDay] = match
+  const monthName = endMonth ?? startMonth
   const month = new Date(`${monthName} 1, ${year}`).getMonth() + 1
   if (isNaN(month) || month === 0) throw new Error(`Bad month "${monthName}"`)
   return `${year}${String(month).padStart(2, '0')}${String(endDay).padStart(2, '0')}`

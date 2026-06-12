@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import TournamentView from './components/TournamentView.jsx'
 import SeasonView from './components/SeasonView.jsx'
 import JayHaasView from './components/JayHaasView.jsx'
@@ -12,12 +12,19 @@ const ALL_TABS = [
   { id: 'picks',      label: 'Submit Picks' },
 ]
 
-// Hide the Picks tab once the current major's picks are locked.
-const picksLocked = Date.now() >= new Date(lockConfig.lockAt).getTime()
-const TABS = picksLocked ? ALL_TABS.filter((t) => t.id !== 'picks') : ALL_TABS
+const lockAt = new Date(lockConfig.lockAt).getTime()
 
 export default function App() {
   const [tab, setTab] = useState('tournament')
+
+  // Re-check the lock on an interval so the Picks tab hides at lock time even
+  // if the page has been left open (module-load evaluation would miss it).
+  const [now, setNow] = useState(Date.now())
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 30000)
+    return () => clearInterval(id)
+  }, [])
+  const TABS = now >= lockAt ? ALL_TABS.filter((t) => t.id !== 'picks') : ALL_TABS
 
   return (
     <div className="min-h-screen bg-white text-gray-900">

@@ -49,6 +49,12 @@ export default function ParticipantRow({ participant, rank, ownership = {} }) {
       <tr
         className="border-b border-gray-200 cursor-pointer hover:bg-gray-50 transition-colors"
         onClick={() => setOpen((o) => !o)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen((o) => !o) }
+        }}
+        tabIndex={0}
+        role="button"
+        aria-expanded={open}
       >
         <td className="py-3 px-3 text-gray-400 text-sm w-8">{rank}</td>
         <td className="py-3 px-3 font-medium text-gray-900">{participant.name}</td>
