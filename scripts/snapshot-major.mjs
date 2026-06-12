@@ -105,15 +105,28 @@ async function main() {
     }
   })
 
-  let winner = null
-  let bestTotal = Infinity
-  for (const r of records) {
+  // Winner: lowest 72-hole total among players who finished all four rounds.
+  // A tie at the top (playoff) is broken by ESPN's `order` field — the winner
+  // is assigned order 1 — and we warn so a human can confirm the result, since
+  // the winner drives the §5a payout tiebreaker.
+  const finishers = records.filter((r) => {
     const sc = scores[normalizeName(r.displayName)]
-    if (!sc || sc.status !== 'active') continue
-    if (r.roundsPlayed < 4) continue
-    if (r.total < bestTotal) {
-      bestTotal = r.total
-      winner = r.displayName
+    return sc && sc.status === 'active' && r.roundsPlayed >= 4
+  })
+  let winner = null
+  let bestTotal = null
+  if (finishers.length > 0) {
+    bestTotal = Math.min(...finishers.map((r) => r.total))
+    const tiedAtTop = finishers
+      .filter((r) => r.total === bestTotal)
+      .sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity))
+    winner = tiedAtTop[0].displayName
+    if (tiedAtTop.length > 1) {
+      console.warn(
+        `WARNING: ${tiedAtTop.length}-way tie at ${bestTotal} for the win ` +
+        `(${tiedAtTop.map((r) => r.displayName).join(', ')}). Using ESPN finishing ` +
+        `order → "${winner}". Verify the playoff result before trusting payouts.`
+      )
     }
   }
 

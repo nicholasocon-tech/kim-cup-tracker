@@ -57,6 +57,7 @@ export function parseScore(val) {
  *   today        current round's vs-par, or null
  *   r2Full       has this competitor played all 18 holes of R2?
  *   roundsPlayed number of rounds with any hole data
+ *   order        ESPN finishing position (1 = leader/winner); null if absent
  */
 export function extractCompetitorRecord(comp) {
   const displayName = comp.athlete?.displayName ?? ''
@@ -88,7 +89,7 @@ export function extractCompetitorRecord(comp) {
   const r2Full = (rounds[1]?.linescores?.length ?? 0) >= 18
   const roundsPlayed = rounds.filter((r) => (r?.linescores?.length ?? 0) > 0).length
 
-  return { displayName, total, preCutTotal, thru, today, r2Full, roundsPlayed }
+  return { displayName, total, preCutTotal, thru, today, r2Full, roundsPlayed, order: comp.order ?? null }
 }
 
 /**
