@@ -5,9 +5,9 @@ import { useLiveScoreboard } from '../utils/useLiveScoreboard.js'
 import seasonData from '../data/season-2026.json'
 
 const PLACE_STYLE = {
-  1: { label: '1st', cls: 'bg-yellow-100 text-yellow-700 border border-yellow-300' },
+  1: { label: '1st', cls: 'bg-gold-100 text-gold-700 border border-gold-300' },
   2: { label: '2nd', cls: 'bg-gray-100 text-gray-600 border border-gray-300' },
-  3: { label: '3rd', cls: 'bg-orange-100 text-orange-600 border border-orange-300' },
+  3: { label: '3rd', cls: 'bg-orange-100 text-orange-700 border border-orange-300' },
 }
 
 function placeLabel(place, tied) {
@@ -196,7 +196,7 @@ export default function SeasonView() {
         tabIndex={0}
         role="button"
         aria-sort={active ? (sortDir === 'best' ? 'ascending' : 'descending') : 'none'}
-        className={`py-2 px-2 text-right cursor-pointer select-none hover:bg-gray-100 ${className}`}
+        className={`py-2.5 px-2 text-right cursor-pointer select-none hover:bg-pine-100 ${className}`}
       >
         {children}{arrow}
       </th>
@@ -206,29 +206,29 @@ export default function SeasonView() {
   return (
     <div>
       <div className="mb-4">
-        <h2 className="text-xl font-bold text-gray-900">2026 Season Standings</h2>
+        <h2 className="text-2xl font-display font-semibold text-pine-900">2026 Season Standings</h2>
         <p className="text-sm text-gray-500">Cumulative Kim Cup score · Top 3 per major pay out</p>
       </div>
 
-      <div className="overflow-x-auto rounded-lg border border-gray-200">
+      <div className="overflow-x-auto rounded-xl border border-cream-200 bg-white shadow-sm">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-gray-200 text-xs text-gray-500 uppercase tracking-wide bg-gray-50">
-              <th className="py-2 px-3 text-left w-6">#</th>
-              <th className="py-2 px-3 text-left">Name</th>
+            <tr className="border-b border-cream-200 text-xs text-pine-800 uppercase tracking-wider bg-pine-50 font-medium">
+              <th className="py-2.5 px-3 text-left w-6">#</th>
+              <th className="py-2.5 px-3 text-left">Name</th>
               <SortHeader col="masters">Masters</SortHeader>
               <SortHeader col="pga">PGA</SortHeader>
               <SortHeader col="usopen">US Open</SortHeader>
               <SortHeader col="theopen">The Open</SortHeader>
-              <SortHeader col="total" className="font-bold text-gray-700">Total</SortHeader>
-              <th className="py-2 px-3 text-right font-bold text-green-700">Winnings</th>
+              <SortHeader col="total" className="font-bold text-pine-800">Total</SortHeader>
+              <th className="py-2.5 px-3 text-right font-bold text-pine-700">Winnings</th>
             </tr>
           </thead>
           <tbody>
             {displayRows.map((row) => {
               const totalWinnings = row.winnings + (seasonPayouts[row.name] ?? 0)
               return (
-                <tr key={row.name} className="border-b border-gray-100 hover:bg-gray-50">
+                <tr key={row.name} className="border-b border-cream-100 hover:bg-cream-50">
                   <td className="py-2.5 px-3 text-gray-400">
                     {row.seasonPlace != null
                       ? (row.seasonTied ? `T${row.seasonPlace}` : row.seasonPlace)
@@ -260,7 +260,7 @@ export default function SeasonView() {
                   <td className={`py-2.5 px-2 text-right tabular-nums font-bold ${scoreColor(row.seasonTotal)}`}>
                     {row.hasAnyScore ? formatScore(row.seasonTotal) : '—'}
                   </td>
-                  <td className="py-2.5 px-3 text-right tabular-nums font-medium text-green-700">
+                  <td className="py-2.5 px-3 text-right tabular-nums font-medium text-pine-700">
                     {totalWinnings > 0
                       ? `$${Number.isInteger(totalWinnings) ? totalWinnings : totalWinnings.toFixed(2)}`
                       : '—'}

@@ -220,7 +220,7 @@ export default function PicksView() {
   if (locked) {
     return (
       <div className="text-center py-16">
-        <h2 className="text-xl font-bold text-gray-900 mb-2">Picks are locked</h2>
+        <h2 className="text-2xl font-display font-semibold text-pine-900 mb-2">Picks are locked</h2>
         <p className="text-sm text-gray-500">
           {lockConfig.currentMajor} picks closed at {formatLockAt()}.
           Head to the Tournament tab for live scoring.
@@ -231,13 +231,13 @@ export default function PicksView() {
 
   const messageCls =
     message?.kind === 'error' ? 'text-red-600'
-      : message?.kind === 'success' ? 'text-green-700'
+      : message?.kind === 'success' ? 'text-pine-700'
         : 'text-gray-600'
 
   return (
     <div>
       <div className="mb-6">
-        <h2 className="text-xl font-bold text-gray-900">
+        <h2 className="text-2xl font-display font-semibold text-pine-900">
           {lockConfig.currentMajor} 2026 — Submit Picks
         </h2>
         <p className="text-sm text-gray-500 mt-1">
@@ -249,7 +249,7 @@ export default function PicksView() {
       </div>
 
       {/* ── Auth card ── */}
-      <div className="mb-6 p-4 rounded border border-gray-200 bg-gray-50">
+      <div className="mb-6 p-4 rounded-xl border border-cream-200 bg-white shadow-sm">
         {phase === 'identity' && (
           <>
             <div className="flex flex-col sm:flex-row gap-3">
@@ -281,7 +281,7 @@ export default function PicksView() {
             <button
               onClick={requestCode}
               disabled={!identityComplete || busy === 'sending'}
-              className="mt-3 px-4 py-2 rounded text-sm font-medium bg-green-600 hover:bg-green-700 text-white disabled:opacity-40 disabled:cursor-not-allowed"
+              className="mt-3 px-4 py-2 rounded text-sm font-medium bg-pine-700 hover:bg-pine-800 text-white disabled:opacity-40 disabled:cursor-not-allowed"
             >
               {busy === 'sending' ? 'Sending…' : 'Email me a code'}
             </button>
@@ -310,7 +310,7 @@ export default function PicksView() {
               <button
                 onClick={verifyCode}
                 disabled={code.length < 6 || busy === 'verifying'}
-                className="px-4 py-2 rounded text-sm font-medium bg-green-600 hover:bg-green-700 text-white disabled:opacity-40 disabled:cursor-not-allowed"
+                className="px-4 py-2 rounded text-sm font-medium bg-pine-700 hover:bg-pine-800 text-white disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 {busy === 'verifying' ? 'Verifying…' : 'Verify'}
               </button>
@@ -336,7 +336,7 @@ export default function PicksView() {
         {phase === 'authed' && (
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-700">
-              Signed in as <span className="font-medium text-gray-900">{auth?.name}</span>
+              Signed in as <span className="font-medium text-pine-900">{auth?.name}</span>
             </span>
             <button
               onClick={signOut}
@@ -363,8 +363,8 @@ export default function PicksView() {
             return (
               <div key={tier} className="mb-6">
                 <div className="flex items-baseline justify-between mb-2">
-                  <h3 className="text-sm font-semibold text-gray-900">Tier {tier}</h3>
-                  <span className={`text-xs ${selected.length === 2 ? 'text-green-600' : 'text-gray-400'}`}>
+                  <h3 className="text-sm font-semibold text-pine-900">Tier {tier}</h3>
+                  <span className={`text-xs ${selected.length === 2 ? 'text-pine-600' : 'text-gray-400'}`}>
                     {selected.length} of 2 selected
                   </span>
                 </div>
@@ -378,8 +378,8 @@ export default function PicksView() {
                         disabled={busy === 'submitting'}
                         className={`text-left px-3 py-2 rounded text-sm border transition-colors ${
                           isSelected
-                            ? 'bg-green-50 border-green-400 text-green-900 font-medium'
-                            : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
+                            ? 'bg-pine-50 border-pine-500 text-pine-900 font-medium'
+                            : 'bg-white border-cream-200 text-gray-700 hover:bg-cream-50'
                         }`}
                       >
                         {isSelected && <span className="mr-1.5">✓</span>}
@@ -396,7 +396,7 @@ export default function PicksView() {
             <button
               onClick={submit}
               disabled={!allTiersComplete || busy === 'submitting'}
-              className="w-full py-3 rounded font-medium text-sm transition-colors disabled:opacity-40 disabled:cursor-not-allowed bg-green-600 hover:bg-green-700 text-white"
+              className="w-full py-3 rounded font-medium text-sm transition-colors disabled:opacity-40 disabled:cursor-not-allowed bg-pine-700 hover:bg-pine-800 text-white"
             >
               {busy === 'submitting'
                 ? 'Submitting…'
@@ -410,7 +410,7 @@ export default function PicksView() {
               </p>
             )}
             {submittedAt && message?.kind === 'success' && (
-              <p className="mt-2 text-xs text-center text-green-700">
+              <p className="mt-2 text-xs text-center text-pine-700">
                 Submitted at {new Date(submittedAt).toLocaleString()}
               </p>
             )}

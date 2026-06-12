@@ -95,7 +95,7 @@ export default function JayHaasView() {
 
   function cutRateColor(pct) {
     if (pct == null) return 'text-gray-400'
-    if (pct >= 75) return 'text-green-600 font-bold'
+    if (pct >= 75) return 'text-pine-600 font-bold'
     if (pct >= 60) return 'text-gray-800'
     return 'text-red-500'
   }
@@ -114,7 +114,7 @@ export default function JayHaasView() {
         tabIndex={0}
         role="button"
         aria-sort={active ? (sortDir === 'best' ? 'descending' : 'ascending') : 'none'}
-        className={`py-2 px-2 text-right cursor-pointer select-none hover:bg-gray-100 ${className}`}
+        className={`py-2.5 px-2 text-right cursor-pointer select-none hover:bg-pine-100 ${className}`}
       >
         {children}{arrow}
       </th>
@@ -124,7 +124,7 @@ export default function JayHaasView() {
   return (
     <div>
       <div className="mb-4">
-        <h2 className="text-xl font-bold text-gray-900">Jay Haas Award</h2>
+        <h2 className="text-2xl font-display font-semibold text-pine-900">Jay Haas Award</h2>
         <p className="text-sm text-gray-500">Most cuts made across all 4 majors · {TOTAL_PICKS} picks per major</p>
       </div>
 
@@ -137,23 +137,23 @@ export default function JayHaasView() {
       {!resolved ? (
         <div className="text-center py-16 text-gray-400">Loading…</div>
       ) : (
-        <div className="overflow-x-auto rounded-lg border border-gray-200">
+        <div className="overflow-x-auto rounded-xl border border-cream-200 bg-white shadow-sm">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200 text-xs text-gray-500 uppercase tracking-wide bg-gray-50">
+              <tr className="border-b border-cream-200 text-xs text-pine-800 uppercase tracking-wider bg-pine-50 font-medium">
                 <th className="py-2 px-3 text-left w-6">#</th>
                 <th className="py-2 px-3 text-left">Name</th>
                 <SortHeader col="masters">Masters</SortHeader>
                 <SortHeader col="pga">PGA</SortHeader>
                 <SortHeader col="usopen">US Open</SortHeader>
                 <SortHeader col="theopen">The Open</SortHeader>
-                <SortHeader col="total" className="font-bold text-gray-700">Total</SortHeader>
-                <SortHeader col="cutRate" className="font-bold text-gray-700">Cut %</SortHeader>
+                <SortHeader col="total" className="font-bold text-pine-800">Total</SortHeader>
+                <SortHeader col="cutRate" className="font-bold text-pine-800">Cut %</SortHeader>
               </tr>
             </thead>
             <tbody>
               {rows.map((row, i) => (
-                <tr key={row.name} className="border-b border-gray-100 hover:bg-gray-50">
+                <tr key={row.name} className="border-b border-cream-100 hover:bg-cream-50">
                   <td className="py-2.5 px-3 text-gray-400">{i + 1}</td>
                   <td className="py-2.5 px-3 text-gray-800 font-medium">{row.name}</td>
                   {row.cutsByMajor.map((cuts, j) => (
@@ -171,7 +171,7 @@ export default function JayHaasView() {
               ))}
             </tbody>
             <tfoot>
-              <tr className="border-t border-gray-300 bg-gray-50 text-xs text-gray-500 font-medium">
+              <tr className="border-t border-cream-200 bg-pine-50 text-xs text-pine-800 font-medium">
                 <td className="py-2 px-3" colSpan={2}>Avg</td>
                 {colAvgs.map((avg, i) => (
                   <td key={i} className="py-2 px-2 text-right tabular-nums">{avg ?? '—'}</td>

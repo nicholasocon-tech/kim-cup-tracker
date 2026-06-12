@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { formatScore } from '../utils/scoring.js'
 
 const TIER_COLORS = {
-  1: 'text-yellow-600',
+  1: 'text-gold-600',
   2: 'text-blue-500',
-  3: 'text-green-600',
+  3: 'text-pine-600',
   4: 'text-gray-400',
 }
 
@@ -26,15 +26,16 @@ export default function ParticipantRow({ participant, rank, ownership = {} }) {
   const [open, setOpen] = useState(false)
   const { result, dns } = participant
   const total = result.total
+  const isLeader = participant.place === 1
 
   if (dns) {
     return (
-      <tr className="border-b border-gray-200 bg-gray-50/50">
+      <tr className="border-b border-cream-200 bg-cream-50/50">
         <td className="py-3 px-3 text-gray-300 text-sm w-8">—</td>
         <td className="py-3 px-3 font-medium text-gray-400">
           <span className="flex items-center gap-2">
             {participant.name}
-            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-gray-200 text-gray-500">DNS</span>
+            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-cream-200 text-gray-500">DNS</span>
           </span>
         </td>
         <td className="py-3 px-3 text-right text-gray-300 text-lg">—</td>
@@ -47,7 +48,11 @@ export default function ParticipantRow({ participant, rank, ownership = {} }) {
     <>
       {/* Summary row */}
       <tr
-        className="border-b border-gray-200 cursor-pointer hover:bg-gray-50 transition-colors"
+        className={`cursor-pointer transition-colors border-b ${
+          isLeader
+            ? 'bg-gold-50 hover:bg-gold-100 border-gold-300'
+            : 'border-cream-200 hover:bg-cream-50'
+        }`}
         onClick={() => setOpen((o) => !o)}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen((o) => !o) }
@@ -56,19 +61,24 @@ export default function ParticipantRow({ participant, rank, ownership = {} }) {
         role="button"
         aria-expanded={open}
       >
-        <td className="py-3 px-3 text-gray-400 text-sm w-8">{rank}</td>
-        <td className="py-3 px-3 font-medium text-gray-900">{participant.name}</td>
+        <td className={`py-3 px-3 text-sm w-8 ${isLeader ? 'text-gold-700 font-semibold' : 'text-gray-400'}`}>{rank}</td>
+        <td className="py-3 px-3 font-medium text-pine-900">
+          <span className="flex items-center gap-1.5">
+            {participant.name}
+            {isLeader && <span className="text-gold-500" title="Leader">🏆</span>}
+          </span>
+        </td>
         <td className={`py-3 px-3 text-right font-bold tabular-nums text-lg ${scoreColor(total)}`}>
           {formatScore(total)}
         </td>
-        <td className="py-3 px-2 text-right text-gray-400 text-sm w-6">
+        <td className={`py-3 px-2 text-right text-sm w-6 ${isLeader ? 'text-gold-500' : 'text-gray-400'}`}>
           {open ? '▲' : '▼'}
         </td>
       </tr>
 
       {/* Expanded picks */}
       {open && (
-        <tr className="bg-gray-50">
+        <tr className="bg-cream-50">
           <td colSpan={4} className="px-3 pb-3 pt-1">
             <div className="grid grid-cols-1 gap-1">
               {[...result.picks].sort((a, b) => a.strokes - b.strokes).map((pick, i) => {
@@ -77,14 +87,14 @@ export default function ParticipantRow({ participant, rank, ownership = {} }) {
                 return (
                   <div
                     key={i}
-                    className={`flex items-center gap-2 text-sm py-1 border-b border-gray-100 last:border-0 ${
+                    className={`flex items-center gap-2 text-sm py-1 border-b border-cream-200 last:border-0 ${
                       isCounting ? '' : 'opacity-40'
                     }`}
                   >
                     {/* Counting indicator */}
                     <span className="w-4 text-center">
                       {isCounting ? (
-                        <span className="text-green-500 text-xs">✓</span>
+                        <span className="text-pine-600 text-xs">✓</span>
                       ) : (
                         <span className="text-gray-300 text-xs">✗</span>
                       )}
@@ -130,7 +140,7 @@ export default function ParticipantRow({ participant, rank, ownership = {} }) {
             </div>
 
             {/* Score breakdown */}
-            <div className="mt-2 pt-2 border-t border-gray-200 text-xs text-gray-400 flex gap-4">
+            <div className="mt-2 pt-2 border-t border-cream-200 text-xs text-gray-400 flex gap-4">
               <span>Best 5 of 8 count</span>
               <span className={`font-bold ${scoreColor(total)}`}>
                 Total: {formatScore(total)}

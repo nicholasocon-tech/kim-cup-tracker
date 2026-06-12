@@ -99,7 +99,7 @@ export default function TournamentView() {
       />
     )
     rightIndicator = (
-      <span className="text-xs px-2 py-1 rounded bg-green-100 text-green-700 font-medium">Final</span>
+      <span className="text-xs px-2 py-1 rounded bg-gold-100 text-gold-700 font-medium">Final</span>
     )
   } else if (status === 'live') {
     const participants = meta.participants
@@ -122,7 +122,7 @@ export default function TournamentView() {
         <button
           onClick={refresh}
           disabled={loading}
-          className="text-xs px-3 py-1.5 rounded bg-gray-100 hover:bg-gray-200 text-gray-600 disabled:opacity-50 transition-colors"
+          className="text-xs px-3 py-1.5 rounded-full bg-pine-50 hover:bg-pine-100 text-pine-700 disabled:opacity-50 transition-colors"
         >
           {loading ? 'Refreshing…' : 'Refresh'}
         </button>
@@ -131,7 +131,7 @@ export default function TournamentView() {
   } else {
     body = <UpcomingPlaceholder major={selected} meta={meta} />
     rightIndicator = (
-      <span className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-500 font-medium">Upcoming</span>
+      <span className="text-xs px-2 py-1 rounded bg-cream-100 text-gray-500 font-medium border border-cream-200">Upcoming</span>
     )
   }
 
@@ -143,10 +143,10 @@ export default function TournamentView() {
           const s = statusFor(m)
           const isActive = m === selected
           const stateCls = isActive
-            ? 'bg-green-600 text-white shadow-sm'
+            ? 'bg-pine-700 text-cream shadow-sm'
             : s === 'upcoming'
-              ? 'bg-gray-50 text-gray-400 hover:bg-gray-100 border border-gray-200'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              ? 'bg-white text-gray-400 hover:bg-cream-100 border border-cream-200'
+              : 'bg-pine-50 text-pine-800 hover:bg-pine-100'
           return (
             <button
               key={m}
@@ -157,7 +157,7 @@ export default function TournamentView() {
                 <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-white' : 'bg-red-500'} animate-pulse`} />
               )}
               {s === 'completed' && (
-                <span className={`text-[10px] ${isActive ? 'text-white' : 'text-green-600'}`}>✓</span>
+                <span className={`text-[10px] ${isActive ? 'text-gold-300' : 'text-gold-600'}`}>✓</span>
               )}
               <span>{SHORT_LABEL[m]}</span>
             </button>
@@ -168,7 +168,7 @@ export default function TournamentView() {
       {/* Major header */}
       <div className="mb-4 flex items-center justify-between flex-wrap gap-2">
         <div>
-          <h2 className="text-xl font-bold text-gray-900">{selected} 2026</h2>
+          <h2 className="text-2xl font-display font-semibold text-pine-900">{selected} 2026</h2>
           <p className="text-sm text-gray-500">{meta.course} · {meta.dates}</p>
         </div>
         <div className="flex items-center gap-3">
@@ -176,7 +176,7 @@ export default function TournamentView() {
             const cutLine = status === 'completed' ? lockedByMajor[selected].cutLine : liveCutLine
             return cutLine != null ? (
               <span className="text-sm text-gray-500">
-                Cut: <span className="text-gray-900 font-medium">{formatScore(cutLine)}</span>
+                Cut: <span className="text-pine-900 font-medium">{formatScore(cutLine)}</span>
               </span>
             ) : null
           })()}
@@ -198,14 +198,14 @@ export default function TournamentView() {
 function Leaderboard({ standings, ownership }) {
   return (
     <>
-      <div className="overflow-x-auto rounded-lg border border-gray-200">
+      <div className="overflow-x-auto rounded-xl border border-cream-200 bg-white shadow-sm">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-gray-200 text-xs text-gray-500 uppercase tracking-wide bg-gray-50">
-              <th className="py-2 px-3 text-left w-8">#</th>
-              <th className="py-2 px-3 text-left">Player</th>
-              <th className="py-2 px-3 text-right">Score</th>
-              <th className="py-2 px-2 w-6" />
+            <tr className="border-b border-cream-200 text-xs text-pine-800 uppercase tracking-wider bg-pine-50 font-medium">
+              <th className="py-2.5 px-3 text-left w-8">#</th>
+              <th className="py-2.5 px-3 text-left">Player</th>
+              <th className="py-2.5 px-3 text-right">Score</th>
+              <th className="py-2.5 px-2 w-6" />
             </tr>
           </thead>
           <tbody>
@@ -229,9 +229,9 @@ function Leaderboard({ standings, ownership }) {
 
 function UpcomingPlaceholder({ major, meta }) {
   return (
-    <div className="rounded-lg border border-gray-200 bg-gray-50 px-6 py-16 text-center">
+    <div className="rounded-xl border border-cream-200 bg-cream-50 px-6 py-16 text-center">
       <div className="text-4xl mb-3">⛳</div>
-      <div className="text-base font-medium text-gray-700">{major} 2026</div>
+      <div className="text-lg font-display font-semibold text-pine-900">{major} 2026</div>
       <div className="text-sm text-gray-500 mt-1">{meta.course} · {meta.dates}</div>
       <div className="mt-4 text-xs text-gray-400 max-w-xs mx-auto">
         Tournament hasn't started yet. Leaderboard and pick breakdowns will appear here when play begins.
