@@ -161,30 +161,39 @@ export default function SeasonView() {
   }
 
   // Sort: null column = default standings order. Clicking a column sorts
-  // best-first; clicking again flips to worst-first. Score columns are
-  // lower=better; null values always go to the bottom.
+  // best-first; clicking again flips to worst-first. Score/total columns are
+  // lower=better; winnings is higher=better. Null values always go to the bottom.
   const SORT_COLUMNS = { masters: 0, pga: 1, usopen: 2, theopen: 3, total: null }
+  const HIGHER_BETTER = new Set(['winnings'])
   function valueFor(row, col) {
     if (col === 'total') return row.seasonTotal
+    if (col === 'winnings') return row.winnings + (seasonPayouts[row.name] ?? 0)
     const idx = SORT_COLUMNS[col]
     return row.perMajor[idx]?.total ?? null
   }
   const displayRows = (() => {
     if (!sortColumn) return seasonRanked
     const dir = sortDir === 'best' ? 1 : -1
+    const orient = HIGHER_BETTER.has(sortColumn) ? -1 : 1 // winnings: higher is better
     return [...seasonRanked].sort((a, b) => {
       const av = valueFor(a, sortColumn)
       const bv = valueFor(b, sortColumn)
       if (av == null && bv == null) return 0
       if (av == null) return 1
       if (bv == null) return -1
-      return dir * (av - bv)
+      return dir * orient * (av - bv)
     })
   })()
 
   function SortHeader({ col, children, className = '' }) {
     const active = sortColumn === col
     const arrow = !active ? '' : sortDir === 'best' ? ' ↑' : ' ↓'
+    const higherBetter = HIGHER_BETTER.has(col)
+    const ariaSort = active
+      ? (sortDir === 'best'
+          ? (higherBetter ? 'descending' : 'ascending')
+          : (higherBetter ? 'ascending' : 'descending'))
+      : 'none'
     const toggle = () => {
       if (sortColumn === col) setSortDir(sortDir === 'best' ? 'worst' : 'best')
       else { setSortColumn(col); setSortDir('best') }
@@ -195,7 +204,7 @@ export default function SeasonView() {
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle() } }}
         tabIndex={0}
         role="button"
-        aria-sort={active ? (sortDir === 'best' ? 'ascending' : 'descending') : 'none'}
+        aria-sort={ariaSort}
         className={`py-2.5 px-2 text-right cursor-pointer select-none hover:bg-pine-100 ${className}`}
       >
         {children}{arrow}
@@ -221,7 +230,7 @@ export default function SeasonView() {
               <SortHeader col="usopen">US Open</SortHeader>
               <SortHeader col="theopen">The Open</SortHeader>
               <SortHeader col="total" className="font-bold text-pine-800">Total</SortHeader>
-              <th className="py-2.5 px-3 text-right font-bold text-pine-700">Winnings</th>
+              <SortHeader col="winnings" className="font-bold text-pine-700">Winnings</SortHeader>
             </tr>
           </thead>
           <tbody>
