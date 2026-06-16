@@ -2,9 +2,25 @@ import { useState, useEffect, useMemo, useCallback } from 'react'
 import participantsData from '../data/participants-2026.json'
 import tiersData from '../data/usopen-2026-tiers.json'
 import lockConfig from '../data/lock-config.json'
+import { normalizeName } from '../utils/espn.js'
 
 const TIERS = [1, 2, 3, 4]
 const AUTH_KEY = 'kimcup_auth'
+
+// Map every golfer in the current tier sheet (by normalized name) to their tier
+// and canonical display name. Saved picks are re-mapped through this on load so
+// they always render under the tier the app now shows — otherwise a player who
+// was re-tiered, renamed, or dropped since submitting becomes an invisible pick
+// with no button to deselect, jamming that tier at "2 picks" (see loadExisting).
+const CURRENT_BY_NAME = (() => {
+  const m = new Map()
+  for (const [tier, players] of Object.entries(tiersData.tiers)) {
+    for (const player of players) {
+      m.set(normalizeName(player), { tier: Number(tier), name: player })
+    }
+  }
+  return m
+})()
 
 function lockTime() {
   return new Date(lockConfig.lockAt).getTime()
@@ -95,11 +111,30 @@ export default function PicksView() {
       }
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const data = await res.json()
+      // Re-map each saved pick to its CURRENT tier + canonical name so it renders
+      // (and can be deselected) under the tier sheet now in effect. Players no
+      // longer in the field drop out entirely and must be re-picked. Re-tiering
+      // can leave a tier with !=2 picks; the grid surfaces that and submit stays
+      // disabled until every tier has exactly 2 again.
       const byTier = { 1: [], 2: [], 3: [], 4: [] }
-      for (const p of data.picks ?? []) byTier[p.tier].push(p.player)
+      const dropped = []
+      for (const p of data.picks ?? []) {
+        const cur = CURRENT_BY_NAME.get(normalizeName(p.player))
+        if (cur) byTier[cur.tier].push(cur.name)
+        else dropped.push(p.player)
+      }
       setPicks(byTier)
       setSubmittedAt(data.submittedAt)
-      setMessage({ kind: 'info', text: `Loaded your saved picks. Editable until ${formatLockAt()}.` })
+      if (dropped.length > 0) {
+        const list = dropped.join(' and ')
+        const plural = dropped.length > 1
+        setMessage({
+          kind: 'info',
+          text: `Loaded your saved picks. ${list} ${plural ? 'are' : 'is'} no longer in the field — pick ${plural ? 'replacements' : 'a replacement'}. Some picks may have shifted tiers, so double-check each tier has exactly 2. Editable until ${formatLockAt()}.`,
+        })
+      } else {
+        setMessage({ kind: 'info', text: `Loaded your saved picks. Editable until ${formatLockAt()}.` })
+      }
     } catch (e) {
       setMessage({ kind: 'error', text: `Couldn't load your picks: ${e.message}` })
     } finally {
