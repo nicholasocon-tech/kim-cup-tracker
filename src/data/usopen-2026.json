@@ -4,29 +4,893 @@
   "dates": "June 18–21",
   "course": "Shinnecock Hills Golf Club",
   "participants": [
-    { "name": "Harley Hudson", "picks": [] },
-    { "name": "Jimmy Messing", "picks": [] },
-    { "name": "Nick O'Connor", "picks": [] },
-    { "name": "Timothy Dee",   "picks": [] },
-    { "name": "Matthew Dee",   "picks": [] },
-    { "name": "Justin",        "picks": [] },
-    { "name": "Hearn",         "picks": [] },
-    { "name": "Pat",           "picks": [] },
-    { "name": "Scott",         "picks": [] },
-    { "name": "Baldur",        "picks": [] },
-    { "name": "Trevor",        "picks": [] },
-    { "name": "Ian",           "picks": [] },
-    { "name": "Max",           "picks": [] },
-    { "name": "Bastian",       "picks": [] },
-    { "name": "Matt Mileski",  "picks": [] },
-    { "name": "Kyan Nafissi",  "picks": [] },
-    { "name": "David",         "picks": [] },
-    { "name": "Chip",          "picks": [] },
-    { "name": "Caleb",         "picks": [] },
-    { "name": "Will",          "picks": [] },
-    { "name": "LB",            "picks": [] },
-    { "name": "Egan",          "picks": [] },
-    { "name": "Ditto",         "picks": [] },
-    { "name": "Wes",           "picks": [] }
+    {
+      "name": "Harley Hudson",
+      "picks": [
+        {
+          "player": "Rory McIlroy",
+          "tier": 1
+        },
+        {
+          "player": "Scottie Scheffler",
+          "tier": 1
+        },
+        {
+          "player": "Viktor Hovland",
+          "tier": 2
+        },
+        {
+          "player": "Maverick McNealy",
+          "tier": 2
+        },
+        {
+          "player": "Cameron Smith",
+          "tier": 3
+        },
+        {
+          "player": "Jackson Koivun",
+          "tier": 3
+        },
+        {
+          "player": "Peter Uihlein",
+          "tier": 4
+        },
+        {
+          "player": "Harry Higgs",
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "Jimmy Messing",
+      "picks": [
+        {
+          "player": "Xander Schauffele",
+          "tier": 1
+        },
+        {
+          "player": "Cameron Young",
+          "tier": 1
+        },
+        {
+          "player": "Chris Gotterup",
+          "tier": 2
+        },
+        {
+          "player": "Patrick Reed",
+          "tier": 2
+        },
+        {
+          "player": "Keegan Bradley",
+          "tier": 3
+        },
+        {
+          "player": "Daniel Berger",
+          "tier": 3
+        },
+        {
+          "player": "Tom Kim",
+          "tier": 4
+        },
+        {
+          "player": "Adrien Dumont de Chassart",
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "Nick O'Connor",
+      "picks": [
+        {
+          "player": "Scottie Scheffler",
+          "tier": 1
+        },
+        {
+          "player": "Tommy Fleetwood",
+          "tier": 1
+        },
+        {
+          "player": "Justin Rose",
+          "tier": 2
+        },
+        {
+          "player": "Shane Lowry",
+          "tier": 2
+        },
+        {
+          "player": "Brian Harman",
+          "tier": 3
+        },
+        {
+          "player": "Corey Conners",
+          "tier": 3
+        },
+        {
+          "player": "Carl Yuan",
+          "tier": 4
+        },
+        {
+          "player": "James Nicholas",
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "Timothy Dee",
+      "picks": [
+        {
+          "player": "Tommy Fleetwood",
+          "tier": 1
+        },
+        {
+          "player": "Brooks Koepka",
+          "tier": 1
+        },
+        {
+          "player": "Russell Henley",
+          "tier": 2
+        },
+        {
+          "player": "Shane Lowry",
+          "tier": 2
+        },
+        {
+          "player": "Brian Harman",
+          "tier": 3
+        },
+        {
+          "player": "Alejandro Tosti",
+          "tier": 3
+        },
+        {
+          "player": "Brandon Wu",
+          "tier": 4
+        },
+        {
+          "player": "Marcelo Rozo",
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "Matthew Dee",
+      "picks": [
+        {
+          "player": "Scottie Scheffler",
+          "tier": 1
+        },
+        {
+          "player": "Rory McIlroy",
+          "tier": 1
+        },
+        {
+          "player": "Patrick Reed",
+          "tier": 2
+        },
+        {
+          "player": "Aaron Rai",
+          "tier": 2
+        },
+        {
+          "player": "Daniel Berger",
+          "tier": 3
+        },
+        {
+          "player": "Ryan Fox",
+          "tier": 3
+        },
+        {
+          "player": "James Nicholas",
+          "tier": 4
+        },
+        {
+          "player": "Tom Kim",
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "Justin",
+      "picks": [
+        {
+          "player": "Matt Fitzpatrick",
+          "tier": 1
+        },
+        {
+          "player": "Rory McIlroy",
+          "tier": 1
+        },
+        {
+          "player": "Aaron Rai",
+          "tier": 2
+        },
+        {
+          "player": "Justin Rose",
+          "tier": 2
+        },
+        {
+          "player": "Ben James",
+          "tier": 3
+        },
+        {
+          "player": "Sahith Theegala",
+          "tier": 3
+        },
+        {
+          "player": "Bryan Lee",
+          "tier": 4
+        },
+        {
+          "player": "Brandon Holtz",
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "Hearn",
+      "picks": [
+        {
+          "player": "Scottie Scheffler",
+          "tier": 1
+        },
+        {
+          "player": "Tommy Fleetwood",
+          "tier": 1
+        },
+        {
+          "player": "Collin Morikawa",
+          "tier": 2
+        },
+        {
+          "player": "Tyrrell Hatton",
+          "tier": 2
+        },
+        {
+          "player": "Harry Hall",
+          "tier": 3
+        },
+        {
+          "player": "Jackson Koivun",
+          "tier": 3
+        },
+        {
+          "player": "Graeme McDowell",
+          "tier": 4
+        },
+        {
+          "player": "Kevin Roy",
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "Pat",
+      "picks": [
+        {
+          "player": "Scottie Scheffler",
+          "tier": 1
+        },
+        {
+          "player": "Tommy Fleetwood",
+          "tier": 1
+        },
+        {
+          "player": "Ben Griffin",
+          "tier": 2
+        },
+        {
+          "player": "Cameron Smith",
+          "tier": 2
+        },
+        {
+          "player": "Akshay Bhatia",
+          "tier": 3
+        },
+        {
+          "player": "Corey Conners",
+          "tier": 3
+        },
+        {
+          "player": "Niklas Nørgaard",
+          "tier": 4
+        },
+        {
+          "player": "Mason Howell",
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "Scott",
+      "picks": [
+        {
+          "player": "Scottie Scheffler",
+          "tier": 1
+        },
+        {
+          "player": "Xander Schauffele",
+          "tier": 1
+        },
+        {
+          "player": "Jason Day",
+          "tier": 2
+        },
+        {
+          "player": "Justin Rose",
+          "tier": 2
+        },
+        {
+          "player": "Corey Conners",
+          "tier": 3
+        },
+        {
+          "player": "Daniel Berger",
+          "tier": 3
+        },
+        {
+          "player": "Brandon Wu",
+          "tier": 4
+        },
+        {
+          "player": "Graeme McDowell",
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "Baldur",
+      "picks": [
+        {
+          "player": "Jon Rahm",
+          "tier": 1
+        },
+        {
+          "player": "Scottie Scheffler",
+          "tier": 1
+        },
+        {
+          "player": "Collin Morikawa",
+          "tier": 2
+        },
+        {
+          "player": "Hideki Matsuyama",
+          "tier": 2
+        },
+        {
+          "player": "Sungjae Im",
+          "tier": 3
+        },
+        {
+          "player": "Corey Conners",
+          "tier": 3
+        },
+        {
+          "player": "Tom Kim",
+          "tier": 4
+        },
+        {
+          "player": "Adrien Dumont de Chassart",
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "Trevor",
+      "picks": [
+        {
+          "player": "Scottie Scheffler",
+          "tier": 1
+        },
+        {
+          "player": "Tommy Fleetwood",
+          "tier": 1
+        },
+        {
+          "player": "Russell Henley",
+          "tier": 2
+        },
+        {
+          "player": "David Puig",
+          "tier": 2
+        },
+        {
+          "player": "Sahith Theegala",
+          "tier": 3
+        },
+        {
+          "player": "Jason Day",
+          "tier": 3
+        },
+        {
+          "player": "Adrien Dumont de Chassart",
+          "tier": 4
+        },
+        {
+          "player": "Brandon Wu",
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "Ian",
+      "picks": [
+        {
+          "player": "Scottie Scheffler",
+          "tier": 1
+        },
+        {
+          "player": "Matthew Fitzpatrick",
+          "tier": 1
+        },
+        {
+          "player": "Sam Burns",
+          "tier": 2
+        },
+        {
+          "player": "Tyrrell Hatton",
+          "tier": 2
+        },
+        {
+          "player": "Nick Taylor",
+          "tier": 3
+        },
+        {
+          "player": "Daniel Berger",
+          "tier": 3
+        },
+        {
+          "player": "Eric Cole",
+          "tier": 4
+        },
+        {
+          "player": "Dylan Wu",
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "Max",
+      "picks": [
+        {
+          "player": "Tommy Fleetwood",
+          "tier": 1
+        },
+        {
+          "player": "Xander Schauffele",
+          "tier": 1
+        },
+        {
+          "player": "Russell Henley",
+          "tier": 2
+        },
+        {
+          "player": "Justin Rose",
+          "tier": 2
+        },
+        {
+          "player": "Corey Conners",
+          "tier": 3
+        },
+        {
+          "player": "Sahith Theegala",
+          "tier": 3
+        },
+        {
+          "player": "Tom Kim",
+          "tier": 4
+        },
+        {
+          "player": "James Nicholas",
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "Bastian",
+      "picks": [
+        {
+          "player": "Scottie Scheffler",
+          "tier": 1
+        },
+        {
+          "player": "Rory McIlroy",
+          "tier": 1
+        },
+        {
+          "player": "Collin Morikawa",
+          "tier": 2
+        },
+        {
+          "player": "Viktor Hovland",
+          "tier": 2
+        },
+        {
+          "player": "Matti Schmid",
+          "tier": 3
+        },
+        {
+          "player": "Corey Conners",
+          "tier": 3
+        },
+        {
+          "player": "Tom Kim",
+          "tier": 4
+        },
+        {
+          "player": "Niklas Nørgaard",
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "Matt Mileski",
+      "picks": [
+        {
+          "player": "Xander Schauffele",
+          "tier": 1
+        },
+        {
+          "player": "Matt Fitzpatrick",
+          "tier": 1
+        },
+        {
+          "player": "Patrick Reed",
+          "tier": 2
+        },
+        {
+          "player": "Wyndham Clark",
+          "tier": 2
+        },
+        {
+          "player": "Akshay Bhatia",
+          "tier": 3
+        },
+        {
+          "player": "Jackson Koivun",
+          "tier": 3
+        },
+        {
+          "player": "Tom Kim",
+          "tier": 4
+        },
+        {
+          "player": "Ethan Fang",
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "Kyan Nafissi",
+      "picks": [
+        {
+          "player": "Scottie Scheffler",
+          "tier": 1
+        },
+        {
+          "player": "Rory McIlroy",
+          "tier": 1
+        },
+        {
+          "player": "Aaron Rai",
+          "tier": 2
+        },
+        {
+          "player": "Russell Henley",
+          "tier": 2
+        },
+        {
+          "player": "Johnny Keefer",
+          "tier": 3
+        },
+        {
+          "player": "Andrew Novak",
+          "tier": 3
+        },
+        {
+          "player": "Tom Kim",
+          "tier": 4
+        },
+        {
+          "player": "J.B. Holmes",
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "David",
+      "picks": [
+        {
+          "player": "Rory McIlroy",
+          "tier": 1
+        },
+        {
+          "player": "Scottie Scheffler",
+          "tier": 1
+        },
+        {
+          "player": "Patrick Reed",
+          "tier": 2
+        },
+        {
+          "player": "Justin Thomas",
+          "tier": 2
+        },
+        {
+          "player": "Alex Noren",
+          "tier": 3
+        },
+        {
+          "player": "Cameron Smith",
+          "tier": 3
+        },
+        {
+          "player": "James Nicholas",
+          "tier": 4
+        },
+        {
+          "player": "Cole Hammer",
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "Chip",
+      "picks": [
+        {
+          "player": "Scottie Scheffler",
+          "tier": 1
+        },
+        {
+          "player": "Rory McIlroy",
+          "tier": 1
+        },
+        {
+          "player": "Robert MacIntyre",
+          "tier": 2
+        },
+        {
+          "player": "Justin Thomas",
+          "tier": 2
+        },
+        {
+          "player": "Sahith Theegala",
+          "tier": 3
+        },
+        {
+          "player": "Brian Harman",
+          "tier": 3
+        },
+        {
+          "player": "Tom Kim",
+          "tier": 4
+        },
+        {
+          "player": "Ethan Fang",
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "Caleb",
+      "picks": [
+        {
+          "player": "Scottie Scheffler",
+          "tier": 1
+        },
+        {
+          "player": "Ludvig Åberg",
+          "tier": 1
+        },
+        {
+          "player": "Shane Lowry",
+          "tier": 2
+        },
+        {
+          "player": "Collin Morikawa",
+          "tier": 2
+        },
+        {
+          "player": "Corey Conners",
+          "tier": 3
+        },
+        {
+          "player": "Sungjae Im",
+          "tier": 3
+        },
+        {
+          "player": "Tom Kim",
+          "tier": 4
+        },
+        {
+          "player": "Niklas Nørgaard",
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "Will",
+      "picks": [
+        {
+          "player": "Matt Fitzpatrick",
+          "tier": 1
+        },
+        {
+          "player": "Rory McIlroy",
+          "tier": 1
+        },
+        {
+          "player": "Chris Gotterup",
+          "tier": 2
+        },
+        {
+          "player": "Russell Henley",
+          "tier": 2
+        },
+        {
+          "player": "Nick Taylor",
+          "tier": 3
+        },
+        {
+          "player": "Akshay Bhatia",
+          "tier": 3
+        },
+        {
+          "player": "Adrien Dumont de Chassart",
+          "tier": 4
+        },
+        {
+          "player": "Niklas Nørgaard",
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "LB",
+      "picks": [
+        {
+          "player": "Xander Schauffele",
+          "tier": 1
+        },
+        {
+          "player": "Matt Fitzpatrick",
+          "tier": 1
+        },
+        {
+          "player": "Patrick Reed",
+          "tier": 2
+        },
+        {
+          "player": "Russell Henley",
+          "tier": 2
+        },
+        {
+          "player": "Billy Horschel",
+          "tier": 3
+        },
+        {
+          "player": "Jackson Koivun",
+          "tier": 3
+        },
+        {
+          "player": "Niklas Nørgaard",
+          "tier": 4
+        },
+        {
+          "player": "Brandon Wu",
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "Egan",
+      "picks": [
+        {
+          "player": "Cameron Young",
+          "tier": 1
+        },
+        {
+          "player": "Tommy Fleetwood",
+          "tier": 1
+        },
+        {
+          "player": "Joaquín Niemann",
+          "tier": 2
+        },
+        {
+          "player": "Russell Henley",
+          "tier": 2
+        },
+        {
+          "player": "Sungjae Im",
+          "tier": 3
+        },
+        {
+          "player": "Daniel Berger",
+          "tier": 3
+        },
+        {
+          "player": "Harry Higgs",
+          "tier": 4
+        },
+        {
+          "player": "Mason Howell",
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "Ditto",
+      "picks": [
+        {
+          "player": "Scottie Scheffler",
+          "tier": 1
+        },
+        {
+          "player": "Rory McIlroy",
+          "tier": 1
+        },
+        {
+          "player": "Aaron Rai",
+          "tier": 2
+        },
+        {
+          "player": "Hideki Matsuyama",
+          "tier": 2
+        },
+        {
+          "player": "Sungjae Im",
+          "tier": 3
+        },
+        {
+          "player": "Andrew Novak",
+          "tier": 3
+        },
+        {
+          "player": "Robbie Higgins",
+          "tier": 4
+        },
+        {
+          "player": "Ethan Fang",
+          "tier": 4
+        }
+      ]
+    },
+    {
+      "name": "Wes",
+      "picks": [
+        {
+          "player": "Xander Schauffele",
+          "tier": 1
+        },
+        {
+          "player": "Tommy Fleetwood",
+          "tier": 1
+        },
+        {
+          "player": "Patrick Reed",
+          "tier": 2
+        },
+        {
+          "player": "Justin Rose",
+          "tier": 2
+        },
+        {
+          "player": "Sahith Theegala",
+          "tier": 3
+        },
+        {
+          "player": "Brian Harman",
+          "tier": 3
+        },
+        {
+          "player": "Brandon Wu",
+          "tier": 4
+        },
+        {
+          "player": "Niklas Nørgaard",
+          "tier": 4
+        }
+      ]
+    }
   ]
 }
