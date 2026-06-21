@@ -121,6 +121,46 @@ describe('calcParticipantScore — post-cut rules', () => {
     //          Exact 3, Protected 3, Cut 5  → best 5 = -2,0,1,2,3 = 4
     expect(r.total).toBe(4)
   })
+
+  it('penalizes a pick who never entered the field at cutLine + 1 (post-cut)', () => {
+    // "Ghost" isn't in the scores map at all — a golfer who withdrew / was never
+    // in the field (e.g. a stale pick from an earlier tier sheet). Once the cut
+    // is in, he takes the missed-cut penalty rather than scoring a free 0.
+    const ghostP = participant('A', [
+      ['Made', 1], ['Ghost', 1], ['Fill a', 2], ['Fill b', 2],
+      ['Fill c', 3], ['Fill d', 3], ['Fill e', 4], ['Fill f', 4],
+    ])
+    const ghostScores = scoresFrom({
+      Made: { total: -2 },
+      'Fill a': { total: 0 }, 'Fill b': { total: 1 }, 'Fill c': { total: 2 },
+      'Fill d': { total: 3 }, 'Fill e': { total: 4 }, 'Fill f': { total: 5 },
+      // "Ghost" deliberately absent
+    })
+    const gr = calcParticipantScore(ghostP, ghostScores, CUT)
+    const ghost = gr.picks.find((x) => x.player === 'Ghost')
+    expect(ghost.strokes).toBe(CUT + 1)
+    expect(ghost.status).toBe('mc')
+  })
+})
+
+describe('name aliasing — variant spellings resolve to one key', () => {
+  const CUT = 4
+  it('scores a "Matthew Fitzpatrick" pick against ESPN\'s "Matt Fitzpatrick"', () => {
+    const p = participant('A', [
+      ['Matthew Fitzpatrick', 1], ['Made', 1], ['Fill a', 2], ['Fill b', 2],
+      ['Fill c', 3], ['Fill d', 3], ['Fill e', 4], ['Fill f', 4],
+    ])
+    const scores = scoresFrom({
+      'Matt Fitzpatrick': { total: 3 }, // ESPN's spelling
+      Made: { total: -2 },
+      'Fill a': { total: 0 }, 'Fill b': { total: 1 }, 'Fill c': { total: 2 },
+      'Fill d': { total: 6 }, 'Fill e': { total: 7 }, 'Fill f': { total: 8 },
+    })
+    const r = calcParticipantScore(p, scores, CUT)
+    const fitz = r.picks.find((x) => x.player === 'Matthew Fitzpatrick')
+    expect(fitz.strokes).toBe(3)
+    expect(fitz.status).toBe('active')
+  })
 })
 
 describe('calcParticipantScore — duplicate pick robustness', () => {

@@ -1,4 +1,4 @@
-import { normalizeName } from './espn.js'
+import { resolveKey } from './espn.js'
 
 /**
  * Calculate Kim Cup score for one participant.
@@ -20,7 +20,7 @@ export function calcParticipantScore(participant, scores, cutLine) {
   if (CUT === null) {
     // Pre-cut: just use raw scores, no MC penalty or protection
     const picks = participant.picks.map((pick) => {
-      const key = normalizeName(pick.player)
+      const key = resolveKey(pick.player)
       const score = scores.get(key)
       const strokes = score ? score.total : 0
       return {
@@ -42,12 +42,15 @@ export function calcParticipantScore(participant, scores, cutLine) {
   }
 
   const picks = participant.picks.map((pick) => {
-    const key = normalizeName(pick.player)
+    const key = resolveKey(pick.player)
     const score = scores.get(key)
 
     if (!score) {
-      // Player not found — not yet started or API mismatch
-      return { ...pick, strokes: 0, status: 'pending', thru: '-' }
+      // Cut is in (CUT !== null) but this pick isn't in the ESPN field at all —
+      // i.e. the golfer never entered the tournament (e.g. a stale pick left over
+      // from an earlier tier sheet). A player who didn't tee it up can't have made
+      // the cut, so he takes the missed-cut penalty like everyone below the line.
+      return { ...pick, strokes: CUT + 1, status: 'mc', thru: '-' }
     }
 
     let strokes = score.total
@@ -109,7 +112,7 @@ function penaltyResult() {
 function countCutsMade(participant, scores) {
   let count = 0
   for (const pick of participant.picks) {
-    const score = scores.get(normalizeName(pick.player))
+    const score = scores.get(resolveKey(pick.player))
     if (score && score.status === 'active') count++
   }
   return count
@@ -117,8 +120,8 @@ function countCutsMade(participant, scores) {
 
 function pickedWinner(participant, winnerName) {
   if (!winnerName) return false
-  const target = normalizeName(winnerName)
-  return participant.picks.some((pick) => normalizeName(pick.player) === target)
+  const target = resolveKey(winnerName)
+  return participant.picks.some((pick) => resolveKey(pick.player) === target)
 }
 
 /**

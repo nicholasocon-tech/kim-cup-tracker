@@ -11,8 +11,15 @@ export function normalizeName(name) {
     .trim()
 }
 
+// Aliases collapse spelling variants onto one canonical key. Applied to BOTH
+// the ESPN side (resolveKey on displayName) and the pick side (resolveKey on
+// pick.player, in scoring.js) so a pick and its scoreboard entry land on the
+// same key no matter which variant each used. Map variant → ESPN's canonical
+// spelling: e.g. a saved pick "Matthew Fitzpatrick" (from an older tier sheet)
+// must score against ESPN's "Matt Fitzpatrick".
 const NAME_OVERRIDES = {
   'haotong li': 'hao-tong li',
+  'matthew fitzpatrick': 'matt fitzpatrick',
 }
 
 // 36-hole cut rules per major (no 10-shot rule — discontinued post-2020).
@@ -32,7 +39,9 @@ function lookupCutRule(tournamentName) {
   return CUT_RULES.find((r) => r.match(t)) ?? null
 }
 
-function resolveKey(name) {
+// Canonical scoring key for a name. Used on both sides of the lookup (ESPN
+// displayName and pick.player) so they can't drift — see NAME_OVERRIDES.
+export function resolveKey(name) {
   const norm = normalizeName(name)
   return NAME_OVERRIDES[norm] ?? norm
 }

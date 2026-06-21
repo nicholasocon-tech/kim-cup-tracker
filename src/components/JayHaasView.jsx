@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { normalizeName } from '../utils/espn.js'
+import { resolveKey } from '../utils/espn.js'
 import { MAJORS, MAJOR_META, MEMBERS, snapshotToScoresMap } from '../utils/majors.js'
 import { useLiveScoreboard } from '../utils/useLiveScoreboard.js'
 import seasonData from '../data/season-2026.json'
@@ -15,7 +15,7 @@ function countCuts(participant, scores, cutMade) {
   if (!cutMade) return null
   let made = 0
   for (const pick of participant.picks) {
-    const key = normalizeName(pick.player)
+    const key = resolveKey(pick.player)
     const score = scores.get(key)
     if (!score || score.status === 'cut') continue
     made++

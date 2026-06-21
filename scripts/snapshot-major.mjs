@@ -19,7 +19,7 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import {
-  normalizeName,
+  resolveKey,
   extractCompetitorRecord,
   detectCutBySegment,
 } from '../src/utils/espn.js'
@@ -96,7 +96,7 @@ async function main() {
   const scores = {}
   records.forEach((r, idx) => {
     if (!r.displayName) return
-    const key = normalizeName(r.displayName)
+    const key = resolveKey(r.displayName)
     scores[key] = {
       total: r.total,
       status: missedCutSet.has(idx) ? 'cut' : 'active',
@@ -110,7 +110,7 @@ async function main() {
   // is assigned order 1 — and we warn so a human can confirm the result, since
   // the winner drives the §5a payout tiebreaker.
   const finishers = records.filter((r) => {
-    const sc = scores[normalizeName(r.displayName)]
+    const sc = scores[resolveKey(r.displayName)]
     return sc && sc.status === 'active' && r.roundsPlayed >= 4
   })
   let winner = null

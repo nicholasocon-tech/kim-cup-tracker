@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react'
 import participantsData from '../data/participants-2026.json'
 import tiersData from '../data/usopen-2026-tiers.json'
 import lockConfig from '../data/lock-config.json'
-import { normalizeName } from '../utils/espn.js'
+import { resolveKey } from '../utils/espn.js'
 
 const TIERS = [1, 2, 3, 4]
 const AUTH_KEY = 'kimcup_auth'
@@ -16,7 +16,7 @@ const CURRENT_BY_NAME = (() => {
   const m = new Map()
   for (const [tier, players] of Object.entries(tiersData.tiers)) {
     for (const player of players) {
-      m.set(normalizeName(player), { tier: Number(tier), name: player })
+      m.set(resolveKey(player), { tier: Number(tier), name: player })
     }
   }
   return m
@@ -119,7 +119,7 @@ export default function PicksView() {
       const byTier = { 1: [], 2: [], 3: [], 4: [] }
       const dropped = []
       for (const p of data.picks ?? []) {
-        const cur = CURRENT_BY_NAME.get(normalizeName(p.player))
+        const cur = CURRENT_BY_NAME.get(resolveKey(p.player))
         if (cur) byTier[cur.tier].push(cur.name)
         else dropped.push(p.player)
       }
