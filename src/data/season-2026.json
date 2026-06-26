@@ -3218,6 +3218,1840 @@
           "thru": "F"
         }
       }
+    },
+    {
+      "major": "U.S. Open",
+      "tournament": "U.S. Open",
+      "cutLine": 4,
+      "winner": "Wyndham Clark",
+      "participants": [
+        {
+          "name": "Harley Hudson",
+          "picks": [
+            {
+              "player": "Rory McIlroy",
+              "tier": 1
+            },
+            {
+              "player": "Scottie Scheffler",
+              "tier": 1
+            },
+            {
+              "player": "Viktor Hovland",
+              "tier": 2
+            },
+            {
+              "player": "Maverick McNealy",
+              "tier": 2
+            },
+            {
+              "player": "Cameron Smith",
+              "tier": 3
+            },
+            {
+              "player": "Jackson Koivun",
+              "tier": 3
+            },
+            {
+              "player": "Peter Uihlein",
+              "tier": 4
+            },
+            {
+              "player": "Harry Higgs",
+              "tier": 4
+            }
+          ]
+        },
+        {
+          "name": "Jimmy Messing",
+          "picks": [
+            {
+              "player": "Xander Schauffele",
+              "tier": 1
+            },
+            {
+              "player": "Cameron Young",
+              "tier": 1
+            },
+            {
+              "player": "Chris Gotterup",
+              "tier": 2
+            },
+            {
+              "player": "Patrick Reed",
+              "tier": 2
+            },
+            {
+              "player": "Keegan Bradley",
+              "tier": 3
+            },
+            {
+              "player": "Daniel Berger",
+              "tier": 3
+            },
+            {
+              "player": "Tom Kim",
+              "tier": 4
+            },
+            {
+              "player": "Adrien Dumont de Chassart",
+              "tier": 4
+            }
+          ]
+        },
+        {
+          "name": "Nick O'Connor",
+          "picks": [
+            {
+              "player": "Scottie Scheffler",
+              "tier": 1
+            },
+            {
+              "player": "Tommy Fleetwood",
+              "tier": 1
+            },
+            {
+              "player": "Justin Rose",
+              "tier": 2
+            },
+            {
+              "player": "Shane Lowry",
+              "tier": 2
+            },
+            {
+              "player": "Brian Harman",
+              "tier": 3
+            },
+            {
+              "player": "Corey Conners",
+              "tier": 3
+            },
+            {
+              "player": "Carl Yuan",
+              "tier": 4
+            },
+            {
+              "player": "James Nicholas",
+              "tier": 4
+            }
+          ]
+        },
+        {
+          "name": "Timothy Dee",
+          "picks": [
+            {
+              "player": "Tommy Fleetwood",
+              "tier": 1
+            },
+            {
+              "player": "Brooks Koepka",
+              "tier": 1
+            },
+            {
+              "player": "Russell Henley",
+              "tier": 2
+            },
+            {
+              "player": "Shane Lowry",
+              "tier": 2
+            },
+            {
+              "player": "Brian Harman",
+              "tier": 3
+            },
+            {
+              "player": "Alejandro Tosti",
+              "tier": 3
+            },
+            {
+              "player": "Brandon Wu",
+              "tier": 4
+            },
+            {
+              "player": "Marcelo Rozo",
+              "tier": 4
+            }
+          ]
+        },
+        {
+          "name": "Matthew Dee",
+          "picks": [
+            {
+              "player": "Scottie Scheffler",
+              "tier": 1
+            },
+            {
+              "player": "Rory McIlroy",
+              "tier": 1
+            },
+            {
+              "player": "Patrick Reed",
+              "tier": 2
+            },
+            {
+              "player": "Aaron Rai",
+              "tier": 2
+            },
+            {
+              "player": "Daniel Berger",
+              "tier": 3
+            },
+            {
+              "player": "Ryan Fox",
+              "tier": 3
+            },
+            {
+              "player": "James Nicholas",
+              "tier": 4
+            },
+            {
+              "player": "Tom Kim",
+              "tier": 4
+            }
+          ]
+        },
+        {
+          "name": "Justin",
+          "picks": [
+            {
+              "player": "Matt Fitzpatrick",
+              "tier": 1
+            },
+            {
+              "player": "Rory McIlroy",
+              "tier": 1
+            },
+            {
+              "player": "Aaron Rai",
+              "tier": 2
+            },
+            {
+              "player": "Justin Rose",
+              "tier": 2
+            },
+            {
+              "player": "Ben James",
+              "tier": 3
+            },
+            {
+              "player": "Sahith Theegala",
+              "tier": 3
+            },
+            {
+              "player": "Bryan Lee",
+              "tier": 4
+            },
+            {
+              "player": "Brandon Holtz",
+              "tier": 4
+            }
+          ]
+        },
+        {
+          "name": "Hearn",
+          "picks": [
+            {
+              "player": "Scottie Scheffler",
+              "tier": 1
+            },
+            {
+              "player": "Tommy Fleetwood",
+              "tier": 1
+            },
+            {
+              "player": "Collin Morikawa",
+              "tier": 2
+            },
+            {
+              "player": "Tyrrell Hatton",
+              "tier": 2
+            },
+            {
+              "player": "Harry Hall",
+              "tier": 3
+            },
+            {
+              "player": "Jackson Koivun",
+              "tier": 3
+            },
+            {
+              "player": "Graeme McDowell",
+              "tier": 4
+            },
+            {
+              "player": "Kevin Roy",
+              "tier": 4
+            }
+          ]
+        },
+        {
+          "name": "Pat",
+          "picks": [
+            {
+              "player": "Scottie Scheffler",
+              "tier": 1
+            },
+            {
+              "player": "Tommy Fleetwood",
+              "tier": 1
+            },
+            {
+              "player": "Ben Griffin",
+              "tier": 2
+            },
+            {
+              "player": "Cameron Smith",
+              "tier": 2
+            },
+            {
+              "player": "Akshay Bhatia",
+              "tier": 3
+            },
+            {
+              "player": "Corey Conners",
+              "tier": 3
+            },
+            {
+              "player": "Niklas Nørgaard",
+              "tier": 4
+            },
+            {
+              "player": "Mason Howell",
+              "tier": 4
+            }
+          ]
+        },
+        {
+          "name": "Scott",
+          "picks": [
+            {
+              "player": "Scottie Scheffler",
+              "tier": 1
+            },
+            {
+              "player": "Xander Schauffele",
+              "tier": 1
+            },
+            {
+              "player": "Jason Day",
+              "tier": 2
+            },
+            {
+              "player": "Justin Rose",
+              "tier": 2
+            },
+            {
+              "player": "Corey Conners",
+              "tier": 3
+            },
+            {
+              "player": "Daniel Berger",
+              "tier": 3
+            },
+            {
+              "player": "Brandon Wu",
+              "tier": 4
+            },
+            {
+              "player": "Graeme McDowell",
+              "tier": 4
+            }
+          ]
+        },
+        {
+          "name": "Baldur",
+          "picks": [
+            {
+              "player": "Jon Rahm",
+              "tier": 1
+            },
+            {
+              "player": "Scottie Scheffler",
+              "tier": 1
+            },
+            {
+              "player": "Collin Morikawa",
+              "tier": 2
+            },
+            {
+              "player": "Hideki Matsuyama",
+              "tier": 2
+            },
+            {
+              "player": "Sungjae Im",
+              "tier": 3
+            },
+            {
+              "player": "Corey Conners",
+              "tier": 3
+            },
+            {
+              "player": "Tom Kim",
+              "tier": 4
+            },
+            {
+              "player": "Adrien Dumont de Chassart",
+              "tier": 4
+            }
+          ]
+        },
+        {
+          "name": "Trevor",
+          "picks": [
+            {
+              "player": "Scottie Scheffler",
+              "tier": 1
+            },
+            {
+              "player": "Tommy Fleetwood",
+              "tier": 1
+            },
+            {
+              "player": "Russell Henley",
+              "tier": 2
+            },
+            {
+              "player": "David Puig",
+              "tier": 2
+            },
+            {
+              "player": "Sahith Theegala",
+              "tier": 3
+            },
+            {
+              "player": "Jason Day",
+              "tier": 3
+            },
+            {
+              "player": "Adrien Dumont de Chassart",
+              "tier": 4
+            },
+            {
+              "player": "Brandon Wu",
+              "tier": 4
+            }
+          ]
+        },
+        {
+          "name": "Ian",
+          "picks": [
+            {
+              "player": "Scottie Scheffler",
+              "tier": 1
+            },
+            {
+              "player": "Matthew Fitzpatrick",
+              "tier": 1
+            },
+            {
+              "player": "Sam Burns",
+              "tier": 2
+            },
+            {
+              "player": "Tyrrell Hatton",
+              "tier": 2
+            },
+            {
+              "player": "Nick Taylor",
+              "tier": 3
+            },
+            {
+              "player": "Daniel Berger",
+              "tier": 3
+            },
+            {
+              "player": "Eric Cole",
+              "tier": 4
+            },
+            {
+              "player": "Dylan Wu",
+              "tier": 4
+            }
+          ]
+        },
+        {
+          "name": "Max",
+          "picks": [
+            {
+              "player": "Tommy Fleetwood",
+              "tier": 1
+            },
+            {
+              "player": "Xander Schauffele",
+              "tier": 1
+            },
+            {
+              "player": "Russell Henley",
+              "tier": 2
+            },
+            {
+              "player": "Justin Rose",
+              "tier": 2
+            },
+            {
+              "player": "Corey Conners",
+              "tier": 3
+            },
+            {
+              "player": "Sahith Theegala",
+              "tier": 3
+            },
+            {
+              "player": "Tom Kim",
+              "tier": 4
+            },
+            {
+              "player": "James Nicholas",
+              "tier": 4
+            }
+          ]
+        },
+        {
+          "name": "Bastian",
+          "picks": [
+            {
+              "player": "Scottie Scheffler",
+              "tier": 1
+            },
+            {
+              "player": "Rory McIlroy",
+              "tier": 1
+            },
+            {
+              "player": "Collin Morikawa",
+              "tier": 2
+            },
+            {
+              "player": "Viktor Hovland",
+              "tier": 2
+            },
+            {
+              "player": "Matti Schmid",
+              "tier": 3
+            },
+            {
+              "player": "Corey Conners",
+              "tier": 3
+            },
+            {
+              "player": "Tom Kim",
+              "tier": 4
+            },
+            {
+              "player": "Niklas Nørgaard",
+              "tier": 4
+            }
+          ]
+        },
+        {
+          "name": "Matt Mileski",
+          "picks": [
+            {
+              "player": "Xander Schauffele",
+              "tier": 1
+            },
+            {
+              "player": "Matt Fitzpatrick",
+              "tier": 1
+            },
+            {
+              "player": "Patrick Reed",
+              "tier": 2
+            },
+            {
+              "player": "Wyndham Clark",
+              "tier": 2
+            },
+            {
+              "player": "Akshay Bhatia",
+              "tier": 3
+            },
+            {
+              "player": "Jackson Koivun",
+              "tier": 3
+            },
+            {
+              "player": "Tom Kim",
+              "tier": 4
+            },
+            {
+              "player": "Ethan Fang",
+              "tier": 4
+            }
+          ]
+        },
+        {
+          "name": "Kyan Nafissi",
+          "picks": [
+            {
+              "player": "Scottie Scheffler",
+              "tier": 1
+            },
+            {
+              "player": "Rory McIlroy",
+              "tier": 1
+            },
+            {
+              "player": "Aaron Rai",
+              "tier": 2
+            },
+            {
+              "player": "Russell Henley",
+              "tier": 2
+            },
+            {
+              "player": "Johnny Keefer",
+              "tier": 3
+            },
+            {
+              "player": "Andrew Novak",
+              "tier": 3
+            },
+            {
+              "player": "Tom Kim",
+              "tier": 4
+            },
+            {
+              "player": "J.B. Holmes",
+              "tier": 4
+            }
+          ]
+        },
+        {
+          "name": "David",
+          "picks": [
+            {
+              "player": "Rory McIlroy",
+              "tier": 1
+            },
+            {
+              "player": "Scottie Scheffler",
+              "tier": 1
+            },
+            {
+              "player": "Patrick Reed",
+              "tier": 2
+            },
+            {
+              "player": "Justin Thomas",
+              "tier": 2
+            },
+            {
+              "player": "Alex Noren",
+              "tier": 3
+            },
+            {
+              "player": "Cameron Smith",
+              "tier": 3
+            },
+            {
+              "player": "James Nicholas",
+              "tier": 4
+            },
+            {
+              "player": "Cole Hammer",
+              "tier": 4
+            }
+          ]
+        },
+        {
+          "name": "Chip",
+          "picks": [
+            {
+              "player": "Scottie Scheffler",
+              "tier": 1
+            },
+            {
+              "player": "Rory McIlroy",
+              "tier": 1
+            },
+            {
+              "player": "Robert MacIntyre",
+              "tier": 2
+            },
+            {
+              "player": "Justin Thomas",
+              "tier": 2
+            },
+            {
+              "player": "Sahith Theegala",
+              "tier": 3
+            },
+            {
+              "player": "Brian Harman",
+              "tier": 3
+            },
+            {
+              "player": "Tom Kim",
+              "tier": 4
+            },
+            {
+              "player": "Ethan Fang",
+              "tier": 4
+            }
+          ]
+        },
+        {
+          "name": "Caleb",
+          "picks": [
+            {
+              "player": "Scottie Scheffler",
+              "tier": 1
+            },
+            {
+              "player": "Ludvig Åberg",
+              "tier": 1
+            },
+            {
+              "player": "Shane Lowry",
+              "tier": 2
+            },
+            {
+              "player": "Collin Morikawa",
+              "tier": 2
+            },
+            {
+              "player": "Corey Conners",
+              "tier": 3
+            },
+            {
+              "player": "Sungjae Im",
+              "tier": 3
+            },
+            {
+              "player": "Tom Kim",
+              "tier": 4
+            },
+            {
+              "player": "Niklas Nørgaard",
+              "tier": 4
+            }
+          ]
+        },
+        {
+          "name": "Will",
+          "picks": [
+            {
+              "player": "Matt Fitzpatrick",
+              "tier": 1
+            },
+            {
+              "player": "Rory McIlroy",
+              "tier": 1
+            },
+            {
+              "player": "Chris Gotterup",
+              "tier": 2
+            },
+            {
+              "player": "Russell Henley",
+              "tier": 2
+            },
+            {
+              "player": "Nick Taylor",
+              "tier": 3
+            },
+            {
+              "player": "Akshay Bhatia",
+              "tier": 3
+            },
+            {
+              "player": "Adrien Dumont de Chassart",
+              "tier": 4
+            },
+            {
+              "player": "Niklas Nørgaard",
+              "tier": 4
+            }
+          ]
+        },
+        {
+          "name": "LB",
+          "picks": [
+            {
+              "player": "Xander Schauffele",
+              "tier": 1
+            },
+            {
+              "player": "Matt Fitzpatrick",
+              "tier": 1
+            },
+            {
+              "player": "Patrick Reed",
+              "tier": 2
+            },
+            {
+              "player": "Russell Henley",
+              "tier": 2
+            },
+            {
+              "player": "Billy Horschel",
+              "tier": 3
+            },
+            {
+              "player": "Jackson Koivun",
+              "tier": 3
+            },
+            {
+              "player": "Niklas Nørgaard",
+              "tier": 4
+            },
+            {
+              "player": "Brandon Wu",
+              "tier": 4
+            }
+          ]
+        },
+        {
+          "name": "Egan",
+          "picks": [
+            {
+              "player": "Cameron Young",
+              "tier": 1
+            },
+            {
+              "player": "Tommy Fleetwood",
+              "tier": 1
+            },
+            {
+              "player": "Joaquín Niemann",
+              "tier": 2
+            },
+            {
+              "player": "Russell Henley",
+              "tier": 2
+            },
+            {
+              "player": "Sungjae Im",
+              "tier": 3
+            },
+            {
+              "player": "Daniel Berger",
+              "tier": 3
+            },
+            {
+              "player": "Harry Higgs",
+              "tier": 4
+            },
+            {
+              "player": "Mason Howell",
+              "tier": 4
+            }
+          ]
+        },
+        {
+          "name": "Ditto",
+          "picks": [
+            {
+              "player": "Scottie Scheffler",
+              "tier": 1
+            },
+            {
+              "player": "Rory McIlroy",
+              "tier": 1
+            },
+            {
+              "player": "Aaron Rai",
+              "tier": 2
+            },
+            {
+              "player": "Hideki Matsuyama",
+              "tier": 2
+            },
+            {
+              "player": "Sungjae Im",
+              "tier": 3
+            },
+            {
+              "player": "Andrew Novak",
+              "tier": 3
+            },
+            {
+              "player": "Robbie Higgins",
+              "tier": 4
+            },
+            {
+              "player": "Ethan Fang",
+              "tier": 4
+            }
+          ]
+        },
+        {
+          "name": "Wes",
+          "picks": [
+            {
+              "player": "Xander Schauffele",
+              "tier": 1
+            },
+            {
+              "player": "Tommy Fleetwood",
+              "tier": 1
+            },
+            {
+              "player": "Patrick Reed",
+              "tier": 2
+            },
+            {
+              "player": "Justin Rose",
+              "tier": 2
+            },
+            {
+              "player": "Sahith Theegala",
+              "tier": 3
+            },
+            {
+              "player": "Brian Harman",
+              "tier": 3
+            },
+            {
+              "player": "Brandon Wu",
+              "tier": 4
+            },
+            {
+              "player": "Niklas Nørgaard",
+              "tier": 4
+            }
+          ]
+        }
+      ],
+      "scores": {
+        "wyndham clark": {
+          "total": -4,
+          "status": "active",
+          "displayName": "Wyndham Clark",
+          "thru": "F"
+        },
+        "sam burns": {
+          "total": -3,
+          "status": "active",
+          "displayName": "Sam Burns",
+          "thru": "F"
+        },
+        "tom kim": {
+          "total": -1,
+          "status": "active",
+          "displayName": "Tom Kim",
+          "thru": "F"
+        },
+        "jt poston": {
+          "total": 0,
+          "status": "active",
+          "displayName": "J.T. Poston",
+          "thru": "F"
+        },
+        "keith mitchell": {
+          "total": 0,
+          "status": "active",
+          "displayName": "Keith Mitchell",
+          "thru": "F"
+        },
+        "scottie scheffler": {
+          "total": 0,
+          "status": "active",
+          "displayName": "Scottie Scheffler",
+          "thru": "F"
+        },
+        "joaquin niemann": {
+          "total": 1,
+          "status": "active",
+          "displayName": "Joaquín Niemann",
+          "thru": "F"
+        },
+        "tyrrell hatton": {
+          "total": 1,
+          "status": "active",
+          "displayName": "Tyrrell Hatton",
+          "thru": "F"
+        },
+        "gary woodland": {
+          "total": 1,
+          "status": "active",
+          "displayName": "Gary Woodland",
+          "thru": "F"
+        },
+        "sam stevens": {
+          "total": 1,
+          "status": "active",
+          "displayName": "Sam Stevens",
+          "thru": "F"
+        },
+        "justin rose": {
+          "total": 2,
+          "status": "active",
+          "displayName": "Justin Rose",
+          "thru": "F"
+        },
+        "john parry": {
+          "total": 2,
+          "status": "active",
+          "displayName": "John Parry",
+          "thru": "F"
+        },
+        "aaron rai": {
+          "total": 2,
+          "status": "active",
+          "displayName": "Aaron Rai",
+          "thru": "F"
+        },
+        "tommy fleetwood": {
+          "total": 2,
+          "status": "active",
+          "displayName": "Tommy Fleetwood",
+          "thru": "F"
+        },
+        "xander schauffele": {
+          "total": 2,
+          "status": "active",
+          "displayName": "Xander Schauffele",
+          "thru": "F"
+        },
+        "sahith theegala": {
+          "total": 2,
+          "status": "active",
+          "displayName": "Sahith Theegala",
+          "thru": "F"
+        },
+        "ludvig aberg": {
+          "total": 3,
+          "status": "active",
+          "displayName": "Ludvig Åberg",
+          "thru": "F"
+        },
+        "ben griffin": {
+          "total": 3,
+          "status": "active",
+          "displayName": "Ben Griffin",
+          "thru": "F"
+        },
+        "justin thomas": {
+          "total": 3,
+          "status": "active",
+          "displayName": "Justin Thomas",
+          "thru": "F"
+        },
+        "akshay bhatia": {
+          "total": 3,
+          "status": "active",
+          "displayName": "Akshay Bhatia",
+          "thru": "F"
+        },
+        "collin morikawa": {
+          "total": 3,
+          "status": "active",
+          "displayName": "Collin Morikawa",
+          "thru": "F"
+        },
+        "matt fitzpatrick": {
+          "total": 4,
+          "status": "active",
+          "displayName": "Matt Fitzpatrick",
+          "thru": "F"
+        },
+        "ben james": {
+          "total": 5,
+          "status": "active",
+          "displayName": "Ben James",
+          "thru": "F"
+        },
+        "ryan fox": {
+          "total": 5,
+          "status": "active",
+          "displayName": "Ryan Fox",
+          "thru": "F"
+        },
+        "jackson koivun": {
+          "total": 5,
+          "status": "active",
+          "displayName": "Jackson Koivun",
+          "thru": "F"
+        },
+        "ben kohles": {
+          "total": 5,
+          "status": "active",
+          "displayName": "Ben Kohles",
+          "thru": "F"
+        },
+        "pierceson coody": {
+          "total": 5,
+          "status": "active",
+          "displayName": "Pierceson Coody",
+          "thru": "F"
+        },
+        "corey conners": {
+          "total": 5,
+          "status": "active",
+          "displayName": "Corey Conners",
+          "thru": "F"
+        },
+        "alex fitzpatrick": {
+          "total": 5,
+          "status": "active",
+          "displayName": "Alex Fitzpatrick",
+          "thru": "F"
+        },
+        "ryder cowan": {
+          "total": 5,
+          "status": "active",
+          "displayName": "Ryder Cowan",
+          "thru": "F"
+        },
+        "emiliano grillo": {
+          "total": 5,
+          "status": "active",
+          "displayName": "Emiliano Grillo",
+          "thru": "F"
+        },
+        "dustin johnson": {
+          "total": 6,
+          "status": "active",
+          "displayName": "Dustin Johnson",
+          "thru": "F"
+        },
+        "max mcgreevy": {
+          "total": 6,
+          "status": "active",
+          "displayName": "Max McGreevy",
+          "thru": "F"
+        },
+        "zac blair": {
+          "total": 6,
+          "status": "active",
+          "displayName": "Zac Blair",
+          "thru": "F"
+        },
+        "rory mcilroy": {
+          "total": 6,
+          "status": "active",
+          "displayName": "Rory McIlroy",
+          "thru": "F"
+        },
+        "maverick mcnealy": {
+          "total": 6,
+          "status": "active",
+          "displayName": "Maverick McNealy",
+          "thru": "F"
+        },
+        "brian harman": {
+          "total": 6,
+          "status": "active",
+          "displayName": "Brian Harman",
+          "thru": "F"
+        },
+        "keegan bradley": {
+          "total": 6,
+          "status": "active",
+          "displayName": "Keegan Bradley",
+          "thru": "F"
+        },
+        "jacob bridgeman": {
+          "total": 7,
+          "status": "active",
+          "displayName": "Jacob Bridgeman",
+          "thru": "F"
+        },
+        "robert macintyre": {
+          "total": 7,
+          "status": "active",
+          "displayName": "Robert MacIntyre",
+          "thru": "F"
+        },
+        "miles russell": {
+          "total": 7,
+          "status": "active",
+          "displayName": "Miles Russell",
+          "thru": "F"
+        },
+        "johnny keefer": {
+          "total": 7,
+          "status": "active",
+          "displayName": "Johnny Keefer",
+          "thru": "F"
+        },
+        "max greyserman": {
+          "total": 8,
+          "status": "active",
+          "displayName": "Max Greyserman",
+          "thru": "F"
+        },
+        "chris gotterup": {
+          "total": 8,
+          "status": "active",
+          "displayName": "Chris Gotterup",
+          "thru": "F"
+        },
+        "michael brennan": {
+          "total": 8,
+          "status": "active",
+          "displayName": "Michael Brennan",
+          "thru": "F"
+        },
+        "harry higgs": {
+          "total": 8,
+          "status": "active",
+          "displayName": "Harry Higgs",
+          "thru": "F"
+        },
+        "laurie canter": {
+          "total": 8,
+          "status": "active",
+          "displayName": "Laurie Canter",
+          "thru": "F"
+        },
+        "cameron young": {
+          "total": 8,
+          "status": "active",
+          "displayName": "Cameron Young",
+          "thru": "F"
+        },
+        "niklas nrgaard": {
+          "total": 8,
+          "status": "active",
+          "displayName": "Niklas Nørgaard",
+          "thru": "F"
+        },
+        "michael kim": {
+          "total": 8,
+          "status": "active",
+          "displayName": "Michael Kim",
+          "thru": "F"
+        },
+        "sungjae im": {
+          "total": 8,
+          "status": "active",
+          "displayName": "Sungjae Im",
+          "thru": "F"
+        },
+        "ryo hisatsune": {
+          "total": 8,
+          "status": "active",
+          "displayName": "Ryo Hisatsune",
+          "thru": "F"
+        },
+        "adrien dumont de chassart": {
+          "total": 9,
+          "status": "active",
+          "displayName": "Adrien Dumont de Chassart",
+          "thru": "F"
+        },
+        "kurt kitayama": {
+          "total": 9,
+          "status": "active",
+          "displayName": "Kurt Kitayama",
+          "thru": "F"
+        },
+        "angel hidalgo": {
+          "total": 9,
+          "status": "active",
+          "displayName": "Angel Hidalgo",
+          "thru": "F"
+        },
+        "peter uihlein": {
+          "total": 10,
+          "status": "active",
+          "displayName": "Peter Uihlein",
+          "thru": "F"
+        },
+        "nico echavarria": {
+          "total": 10,
+          "status": "active",
+          "displayName": "Nico Echavarria",
+          "thru": "F"
+        },
+        "marek fleming": {
+          "total": 10,
+          "status": "active",
+          "displayName": "Marek Fleming",
+          "thru": "F"
+        },
+        "bud cauley": {
+          "total": 10,
+          "status": "active",
+          "displayName": "Bud Cauley",
+          "thru": "F"
+        },
+        "jordan spieth": {
+          "total": 10,
+          "status": "active",
+          "displayName": "Jordan Spieth",
+          "thru": "F"
+        },
+        "jackson van paris": {
+          "total": 11,
+          "status": "active",
+          "displayName": "Jackson Van Paris",
+          "thru": "F"
+        },
+        "spencer tibbits": {
+          "total": 11,
+          "status": "active",
+          "displayName": "Spencer Tibbits",
+          "thru": "F"
+        },
+        "eric lee": {
+          "total": 13,
+          "status": "active",
+          "displayName": "Eric Lee",
+          "thru": "F"
+        },
+        "caleb surratt": {
+          "total": 13,
+          "status": "active",
+          "displayName": "Caleb Surratt",
+          "thru": "F"
+        },
+        "james nicholas": {
+          "total": 14,
+          "status": "active",
+          "displayName": "James Nicholas",
+          "thru": "F"
+        },
+        "russell henley": {
+          "total": 14,
+          "status": "active",
+          "displayName": "Russell Henley",
+          "thru": "F"
+        },
+        "neal shipley": {
+          "total": 14,
+          "status": "active",
+          "displayName": "Neal Shipley",
+          "thru": "F"
+        },
+        "hideki matsuyama": {
+          "total": 14,
+          "status": "active",
+          "displayName": "Hideki Matsuyama",
+          "thru": "F"
+        },
+        "andrew putnam": {
+          "total": 14,
+          "status": "active",
+          "displayName": "Andrew Putnam",
+          "thru": "F"
+        },
+        "william mouw": {
+          "total": 14,
+          "status": "active",
+          "displayName": "William Mouw",
+          "thru": "F"
+        },
+        "patrick rodgers": {
+          "total": 17,
+          "status": "active",
+          "displayName": "Patrick Rodgers",
+          "thru": "F"
+        },
+        "dylan wu": {
+          "total": 18,
+          "status": "active",
+          "displayName": "Dylan Wu",
+          "thru": "F"
+        },
+        "viktor hovland": {
+          "total": 5,
+          "status": "cut",
+          "displayName": "Viktor Hovland",
+          "thru": "F"
+        },
+        "filippo celli": {
+          "total": 5,
+          "status": "cut",
+          "displayName": "Filippo Celli",
+          "thru": "F"
+        },
+        "jackson suber": {
+          "total": 5,
+          "status": "cut",
+          "displayName": "Jackson Suber",
+          "thru": "F"
+        },
+        "nick taylor": {
+          "total": 5,
+          "status": "cut",
+          "displayName": "Nick Taylor",
+          "thru": "F"
+        },
+        "sudarshan yellamaraju": {
+          "total": 5,
+          "status": "cut",
+          "displayName": "Sudarshan Yellamaraju",
+          "thru": "F"
+        },
+        "ryan gerard": {
+          "total": 5,
+          "status": "cut",
+          "displayName": "Ryan Gerard",
+          "thru": "F"
+        },
+        "billy horschel": {
+          "total": 5,
+          "status": "cut",
+          "displayName": "Billy Horschel",
+          "thru": "F"
+        },
+        "andrew novak": {
+          "total": 5,
+          "status": "cut",
+          "displayName": "Andrew Novak",
+          "thru": "F"
+        },
+        "matthew jordan": {
+          "total": 5,
+          "status": "cut",
+          "displayName": "Matthew Jordan",
+          "thru": "F"
+        },
+        "patrick reed": {
+          "total": 5,
+          "status": "cut",
+          "displayName": "Patrick Reed",
+          "thru": "F"
+        },
+        "harris english": {
+          "total": 5,
+          "status": "cut",
+          "displayName": "Harris English",
+          "thru": "F"
+        },
+        "rickie fowler": {
+          "total": 5,
+          "status": "cut",
+          "displayName": "Rickie Fowler",
+          "thru": "F"
+        },
+        "bryson dechambeau": {
+          "total": 5,
+          "status": "cut",
+          "displayName": "Bryson DeChambeau",
+          "thru": "F"
+        },
+        "si woo kim": {
+          "total": 6,
+          "status": "cut",
+          "displayName": "Si Woo Kim",
+          "thru": "F"
+        },
+        "nathan kimsey": {
+          "total": 6,
+          "status": "cut",
+          "displayName": "Nathan Kimsey",
+          "thru": "F"
+        },
+        "cameron smith": {
+          "total": 6,
+          "status": "cut",
+          "displayName": "Cameron Smith",
+          "thru": "F"
+        },
+        "patrick cantlay": {
+          "total": 6,
+          "status": "cut",
+          "displayName": "Patrick Cantlay",
+          "thru": "F"
+        },
+        "lucas herbert": {
+          "total": 6,
+          "status": "cut",
+          "displayName": "Lucas Herbert",
+          "thru": "F"
+        },
+        "alex noren": {
+          "total": 6,
+          "status": "cut",
+          "displayName": "Alex Noren",
+          "thru": "F"
+        },
+        "shane lowry": {
+          "total": 6,
+          "status": "cut",
+          "displayName": "Shane Lowry",
+          "thru": "F"
+        },
+        "cole hammer": {
+          "total": 6,
+          "status": "cut",
+          "displayName": "Cole Hammer",
+          "thru": "F"
+        },
+        "jack schoenberger": {
+          "total": 6,
+          "status": "cut",
+          "displayName": "Jack Schoenberger",
+          "thru": "F"
+        },
+        "carlos ortiz": {
+          "total": 6,
+          "status": "cut",
+          "displayName": "Carlos Ortiz",
+          "thru": "F"
+        },
+        "kristoffer reitan": {
+          "total": 6,
+          "status": "cut",
+          "displayName": "Kristoffer Reitan",
+          "thru": "F"
+        },
+        "jon rahm": {
+          "total": 6,
+          "status": "cut",
+          "displayName": "Jon Rahm",
+          "thru": "F"
+        },
+        "brandon wu": {
+          "total": 7,
+          "status": "cut",
+          "displayName": "Brandon Wu",
+          "thru": "F"
+        },
+        "kaito onishi": {
+          "total": 7,
+          "status": "cut",
+          "displayName": "Kaito Onishi",
+          "thru": "F"
+        },
+        "min woo lee": {
+          "total": 7,
+          "status": "cut",
+          "displayName": "Min Woo Lee",
+          "thru": "F"
+        },
+        "giuseppe puebla": {
+          "total": 7,
+          "status": "cut",
+          "displayName": "Giuseppe Puebla",
+          "thru": "F"
+        },
+        "jimmy stanger": {
+          "total": 7,
+          "status": "cut",
+          "displayName": "Jimmy Stanger",
+          "thru": "F"
+        },
+        "bryan lee": {
+          "total": 7,
+          "status": "cut",
+          "displayName": "Bryan Lee",
+          "thru": "F"
+        },
+        "manav shah": {
+          "total": 7,
+          "status": "cut",
+          "displayName": "Manav Shah",
+          "thru": "F"
+        },
+        "adrien saddier": {
+          "total": 7,
+          "status": "cut",
+          "displayName": "Adrien Saddier",
+          "thru": "F"
+        },
+        "sepp straka": {
+          "total": 7,
+          "status": "cut",
+          "displayName": "Sepp Straka",
+          "thru": "F"
+        },
+        "alejandro tosti": {
+          "total": 8,
+          "status": "cut",
+          "displayName": "Alejandro Tosti",
+          "thru": "F"
+        },
+        "mason howell": {
+          "total": 8,
+          "status": "cut",
+          "displayName": "Mason Howell",
+          "thru": "F"
+        },
+        "jake knapp": {
+          "total": 8,
+          "status": "cut",
+          "displayName": "Jake Knapp",
+          "thru": "F"
+        },
+        "jj spaun": {
+          "total": 8,
+          "status": "cut",
+          "displayName": "J.J. Spaun",
+          "thru": "F"
+        },
+        "marcelo rozo": {
+          "total": 8,
+          "status": "cut",
+          "displayName": "Marcelo Rozo",
+          "thru": "F"
+        },
+        "ben silverman": {
+          "total": 8,
+          "status": "cut",
+          "displayName": "Ben Silverman",
+          "thru": "F"
+        },
+        "adam scott": {
+          "total": 8,
+          "status": "cut",
+          "displayName": "Adam Scott",
+          "thru": "F"
+        },
+        "chris kirk": {
+          "total": 9,
+          "status": "cut",
+          "displayName": "Chris Kirk",
+          "thru": "F"
+        },
+        "david puig": {
+          "total": 9,
+          "status": "cut",
+          "displayName": "David Puig",
+          "thru": "F"
+        },
+        "carl yuan": {
+          "total": 9,
+          "status": "cut",
+          "displayName": "Carl Yuan",
+          "thru": "F"
+        },
+        "ugo coussaud": {
+          "total": 9,
+          "status": "cut",
+          "displayName": "Ugo Coussaud",
+          "thru": "F"
+        },
+        "alex smalley": {
+          "total": 9,
+          "status": "cut",
+          "displayName": "Alex Smalley",
+          "thru": "F"
+        },
+        "taihei sato": {
+          "total": 9,
+          "status": "cut",
+          "displayName": "Taihei Sato",
+          "thru": "F"
+        },
+        "jackson herrington": {
+          "total": 9,
+          "status": "cut",
+          "displayName": "Jackson Herrington",
+          "thru": "F"
+        },
+        "jb holmes": {
+          "total": 9,
+          "status": "cut",
+          "displayName": "J.B. Holmes",
+          "thru": "F"
+        },
+        "nicolai hjgaard": {
+          "total": 9,
+          "status": "cut",
+          "displayName": "Nicolai Højgaard",
+          "thru": "F"
+        },
+        "chandler phillips": {
+          "total": 9,
+          "status": "cut",
+          "displayName": "Chandler Phillips",
+          "thru": "F"
+        },
+        "kevin roy": {
+          "total": 9,
+          "status": "cut",
+          "displayName": "Kevin Roy",
+          "thru": "F"
+        },
+        "preston stout": {
+          "total": 9,
+          "status": "cut",
+          "displayName": "Preston Stout",
+          "thru": "F"
+        },
+        "ryuichi oiwa": {
+          "total": 10,
+          "status": "cut",
+          "displayName": "Ryuichi Oiwa",
+          "thru": "F"
+        },
+        "daniel berger": {
+          "total": 10,
+          "status": "cut",
+          "displayName": "Daniel Berger",
+          "thru": "F"
+        },
+        "brandon holtz": {
+          "total": 10,
+          "status": "cut",
+          "displayName": "Brandon Holtz",
+          "thru": "F"
+        },
+        "jayden schaper": {
+          "total": 10,
+          "status": "cut",
+          "displayName": "Jayden Schaper",
+          "thru": "F"
+        },
+        "davis thompson": {
+          "total": 10,
+          "status": "cut",
+          "displayName": "Davis Thompson",
+          "thru": "F"
+        },
+        "brooks koepka": {
+          "total": 10,
+          "status": "cut",
+          "displayName": "Brooks Koepka",
+          "thru": "F"
+        },
+        "hamilton coleman": {
+          "total": 11,
+          "status": "cut",
+          "displayName": "Hamilton Coleman",
+          "thru": "F"
+        },
+        "cooper dossey": {
+          "total": 11,
+          "status": "cut",
+          "displayName": "Cooper Dossey",
+          "thru": "F"
+        },
+        "logan reilly": {
+          "total": 11,
+          "status": "cut",
+          "displayName": "Logan Reilly",
+          "thru": "F"
+        },
+        "taylor montgomery": {
+          "total": 11,
+          "status": "cut",
+          "displayName": "Taylor Montgomery",
+          "thru": "F"
+        },
+        "padraig harrington": {
+          "total": 11,
+          "status": "cut",
+          "displayName": "Padraig Harrington",
+          "thru": "F"
+        },
+        "jake peacock": {
+          "total": 11,
+          "status": "cut",
+          "displayName": "Jake Peacock",
+          "thru": "F"
+        },
+        "harry hall": {
+          "total": 11,
+          "status": "cut",
+          "displayName": "Harry Hall",
+          "thru": "F"
+        },
+        "mateo pulcini": {
+          "total": 11,
+          "status": "cut",
+          "displayName": "Mateo Pulcini",
+          "thru": "F"
+        },
+        "ethan fang": {
+          "total": 11,
+          "status": "cut",
+          "displayName": "Ethan Fang",
+          "thru": "F"
+        },
+        "nick hardy": {
+          "total": 12,
+          "status": "cut",
+          "displayName": "Nick Hardy",
+          "thru": "F"
+        },
+        "hennie du plessis": {
+          "total": 12,
+          "status": "cut",
+          "displayName": "Hennie Du Plessis",
+          "thru": "F"
+        },
+        "graeme mcdowell": {
+          "total": 12,
+          "status": "cut",
+          "displayName": "Graeme McDowell",
+          "thru": "F"
+        },
+        "chase kyes": {
+          "total": 12,
+          "status": "cut",
+          "displayName": "Chase Kyes",
+          "thru": "F"
+        },
+        "vaughn harber": {
+          "total": 12,
+          "status": "cut",
+          "displayName": "Vaughn Harber",
+          "thru": "F"
+        },
+        "matt mccarty": {
+          "total": 12,
+          "status": "cut",
+          "displayName": "Matt McCarty",
+          "thru": "F"
+        },
+        "jake sollon": {
+          "total": 13,
+          "status": "cut",
+          "displayName": "Jake Sollon",
+          "thru": "F"
+        },
+        "matti schmid": {
+          "total": 14,
+          "status": "cut",
+          "displayName": "Matti Schmid",
+          "thru": "F"
+        },
+        "tk kim": {
+          "total": 16,
+          "status": "cut",
+          "displayName": "T.K. Kim",
+          "thru": "F"
+        },
+        "matthew robles": {
+          "total": 16,
+          "status": "cut",
+          "displayName": "Matthew Robles",
+          "thru": "F"
+        },
+        "rocco repetto taylor": {
+          "total": 17,
+          "status": "cut",
+          "displayName": "Rocco Repetto Taylor",
+          "thru": "F"
+        },
+        "robbie higgins": {
+          "total": 19,
+          "status": "cut",
+          "displayName": "Robbie Higgins",
+          "thru": "F"
+        },
+        "jackson ormond": {
+          "total": 20,
+          "status": "cut",
+          "displayName": "Jackson Ormond",
+          "thru": "F"
+        },
+        "arni sveinsson": {
+          "total": 21,
+          "status": "cut",
+          "displayName": "Arni Sveinsson",
+          "thru": "F"
+        },
+        "greyson leach": {
+          "total": 21,
+          "status": "cut",
+          "displayName": "Greyson Leach",
+          "thru": "F"
+        },
+        "jason day": {
+          "total": 7,
+          "status": "cut",
+          "displayName": "Jason Day",
+          "thru": "10"
+        }
+      }
     }
   ]
 }
