@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import participantsData from '../data/participants-2026.json'
-import tiersData from '../data/usopen-2026-tiers.json'
+import tiersData from '../data/theopen-2026-tiers.json'
 import lockConfig from '../data/lock-config.json'
 import { resolveKey } from '../utils/espn.js'
 
