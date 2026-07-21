@@ -4,6 +4,14 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # The auto-snapshot workflow commits season-2026.json with the default
+  # GITHUB_TOKEN, and GitHub deliberately does NOT fire the push event above
+  # for token-authored commits (recursion guard). Without this, a freshly
+  # snapshotted major lands on main but never reaches the live site. Redeploy
+  # whenever the snapshot workflow finishes.
+  workflow_run:
+    workflows: ["Auto-snapshot completed majors"]
+    types: [completed]
 
 permissions:
   contents: write
@@ -11,6 +19,9 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    # On a workflow_run trigger, only deploy when the snapshot actually
+    # succeeded (workflow_run fires on completion regardless of conclusion).
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/checkout@v4
 
